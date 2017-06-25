@@ -1,0 +1,103 @@
+---
+title: "Arran"
+output: html_notebook
+---
+
+This is a small project to familiarise myself with R.
+
+Method
+
+First I need to load up the packages I'll need
+
+```{r}
+library(sf)
+library(ggplot2) #development version!
+## devtools::install_github("tidyverse/ggplot2")
+library(tidyverse)
+library(readr)
+## Not sure about this bit
+library("tidyverse", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+```
+
+Now I need to import my data
+In this case 'Code-Point Open - GB', already downloaded from https://www.ordnancesurvey.co.uk/opendatadownload/products.html. 
+I've already selected the National Grid Reference square I needed and put on the desktop.
+
+```{r}
+## Import data
+ka <- read.csv("~/Desktop/ka.csv")
+```
+
+Fiddle about with it.
+
+```{r}
+## Print it if you like
+ka
+
+## Summarise it
+summary(ka)
+
+## Find out classes
+sapply(ka,class)
+
+## Use this bit to check which columns had unique values
+## E.g Positional_quality_indicator column
+length(unique(ka$Positional_quality_indicator))
+```
+
+Now I plot the entire grid reference square as co-ordinates.
+
+```{r}
+## Plot Postcodes as co-ordinates
+ggplot(data = ka) +
+  geom_point(mapping = aes(x = Eastings, y = Northings))
+```
+
+Now I subselect from the KA data.
+Initially I had to do this by looking at the data which was organised alphabetically by postcode.
+Since Arran all begins 'KA27' it means I could simply select out the rows containing Arran postcodes together.
+
+```{r}
+## Selecting columns
+postcodecoord <- data.frame(ka$Postcode,ka$Eastings,ka$Northings)
+## OR
+postcodecoord <- ka[,c("Postcode","Eastings","Northings")]
+
+## Selecting rows
+Arran <- ka[c(6700:6896),c("Postcode","Eastings","Northings")]
+```
+
+Now I plot it. (With a few labels, etc)
+```{r}
+## Neater version
+ggplot(data = Arran) +
+  geom_point(mapping = aes(x = Eastings, y = Northings)) +
+  ggtitle("Arran Postcodes") +
+  labs(title = "Arran Postcodes", x = "Eastings", y = "Northings") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+--
+--
+
+Now I try something different. I found some new data from somewhere.
+I import it. I filter for the Arran postcodes using a more clever code then last time.
+
+```{r}
+## Finding the Arran coordinates
+library(dplyr)
+allcoordinates <- read.csv("~/Desktop/ukpostcodes.csv")
+arrancoordinates <- filter(allcoordinates,substr(postcode,1,4)=="KA27")
+```
+
+Now I plot that instead.
+```{r}
+## Plotting the Arran coordinates
+ggplot(data = arrancoordinates) +
+  geom_point(mapping = aes(x = longitude, y = latitude)) +
+  ggtitle("Arran Postcodes") +
+  labs(title = "Arran Postcodes", x = "Longitude", y = "Latitude") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).
