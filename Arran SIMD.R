@@ -8,7 +8,7 @@ library(tidyverse)
 #Import SIMD data from http://www.gov.scot/Topics/Statistics/SIMD
 #The "new data zone boundaries with SIMD16 ranks (zipped shapefile)"
 #'2011 Data Zone boundaries'
-sg <- read_sf("./SG_SIMD_2016")
+sg <- read_sf("./alldata/SG_SIMD_2016")
 
 #sg %>%
 #  ggplot() +
@@ -28,7 +28,7 @@ sh %>%
 
 #Import SIMD data from http://www.gov.scot/Topics/Statistics/SIMD
 #The 'Postcode to SIMD rank'
-allsimdgroups <-read.csv("~/Desktop/00505244.csv")
+allsimdgroups <-read.csv("./alldata/00505244.csv")
 #Summarise this data
 summary(allsimdgroups)
 #Find the classes from this data
