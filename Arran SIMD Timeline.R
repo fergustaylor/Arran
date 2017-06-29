@@ -1,9 +1,54 @@
 # this uses the sf package to create a new object called sg
 # sg is a dataframe, there is one column called geometry with all the useful map info
-
 library(sf)
 library(ggplot2) #development version!
 library(tidyverse)
+
+#Multiplot code
+#http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
+# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
+# - cols:   Number of columns in layout
+# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
+#
+# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
+# then plot 1 will go in the upper left, 2 will go in the upper right, and
+# 3 will go all the way across the bottom.
+#
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  library(grid)
+  
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+  
+  numPlots = length(plots)
+  
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                     ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+  
+  if (numPlots==1) {
+    print(plots[[1]])
+    
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+    
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+      
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
 
 #Import SIMD data from http://www.gov.scot/Topics/Statistics/SIMD
 #The "new data zone boundaries with SIMD16 ranks (zipped shapefile)"
@@ -59,6 +104,11 @@ arran2006 <- DZBoundaries2006[Arrandz2012,]
 #2004
 arran2004 <- DZBoundaries2004[Arrandz2012,]
 
+#Plot 2016
+arran2016 %>%
+  ggplot() +
+  geom_sf(aes(fill = DataZone))
+
 #Plot 2012
 arran2012 %>%
   ggplot() +
@@ -96,3 +146,38 @@ arran2004 %>%
   geom_sf(aes(fill = Percentile))
 
 ##Plot graphs together
+
+#Plot 2016
+p1 <- arran2016 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle("2016")
+
+#Plot 2012
+p2 <- arran2012 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle("2012")
+
+#Plot 2009
+p3 <- arran2009 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle("2009")
+
+#Plot 2006
+p4 <- arran2006 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle("2006")
+
+#Plot 2004
+p5 <- arran2004 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle("2004")
+
+multiplot(p1, p2, p3, p4, p5, cols=3)
+
+multiplot(p1, p2, p3, p4, p5, cols=3) +
+  ggtitle("SIMD Percentiles 2004-2016")
