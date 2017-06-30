@@ -1,36 +1,22 @@
 # Arran
 
-# The Minimal theme
+## Introduction
+This is an early project based on SIMD data that I'm using to learn R.
+For this I intend to explore 'ggplot2' to incorporate a set of skills I'm attempting to learn through a combination of DataCamp courses, RStudio 'Cheat Sheets' and twitter.
 
-[![Build Status](https://travis-ci.org/pages-themes/minimal.svg?branch=master)](https://travis-ci.org/pages-themes/minimal) [![Gem Version](https://badge.fury.io/rb/jekyll-theme-minimal.svg)](https://badge.fury.io/rb/jekyll-theme-minimal)
+### Early progress
 
-*Minimal is a Jekyll theme for GitHub Pages. You can [preview the theme to see what it looks like](http://pages-themes.github.io/minimal), or even [use it today](#usage).*
+Initially I used map cordinates given by Ordinance Survey to find the centre of any KA27 postcode on a map.
+(KA27 being the prefix or 'postcode area' that relates to all Aran Island postcodes).
+I used the function 'geom_point' to 
 
-![Thumbnail of minimal](thumbnail.png)
+Actually in reality, I first plotted the entire map section (NR) before taking a shockingly large amount of time to work out how to filter the postcodes down futher.
 
-## Usage
+I then used SIMD 'DataZone boundraries' and plotted their ERSI Shapefiles using 'geom_sf.' I then coloured and labelled the individual data zones, and overlayed some 'percentile' data about the areas.
 
-To use the Minimal theme:
+After faffing about with individual shape files for every year. (The data zone labels changed after 2012), I then did the same for all the SIMD data periods.
 
-1. Add the following to your site's `_config.yml`:
-
-    ```yml
-    theme: jekyll-theme-minimal
-    ```
-
-2. Optionally, if you'd like to preview your site on your computer, add the following to your site's `Gemfile`:
-
-    ```ruby
-    gem "github-pages", group: :jekyll_plugins
-    ```
-
-
-
-## Customizing
-
-### Configuration variables
-
-Minimal will respect the following variables, if set in your site's `_config.yml`:
+I then added multiplot to add them together.
 
 ```yml
 title: [The title of your site]
