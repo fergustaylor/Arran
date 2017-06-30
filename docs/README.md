@@ -24,7 +24,7 @@ I then used SIMD 'DataZone boundraries' and plotted their ERSI Shapefiles using 
 
 ![DZ Outlines Colourewd](https://github.com/fergustaylor/Arran/blob/master/docs/Rplot06.png)
 
-![DZ Outlines Colourewd](https://github.com/fergustaylor/Arran/blob/master/docs/Rplot07.png)
+![DZ Outlines Colourewd](https://lh4.googleusercontent.com/zJB20WDsULWK_osc0Z8dDYY3GJ_b8hCHU4lr8VmSmHIuzl5IfCtR1jT_Mm9ot8g9CbQ8TJaI8cb5pJs=w2280-h1398-rw)
 
 After faffing about with individual shape files for every year. (The data zone labels changed after 2012), I then did the same for all the SIMD data periods.
 I then added multiplot to add them together.
