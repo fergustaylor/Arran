@@ -46,4 +46,8 @@ If you'd like to add lists:
 
 [Contribution guidelines for this project](docs/Rplot.png)
 
+[Contribution guidelines for this project](docs/CopyOfREADME.md)
+
+
+
 Arran/docs/Rplot.png
