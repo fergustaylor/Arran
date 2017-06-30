@@ -10,7 +10,7 @@ Initially I used map cordinates given by Ordinance Survey to find the centre of 
 (KA27 being the prefix or 'postcode area' that relates to all Aran Island postcodes).
 I used the function 'geom_point' to plot these postcodes as points on a map.
 
-![Point coordinates](hhttps://github.com/fergustaylor/Arran/blob/master/docs/Rplot03.png)
+![Point coordinates](https://github.com/fergustaylor/Arran/docs/Rplot03.png)
 
 Actually in reality, I first plotted the entire map section (NR) before taking a shockingly large amount of time to work out how to filter the postcodes down futher.
 
