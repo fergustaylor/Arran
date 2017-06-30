@@ -7,7 +7,7 @@ library(readr)
 library("tidyverse", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
 
 ## Import data
-ka <- read.csv("~/Desktop/ka.csv")
+ka <- read.csv("alldata/ka.csv")
 
 ## Print it if you like
 ka
@@ -51,7 +51,7 @@ ggplot(data = Arran) +
 
 ## Finding the Arran coordinates
 library(dplyr)
-allcoordinates <- read.csv("~/Desktop/ukpostcodes.csv")
+allcoordinates <- read.csv("alldata/ukpostcodes.csv")
 arrancoordinates <- filter(allcoordinates,substr(postcode,1,4)=="KA27")
 
 ## Plotting the Arran coordinates
