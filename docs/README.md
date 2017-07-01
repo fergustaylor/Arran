@@ -12,6 +12,24 @@ I used the function 'geom_point' to plot these postcodes as points on a map.
 
 ![Point coordinates](https://github.com/fergustaylor/Arran/raw/master/docs/Rplot03.png)
 
+![Point coordinates14](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
+
+![Point coordinates13](Rplot03.png)
+
+
+![Point coordinates12](https://fergustaylor.github.io/Arran/figure-html/Rplot03.png)
+
+
+![Point coordinates5](https://fergustaylor.github.io/Arran/raw/master/docs/Rplot03.png)
+
+![Point coordinates6](https://fergustaylor.github.io/Arran/docs/Rplot03.png)
+
+![Point coordinates2](https://fergustaylor.github.io/Arran/docs/Rplot03.png)
+
+![Point coordinates3](https://callumgwtaylor.github.io/blog/post/2017-06-05-using-sf-gganimate-and-the-humanitarian-data-exchange-to-map-acled-data-for-africa_files/figure-html/acled_2017-1.png)
+
+https://callumgwtaylor.github.io/blog/post/2017-05-28-plotting-deprivation-in-scotland-using-geofacet-and-sf-in-r_files/figure-html/geofacet_deprivation_plots-1.png
+
 Actually in reality, I first plotted the entire map section (NR) before taking a shockingly large amount of time to work out how to filter the postcodes down futher.
 
 ![Point coordinates whole map](https://github.com/fergustaylor/Arran/raw/master/docs/Rplot02.png)
