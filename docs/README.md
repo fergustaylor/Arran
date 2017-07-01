@@ -39,6 +39,10 @@ Then after faffing about with individual shape files for every year, (The data z
 
 ![Multiplot plot](Rplot.png)
 
+The next steps for me are to join the yearly data frames together and use facet_wrap to create a graph for each year.
+
+Then to overlay the coordinates onto the maps.
+
 ### Example coding
 ```yml
 title: [The title of your site]
