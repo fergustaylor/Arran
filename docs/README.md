@@ -40,12 +40,6 @@ If you'd like to add lists:
 
 1. Bullet-pointing
 
-[Contribution guidelines for this project](Arran/docs/Rplot.png) 
+[Back to main site](https://fergustaylor.github.io) 
 
-[Contribution guidelines for this project](docs/Rplot.png)
-
-[Contribution guidelines for this project](docs/CopyOfREADME.md)
-
-
-
-Arran/docs/Rplot.png
+[Another example readme](https://github.com/fergustaylor/Arran/raw/master/docs/CopyOfREADME.md)
