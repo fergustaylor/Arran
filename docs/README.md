@@ -43,6 +43,7 @@ The next steps for me are to join the yearly data frames together and use facet_
 
 Then to overlay the coordinates onto the maps.
 
-[Other projects I'm working on.](https://fergustaylor.github.io) 
+[See the code.](RHTML.html)
+[Page 2.](page2.md)
 
-[Page 2.](CopyOfREADME.md)
+[Other projects I'm working on.](https://fergustaylor.github.io) 
