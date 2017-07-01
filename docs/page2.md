@@ -20,3 +20,5 @@ If you'd like to add lists:
 [Example3](RHTML.Rhtml)
 
 [Example4](Shinydocumentexample.Rmd)
+
+[Example5](RHTMLcopy.html)
