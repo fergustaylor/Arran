@@ -20,16 +20,23 @@ N.B Actually I first plotted the coordinates of the entire map section, (NR), be
 With the postcodes sorted, I then wanted to get relate some other information to these areas.
 I used [SIMD](www.gov.scot/Topics/Statistics/SIMD) 'DataZone boundraries' and plotted their ERSI Shapefiles using 'geom_sf.' 
 First the whole island together.
+
 ![DZ Outlines](Rplot04.png)
+
 Then the data zones onto the island.
+
 ![DZ Outlines2](Rplot05.png)
+
 I then skipped a few steps and coloured/labelled the individual data zones.
+
 ![DZ Outlines Colourewd](Rplot06.png)
 
 Having worked that out, I wanted to show some health data about the zones. I overlayed 'percentile' data about the areas for 2016.
+
 ![DZ Outlines Colourewd](Rplot07.png)
 
 Then after faffing about with individual shape files for every year, (The data zone labels changed after 2012), I did the same for all the SIMD data periods and used multiplot to add them together.
+
 ![Multiplot plot](Rplot.png)
 
 ### Example coding
