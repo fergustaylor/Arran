@@ -177,4 +177,5 @@ p5 <- arran2004 %>%
   geom_sf(aes(fill = Percentile)) +
   ggtitle("2004")
 
+#Plot 2004-2016 Together
 multiplot(p1, p2, p3, p4, p5, cols=3)
