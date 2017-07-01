@@ -45,7 +45,7 @@ Then to overlay the coordinates onto the maps.
 
 [See the code.](RHTML.html)
 
-[See the code.](code.md)
+[See the code.](Code.md)
 
 [Page 2.](page2.md)
 
