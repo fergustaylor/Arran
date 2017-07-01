@@ -12,6 +12,8 @@ I used the function 'geom_point' to plot these postcodes as points on a map.
 
 ![Point coordinates](https://github.com/fergustaylor/Arran/blob/master/docs/Rplot03.png)
 
+![Point coordinates](https://github.com/fergustaylor/Arran/raw/master/docs/Rplot03.png)
+
 Actually in reality, I first plotted the entire map section (NR) before taking a shockingly large amount of time to work out how to filter the postcodes down futher.
 
 ![Point coordinates whole map](https://github.com/fergustaylor/Arran/blob/master/docs/Rplot02.png)
