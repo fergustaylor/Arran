@@ -178,6 +178,3 @@ p5 <- arran2004 %>%
   ggtitle("2004")
 
 multiplot(p1, p2, p3, p4, p5, cols=3)
-
-multiplot(p1, p2, p3, p4, p5, cols=3) +
-  ggtitle("SIMD Percentiles 2004-2016")

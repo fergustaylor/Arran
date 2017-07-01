@@ -99,5 +99,3 @@ ggplot(data = arrancoordinates) +
   labs(title = "Arran Postcodes", x = "Longitude", y = "Latitude") +
   theme(plot.title = element_text(hjust = 0.5))
 ```
-
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).
