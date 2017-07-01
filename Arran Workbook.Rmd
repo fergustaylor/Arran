@@ -97,6 +97,21 @@ ggplot(data = arrancoordinates) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
+Now I create some pictures. Embarrassingly I'm missing a few bits of code, and can't remember how I made several plots.
+
+```{r}
+pcs <- read_sf("alldata/Scotland_pcs_2011")
+
+#Print Post codes lists
+arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
+arransubsect %>%
+  ggplot() +
+  geom_sf()
+
+ggplot() +
+  geom_sf(aes(fill = D))
+```
+
 Now I have to load up a new function.
 
 ```{r}

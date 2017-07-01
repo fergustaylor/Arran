@@ -172,8 +172,6 @@ $(document).ready(function () {
 
 
 <!-- rnb-text-begin -->
-<p>This is a small project to familiarise myself with R.</p>
-<p>Method</p>
 <p>First I need to load up the packages I’ll need</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
@@ -191,18 +189,17 @@ library(&quot;tidyverse&quot;, lib.loc=&quot;/Library/Frameworks/R.framework/Ver
 <p>Now I need to import my data In this case ‘Code-Point Open - GB’, already downloaded from <a href="https://www.ordnancesurvey.co.uk/opendatadownload/products.html" class="uri">https://www.ordnancesurvey.co.uk/opendatadownload/products.html</a>. I’ve already selected the National Grid Reference square I needed and put on the desktop.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgSW1wb3J0IGRhdGFcbmthIDwtIHJlYWQuY3N2KFwifi9EZXNrdG9wL2thLmNzdlwiKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgSW1wb3J0IGRhdGFcbmthIDwtIHJlYWQuY3N2KFwiYWxsZGF0YS9rYS5jc3ZcIilcbmBgYCJ9 -->
 <pre class="r"><code>## Import data
-ka &lt;- read.csv(&quot;~/Desktop/ka.csv&quot;)</code></pre>
+ka &lt;- read.csv(&quot;alldata/ka.csv&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Fiddle about with it.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgUHJpbnQgaXQgaWYgeW91IGxpa2VcbmthXG5cbiMjIFN1bW1hcmlzZSBpdFxuc3VtbWFyeShrYSlcblxuIyMgRmluZCBvdXQgY2xhc3Nlc1xuc2FwcGx5KGthLGNsYXNzKVxuXG4jIyBVc2UgdGhpcyBiaXQgdG8gY2hlY2sgd2hpY2ggY29sdW1ucyBoYWQgdW5pcXVlIHZhbHVlc1xuIyMgRS5nIFBvc2l0aW9uYWxfcXVhbGl0eV9pbmRpY2F0b3IgY29sdW1uXG5sZW5ndGgodW5pcXVlKGthJFBvc2l0aW9uYWxfcXVhbGl0eV9pbmRpY2F0b3IpKVxuYGBgIn0= -->
-<pre class="r"><code>## Print it if you like
-ka
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgUHJpbnQgaXQgaWYgeW91IGxpa2UgYnkgaW5wdXR0aW5nIFwia2FcIi5cblxuIyMgU3VtbWFyaXNlIGl0XG5zdW1tYXJ5KGthKVxuXG4jIyBGaW5kIG91dCBjbGFzc2VzXG5zYXBwbHkoa2EsY2xhc3MpXG5cbiMjIFVzZSB0aGlzIGJpdCB0byBjaGVjayB3aGljaCBjb2x1bW5zIGhhZCB1bmlxdWUgdmFsdWVzXG4jIyBFLmcgUG9zaXRpb25hbF9xdWFsaXR5X2luZGljYXRvciBjb2x1bW5cbmxlbmd0aCh1bmlxdWUoa2EkUG9zaXRpb25hbF9xdWFsaXR5X2luZGljYXRvcikpXG5gYGAifQ== -->
+<pre class="r"><code>## Print it if you like by inputting &quot;ka&quot;.
 
 ## Summarise it
 summary(ka)
@@ -258,10 +255,10 @@ ggplot(data = Arran) +
 <p>Now I try something different. I found some new data from somewhere. I import it. I filter for the Arran postcodes using a more clever code then last time.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgRmluZGluZyB0aGUgQXJyYW4gY29vcmRpbmF0ZXNcbmxpYnJhcnkoZHBseXIpXG5hbGxjb29yZGluYXRlcyA8LSByZWFkLmNzdihcIn4vRGVza3RvcC91a3Bvc3Rjb2Rlcy5jc3ZcIilcbmFycmFuY29vcmRpbmF0ZXMgPC0gZmlsdGVyKGFsbGNvb3JkaW5hdGVzLHN1YnN0cihwb3N0Y29kZSwxLDQpPT1cIktBMjdcIilcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgRmluZGluZyB0aGUgQXJyYW4gY29vcmRpbmF0ZXNcbmxpYnJhcnkoZHBseXIpXG5hbGxjb29yZGluYXRlcyA8LSByZWFkLmNzdihcImFsbGRhdGEvdWtwb3N0Y29kZXMuY3N2XCIpXG5hcnJhbmNvb3JkaW5hdGVzIDwtIGZpbHRlcihhbGxjb29yZGluYXRlcyxzdWJzdHIocG9zdGNvZGUsMSw0KT09XCJLQTI3XCIpXG5gYGAifQ== -->
 <pre class="r"><code>## Finding the Arran coordinates
 library(dplyr)
-allcoordinates &lt;- read.csv(&quot;~/Desktop/ukpostcodes.csv&quot;)
+allcoordinates &lt;- read.csv(&quot;alldata/ukpostcodes.csv&quot;)
 arrancoordinates &lt;- filter(allcoordinates,substr(postcode,1,4)==&quot;KA27&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -278,9 +275,189 @@ ggplot(data = arrancoordinates) +
   theme(plot.title = element_text(hjust = 0.5))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Now I create some pictures. Embarrassingly I’m missing a few bits of code, and can’t remember how I made several plots.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGNzIDwtIHJlYWRfc2YoXCJhbGxkYXRhL1Njb3RsYW5kX3Bjc18yMDExXCIpXG5cbiNQcmludCBQb3N0IGNvZGVzIGxpc3RzXG5hcnJhbnN1YnNlY3QgPC0gZmlsdGVyKHBjcyxzdWJzdHIobGFiZWwsMSw0KT09XCJLQTI3XCIpXG5hcnJhbnN1YnNlY3QgJT4lXG4gIGdncGxvdCgpICtcbiAgZ2VvbV9zZigpXG5cbmdncGxvdCgpICtcbiAgZ2VvbV9zZihhZXMoZmlsbCA9IEQpKVxuYGBgIn0= -->
+<pre class="r"><code>pcs &lt;- read_sf(&quot;alldata/Scotland_pcs_2011&quot;)
+
+#Print Post codes lists
+arransubsect &lt;- filter(pcs,substr(label,1,4)==&quot;KA27&quot;)
+arransubsect %&gt;%
+  ggplot() +
+  geom_sf()
+
+ggplot() +
+  geom_sf(aes(fill = D))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Now I have to load up a new function.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI011bHRpcGxvdCBjb2RlXG4jTXVsdGlwbG90IGNvZGVcbiNodHRwOi8vd3d3LmNvb2tib29rLXIuY29tL0dyYXBocy9NdWx0aXBsZV9ncmFwaHNfb25fb25lX3BhZ2VfKGdncGxvdDIpL1xuIyBnZ3Bsb3Qgb2JqZWN0cyBjYW4gYmUgcGFzc2VkIGluIC4uLiwgb3IgdG8gcGxvdGxpc3QgKGFzIGEgbGlzdCBvZiBnZ3Bsb3Qgb2JqZWN0cylcbiMgLSBjb2xzOiAgIE51bWJlciBvZiBjb2x1bW5zIGluIGxheW91dFxuIyAtIGxheW91dDogQSBtYXRyaXggc3BlY2lmeWluZyB0aGUgbGF5b3V0LiBJZiBwcmVzZW50LCAnY29scycgaXMgaWdub3JlZC5cbiNcbiMgSWYgdGhlIGxheW91dCBpcyBzb21ldGhpbmcgbGlrZSBtYXRyaXgoYygxLDIsMywzKSwgbnJvdz0yLCBieXJvdz1UUlVFKSxcbiMgdGhlbiBwbG90IDEgd2lsbCBnbyBpbiB0aGUgdXBwZXIgbGVmdCwgMiB3aWxsIGdvIGluIHRoZSB1cHBlciByaWdodCwgYW5kXG4jIDMgd2lsbCBnbyBhbGwgdGhlIHdheSBhY3Jvc3MgdGhlIGJvdHRvbS5cbiNcbm11bHRpcGxvdCA8LSBmdW5jdGlvbiguLi4sIHBsb3RsaXN0PU5VTEwsIGZpbGUsIGNvbHM9MSwgbGF5b3V0PU5VTEwpIHtcbiAgbGlicmFyeShncmlkKVxuICBcbiAgIyBNYWtlIGEgbGlzdCBmcm9tIHRoZSAuLi4gYXJndW1lbnRzIGFuZCBwbG90bGlzdFxuICBwbG90cyA8LSBjKGxpc3QoLi4uKSwgcGxvdGxpc3QpXG4gIFxuICBudW1QbG90cyA9IGxlbmd0aChwbG90cylcbiAgXG4gICMgSWYgbGF5b3V0IGlzIE5VTEwsIHRoZW4gdXNlICdjb2xzJyB0byBkZXRlcm1pbmUgbGF5b3V0XG4gIGlmIChpcy5udWxsKGxheW91dCkpIHtcbiAgICAjIE1ha2UgdGhlIHBhbmVsXG4gICAgIyBuY29sOiBOdW1iZXIgb2YgY29sdW1ucyBvZiBwbG90c1xuICAgICMgbnJvdzogTnVtYmVyIG9mIHJvd3MgbmVlZGVkLCBjYWxjdWxhdGVkIGZyb20gIyBvZiBjb2xzXG4gICAgbGF5b3V0IDwtIG1hdHJpeChzZXEoMSwgY29scyAqIGNlaWxpbmcobnVtUGxvdHMvY29scykpLFxuICAgICAgICAgICAgICAgICAgICAgbmNvbCA9IGNvbHMsIG5yb3cgPSBjZWlsaW5nKG51bVBsb3RzL2NvbHMpKVxuICB9XG4gIFxuICBpZiAobnVtUGxvdHM9PTEpIHtcbiAgICBwcmludChwbG90c1tbMV1dKVxuICAgIFxuICB9IGVsc2Uge1xuICAgICMgU2V0IHVwIHRoZSBwYWdlXG4gICAgZ3JpZC5uZXdwYWdlKClcbiAgICBwdXNoVmlld3BvcnQodmlld3BvcnQobGF5b3V0ID0gZ3JpZC5sYXlvdXQobnJvdyhsYXlvdXQpLCBuY29sKGxheW91dCkpKSlcbiAgICBcbiAgICAjIE1ha2UgZWFjaCBwbG90LCBpbiB0aGUgY29ycmVjdCBsb2NhdGlvblxuICAgIGZvciAoaSBpbiAxOm51bVBsb3RzKSB7XG4gICAgICAjIEdldCB0aGUgaSxqIG1hdHJpeCBwb3NpdGlvbnMgb2YgdGhlIHJlZ2lvbnMgdGhhdCBjb250YWluIHRoaXMgc3VicGxvdFxuICAgICAgbWF0Y2hpZHggPC0gYXMuZGF0YS5mcmFtZSh3aGljaChsYXlvdXQgPT0gaSwgYXJyLmluZCA9IFRSVUUpKVxuICAgICAgXG4gICAgICBwcmludChwbG90c1tbaV1dLCB2cCA9IHZpZXdwb3J0KGxheW91dC5wb3Mucm93ID0gbWF0Y2hpZHgkcm93LFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsYXlvdXQucG9zLmNvbCA9IG1hdGNoaWR4JGNvbCkpXG4gICAgfVxuICB9XG59XG5gYGAifQ== -->
+<pre class="r"><code>#Multiplot code
+#Multiplot code
+#http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
+# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
+# - cols:   Number of columns in layout
+# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
+#
+# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
+# then plot 1 will go in the upper left, 2 will go in the upper right, and
+# 3 will go all the way across the bottom.
+#
+multiplot &lt;- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  library(grid)
+  
+  # Make a list from the ... arguments and plotlist
+  plots &lt;- c(list(...), plotlist)
+  
+  numPlots = length(plots)
+  
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout &lt;- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                     ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+  
+  if (numPlots==1) {
+    print(plots[[1]])
+    
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+    
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx &lt;- as.data.frame(which(layout == i, arr.ind = TRUE))
+      
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Then I can load the shape files.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0ltcG9ydCBTSU1EIGRhdGEgZnJvbSBodHRwOi8vd3d3Lmdvdi5zY290L1RvcGljcy9TdGF0aXN0aWNzL1NJTURcbiNUaGUgXCJuZXcgZGF0YSB6b25lIGJvdW5kYXJpZXMgd2l0aCBTSU1EMTYgcmFua3MgKHppcHBlZCBzaGFwZWZpbGUpXCJcbiMnMjAxMSBEYXRhIFpvbmUgYm91bmRhcmllcydcblxuRFpCb3VuZGFyaWVzMjAxNiA8LSByZWFkX3NmKFwiLi9hbGxkYXRhL1NHX1NJTURfMjAxNlwiKVxuXG4jaHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhc2V0L3Njb3R0aXNoLWluZGV4LW9mLW11bHRpcGxlLWRlcHJpdmF0aW9uLXNpbWQtMjAxMlxuI2h0dHBzOi8vZGF0YS5nb3YudWsvZGF0YXNldC9zY290dGlzaC1pbmRleC1vZi1tdWx0aXBsZS1kZXByaXZhdGlvbi1zaW1kLTIwMTIvcmVzb3VyY2UvZDZmYTg5MjQtODNkYS00ZTgwLWE1NjAtNGVmMDQ3N2YyMzBiXG5EWkJvdW5kYXJpZXMyMDEyIDwtIHJlYWRfc2YoXCIuL2FsbGRhdGEvU0dfU0lNRF8yMDEyXCIpXG5EWkJvdW5kYXJpZXMyMDA5IDwtIHJlYWRfc2YoXCIuL2FsbGRhdGEvU0dfU0lNRF8yMDA5XCIpXG5EWkJvdW5kYXJpZXMyMDA2IDwtIHJlYWRfc2YoXCIuL2FsbGRhdGEvU0dfU0lNRF8yMDA2XCIpXG5EWkJvdW5kYXJpZXMyMDA0IDwtIHJlYWRfc2YoXCIuL2FsbGRhdGEvU0dfU0lNRF8yMDA0XCIpXG5gYGAifQ== -->
+<pre class="r"><code>#Import SIMD data from http://www.gov.scot/Topics/Statistics/SIMD
+#The &quot;new data zone boundaries with SIMD16 ranks (zipped shapefile)&quot;
+#'2011 Data Zone boundaries'
+
+DZBoundaries2016 &lt;- read_sf(&quot;./alldata/SG_SIMD_2016&quot;)
+
+#https://data.gov.uk/dataset/scottish-index-of-multiple-deprivation-simd-2012
+#https://data.gov.uk/dataset/scottish-index-of-multiple-deprivation-simd-2012/resource/d6fa8924-83da-4e80-a560-4ef0477f230b
+DZBoundaries2012 &lt;- read_sf(&quot;./alldata/SG_SIMD_2012&quot;)
+DZBoundaries2009 &lt;- read_sf(&quot;./alldata/SG_SIMD_2009&quot;)
+DZBoundaries2006 &lt;- read_sf(&quot;./alldata/SG_SIMD_2006&quot;)
+DZBoundaries2004 &lt;- read_sf(&quot;./alldata/SG_SIMD_2004&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Then (having already downloaded it), I can load the SIMD data.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0xvb2sgYXQgZGF0YSBmcm9tIDIwMTZcblNJTUQyMDE2IDwtcmVhZC5jc3YoXCIuL2FsbGRhdGEvMDA1MDUyNDQuY3N2XCIpXG5TSU1EMjAxNjIgPC1yZWFkX3NmKFwiLi9hbGxkYXRhL1NHX1NJTURfMjAxNlwiKVxuXG4jTG9vayBhdCBkYXRhIGZyb20gMjAxMlxuU0lNRDIwMTIgPC0gcmVhZHhsOjpyZWFkX2V4Y2VsKFwiLi9hbGxkYXRhL1NJTUQyMDEyLzAwNDEwNzcwLnhsc1wiKVxuU0lNRDIwMTIyIDwtIHJlYWR4bDo6cmVhZF9leGNlbChcIi4vYWxsZGF0YS9TSU1EMjAxMi8wMDQxNjU1Mi54bHNcIilcblxuI0xvb2sgYXQgZGF0YSBmcm9tIDIwMDlcblNJTUQyMDA5IDwtIHJlYWR4bDo6cmVhZF9leGNlbChcIi4vYWxsZGF0YS9TSU1EMjAwOS8wMDk2NTc4Lnhsc1wiKVxuU0lNRDIwMDkyIDwtIHJlYWR4bDo6cmVhZF9leGNlbChcIi4vYWxsZGF0YS9TSU1EMjAwOS8wMDk3ODA2Lnhsc1wiKVxuXG4jTG9vayBhdCBkYXRhIGZyb20gMjAwNlxuIyAyMDA5IGRhdGEgLSBTSU1EMjAwNiA8LSByZWFkeGw6OnJlYWRfZXhjZWwoXCIuL2FsbGRhdGEvU0lNRDIwMDYvMDA5NjU3OC54bHNcIilcblNJTUQyMDA2MiA8LSByZWFkeGw6OnJlYWRfZXhjZWwoXCIuL2FsbGRhdGEvU0lNRDIwMDYvMDA5Nzg4MC54bHNcIilcblxuI0xvb2sgYXQgZGF0YSBmcm9tIDIwMDRcblNJTUQyMDA0IDwtIHJlYWR4bDo6cmVhZF9leGNlbChcIi4vYWxsZGF0YS9TSU1EMjAwNC8wMDI3MDAzLnhsc1wiKVxuYGBgIn0= -->
+<pre class="r"><code>#Look at data from 2016
+SIMD2016 &lt;-read.csv(&quot;./alldata/00505244.csv&quot;)
+SIMD20162 &lt;-read_sf(&quot;./alldata/SG_SIMD_2016&quot;)
+
+#Look at data from 2012
+SIMD2012 &lt;- readxl::read_excel(&quot;./alldata/SIMD2012/00410770.xls&quot;)
+SIMD20122 &lt;- readxl::read_excel(&quot;./alldata/SIMD2012/00416552.xls&quot;)
+
+#Look at data from 2009
+SIMD2009 &lt;- readxl::read_excel(&quot;./alldata/SIMD2009/0096578.xls&quot;)
+SIMD20092 &lt;- readxl::read_excel(&quot;./alldata/SIMD2009/0097806.xls&quot;)
+
+#Look at data from 2006
+# 2009 data - SIMD2006 &lt;- readxl::read_excel(&quot;./alldata/SIMD2006/0096578.xls&quot;)
+SIMD20062 &lt;- readxl::read_excel(&quot;./alldata/SIMD2006/0097880.xls&quot;)
+
+#Look at data from 2004
+SIMD2004 &lt;- readxl::read_excel(&quot;./alldata/SIMD2004/0027003.xls&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>I have to choose the right columns manually in order to select the Arran data.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1NlbGVjdGluZyBBcnJhbkRaMjAxNlxuQXJyYW5keiA8LSBjKDQ2NzIsNDY2Niw0NjY5LDQ2NzEsNDY2Nyw0NjY4LDQ2NzApXG5cbiNIZWFsdGggZG9tYWluIHJhbmtcbiMyMDE2XG5hcnJhbjIwMTYgPC0gU0lNRDIwMTYyW0FycmFuZHosXVxuXG4jRmluZCBwb3N0Y29kZSBsb29rLXVwLCBLQTI3IHBvc3Rjb2Rlcy4gRmluZCB1bmlxdWUgRFouIEZpbmQgcm93IHBvc2l0aW9ucy5cblxuI1NlbGVjdGluZyBBcnJhbkRaMjAxMlxuQXJyYW5kejIwMTIgPC0gYyg0NDA5LDQzNzIsNDM1Myw0MzUyLDQzNTEsNDM1MCw0MzQ5KVxuXG4jMjAxMlxuYXJyYW4yMDEyIDwtIERaQm91bmRhcmllczIwMTJbQXJyYW5kejIwMTIsXVxuIzIwMDlcbmFycmFuMjAwOSA8LSBEWkJvdW5kYXJpZXMyMDA5W0FycmFuZHoyMDEyLF1cbiMyMDA2XG5hcnJhbjIwMDYgPC0gRFpCb3VuZGFyaWVzMjAwNltBcnJhbmR6MjAxMixdXG4jMjAwNFxuYXJyYW4yMDA0IDwtIERaQm91bmRhcmllczIwMDRbQXJyYW5kejIwMTIsXVxuYGBgIn0= -->
+<pre class="r"><code>#Selecting ArranDZ2016
+Arrandz &lt;- c(4672,4666,4669,4671,4667,4668,4670)
+
+#Health domain rank
+#2016
+arran2016 &lt;- SIMD20162[Arrandz,]
+
+#Find postcode look-up, KA27 postcodes. Find unique DZ. Find row positions.
+
+#Selecting ArranDZ2012
+Arrandz2012 &lt;- c(4409,4372,4353,4352,4351,4350,4349)
+
+#2012
+arran2012 &lt;- DZBoundaries2012[Arrandz2012,]
+#2009
+arran2009 &lt;- DZBoundaries2009[Arrandz2012,]
+#2006
+arran2006 &lt;- DZBoundaries2006[Arrandz2012,]
+#2004
+arran2004 &lt;- DZBoundaries2004[Arrandz2012,]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Now I can plot all the data.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1Bsb3QgMjAxNlxucDEgPC0gYXJyYW4yMDE2ICU+JVxuICBnZ3Bsb3QoKSArXG4gIGdlb21fc2YoYWVzKGZpbGwgPSBQZXJjZW50aWxlKSkgK1xuICBnZ3RpdGxlKFwiMjAxNlwiKVxuXG4jUGxvdCAyMDEyXG5wMiA8LSBhcnJhbjIwMTIgJT4lXG4gIGdncGxvdCgpICtcbiAgZ2VvbV9zZihhZXMoZmlsbCA9IFBlcmNlbnRpbGUpKSArXG4gIGdndGl0bGUoXCIyMDEyXCIpXG5cbiNQbG90IDIwMDlcbnAzIDwtIGFycmFuMjAwOSAlPiVcbiAgZ2dwbG90KCkgK1xuICBnZW9tX3NmKGFlcyhmaWxsID0gUGVyY2VudGlsZSkpICtcbiAgZ2d0aXRsZShcIjIwMDlcIilcblxuI1Bsb3QgMjAwNlxucDQgPC0gYXJyYW4yMDA2ICU+JVxuICBnZ3Bsb3QoKSArXG4gIGdlb21fc2YoYWVzKGZpbGwgPSBQZXJjZW50aWxlKSkgK1xuICBnZ3RpdGxlKFwiMjAwNlwiKVxuXG4jUGxvdCAyMDA0XG5wNSA8LSBhcnJhbjIwMDQgJT4lXG4gIGdncGxvdCgpICtcbiAgZ2VvbV9zZihhZXMoZmlsbCA9IFBlcmNlbnRpbGUpKSArXG4gIGdndGl0bGUoXCIyMDA0XCIpXG5cbiNQbG90IDIwMDQtMjAxNiBUb2dldGhlclxubXVsdGlwbG90KHAxLCBwMiwgcDMsIHA0LCBwNSwgY29scz0zKVxuYGBgIn0= -->
+<pre class="r"><code>#Plot 2016
+p1 &lt;- arran2016 %&gt;%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle(&quot;2016&quot;)
+
+#Plot 2012
+p2 &lt;- arran2012 %&gt;%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle(&quot;2012&quot;)
+
+#Plot 2009
+p3 &lt;- arran2009 %&gt;%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle(&quot;2009&quot;)
+
+#Plot 2006
+p4 &lt;- arran2006 %&gt;%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle(&quot;2006&quot;)
+
+#Plot 2004
+p5 &lt;- arran2004 %&gt;%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle(&quot;2004&quot;)
+
+#Plot 2004-2016 Together
+multiplot(p1, p2, p3, p4, p5, cols=3)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQXJyYW4iCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KClRoaXMgaXMgYSBzbWFsbCBwcm9qZWN0IHRvIGZhbWlsaWFyaXNlIG15c2VsZiB3aXRoIFIuCgpNZXRob2QKCkZpcnN0IEkgbmVlZCB0byBsb2FkIHVwIHRoZSBwYWNrYWdlcyBJJ2xsIG5lZWQKCmBgYHtyfQpsaWJyYXJ5KHNmKQpsaWJyYXJ5KGdncGxvdDIpICNkZXZlbG9wbWVudCB2ZXJzaW9uIQojIyBkZXZ0b29sczo6aW5zdGFsbF9naXRodWIoInRpZHl2ZXJzZS9nZ3Bsb3QyIikKbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkocmVhZHIpCiMjIE5vdCBzdXJlIGFib3V0IHRoaXMgYml0CmxpYnJhcnkoInRpZHl2ZXJzZSIsIGxpYi5sb2M9Ii9MaWJyYXJ5L0ZyYW1ld29ya3MvUi5mcmFtZXdvcmsvVmVyc2lvbnMvMy40L1Jlc291cmNlcy9saWJyYXJ5IikKYGBgCgpOb3cgSSBuZWVkIHRvIGltcG9ydCBteSBkYXRhCkluIHRoaXMgY2FzZSAnQ29kZS1Qb2ludCBPcGVuIC0gR0InLCBhbHJlYWR5IGRvd25sb2FkZWQgZnJvbSBodHRwczovL3d3dy5vcmRuYW5jZXN1cnZleS5jby51ay9vcGVuZGF0YWRvd25sb2FkL3Byb2R1Y3RzLmh0bWwuIApJJ3ZlIGFscmVhZHkgc2VsZWN0ZWQgdGhlIE5hdGlvbmFsIEdyaWQgUmVmZXJlbmNlIHNxdWFyZSBJIG5lZWRlZCBhbmQgcHV0IG9uIHRoZSBkZXNrdG9wLgoKYGBge3J9CiMjIEltcG9ydCBkYXRhCmthIDwtIHJlYWQuY3N2KCJ+L0Rlc2t0b3Ava2EuY3N2IikKYGBgCgpGaWRkbGUgYWJvdXQgd2l0aCBpdC4KCmBgYHtyfQojIyBQcmludCBpdCBpZiB5b3UgbGlrZQprYQoKIyMgU3VtbWFyaXNlIGl0CnN1bW1hcnkoa2EpCgojIyBGaW5kIG91dCBjbGFzc2VzCnNhcHBseShrYSxjbGFzcykKCiMjIFVzZSB0aGlzIGJpdCB0byBjaGVjayB3aGljaCBjb2x1bW5zIGhhZCB1bmlxdWUgdmFsdWVzCiMjIEUuZyBQb3NpdGlvbmFsX3F1YWxpdHlfaW5kaWNhdG9yIGNvbHVtbgpsZW5ndGgodW5pcXVlKGthJFBvc2l0aW9uYWxfcXVhbGl0eV9pbmRpY2F0b3IpKQpgYGAKCk5vdyBJIHBsb3QgdGhlIGVudGlyZSBncmlkIHJlZmVyZW5jZSBzcXVhcmUgYXMgY28tb3JkaW5hdGVzLgoKYGBge3J9CiMjIFBsb3QgUG9zdGNvZGVzIGFzIGNvLW9yZGluYXRlcwpnZ3Bsb3QoZGF0YSA9IGthKSArCiAgZ2VvbV9wb2ludChtYXBwaW5nID0gYWVzKHggPSBFYXN0aW5ncywgeSA9IE5vcnRoaW5ncykpCmBgYAoKTm93IEkgc3Vic2VsZWN0IGZyb20gdGhlIEtBIGRhdGEuCkluaXRpYWxseSBJIGhhZCB0byBkbyB0aGlzIGJ5IGxvb2tpbmcgYXQgdGhlIGRhdGEgd2hpY2ggd2FzIG9yZ2FuaXNlZCBhbHBoYWJldGljYWxseSBieSBwb3N0Y29kZS4KU2luY2UgQXJyYW4gYWxsIGJlZ2lucyAnS0EyNycgaXQgbWVhbnMgSSBjb3VsZCBzaW1wbHkgc2VsZWN0IG91dCB0aGUgcm93cyBjb250YWluaW5nIEFycmFuIHBvc3Rjb2RlcyB0b2dldGhlci4KCmBgYHtyfQojIyBTZWxlY3RpbmcgY29sdW1ucwpwb3N0Y29kZWNvb3JkIDwtIGRhdGEuZnJhbWUoa2EkUG9zdGNvZGUsa2EkRWFzdGluZ3Msa2EkTm9ydGhpbmdzKQojIyBPUgpwb3N0Y29kZWNvb3JkIDwtIGthWyxjKCJQb3N0Y29kZSIsIkVhc3RpbmdzIiwiTm9ydGhpbmdzIildCgojIyBTZWxlY3Rpbmcgcm93cwpBcnJhbiA8LSBrYVtjKDY3MDA6Njg5NiksYygiUG9zdGNvZGUiLCJFYXN0aW5ncyIsIk5vcnRoaW5ncyIpXQpgYGAKCk5vdyBJIHBsb3QgaXQuIChXaXRoIGEgZmV3IGxhYmVscywgZXRjKQpgYGB7cn0KIyMgTmVhdGVyIHZlcnNpb24KZ2dwbG90KGRhdGEgPSBBcnJhbikgKwogIGdlb21fcG9pbnQobWFwcGluZyA9IGFlcyh4ID0gRWFzdGluZ3MsIHkgPSBOb3J0aGluZ3MpKSArCiAgZ2d0aXRsZSgiQXJyYW4gUG9zdGNvZGVzIikgKwogIGxhYnModGl0bGUgPSAiQXJyYW4gUG9zdGNvZGVzIiwgeCA9ICJFYXN0aW5ncyIsIHkgPSAiTm9ydGhpbmdzIikgKwogIHRoZW1lKHBsb3QudGl0bGUgPSBlbGVtZW50X3RleHQoaGp1c3QgPSAwLjUpKQpgYGAKCi0tCi0tCgpOb3cgSSB0cnkgc29tZXRoaW5nIGRpZmZlcmVudC4gSSBmb3VuZCBzb21lIG5ldyBkYXRhIGZyb20gc29tZXdoZXJlLgpJIGltcG9ydCBpdC4gSSBmaWx0ZXIgZm9yIHRoZSBBcnJhbiBwb3N0Y29kZXMgdXNpbmcgYSBtb3JlIGNsZXZlciBjb2RlIHRoZW4gbGFzdCB0aW1lLgoKYGBge3J9CiMjIEZpbmRpbmcgdGhlIEFycmFuIGNvb3JkaW5hdGVzCmxpYnJhcnkoZHBseXIpCmFsbGNvb3JkaW5hdGVzIDwtIHJlYWQuY3N2KCJ+L0Rlc2t0b3AvdWtwb3N0Y29kZXMuY3N2IikKYXJyYW5jb29yZGluYXRlcyA8LSBmaWx0ZXIoYWxsY29vcmRpbmF0ZXMsc3Vic3RyKHBvc3Rjb2RlLDEsNCk9PSJLQTI3IikKYGBgCgpOb3cgSSBwbG90IHRoYXQgaW5zdGVhZC4KYGBge3J9CiMjIFBsb3R0aW5nIHRoZSBBcnJhbiBjb29yZGluYXRlcwpnZ3Bsb3QoZGF0YSA9IGFycmFuY29vcmRpbmF0ZXMpICsKICBnZW9tX3BvaW50KG1hcHBpbmcgPSBhZXMoeCA9IGxvbmdpdHVkZSwgeSA9IGxhdGl0dWRlKSkgKwogIGdndGl0bGUoIkFycmFuIFBvc3Rjb2RlcyIpICsKICBsYWJzKHRpdGxlID0gIkFycmFuIFBvc3Rjb2RlcyIsIHggPSAiTG9uZ2l0dWRlIiwgeSA9ICJMYXRpdHVkZSIpICsKICB0aGVtZShwbG90LnRpdGxlID0gZWxlbWVudF90ZXh0KGhqdXN0ID0gMC41KSkKYGBgCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQXJyYW4iCm91dHB1dDoKICBodG1sX2RvY3VtZW50OiBkZWZhdWx0CiAgaHRtbF9ub3RlYm9vazogZGVmYXVsdAotLS0KCkZpcnN0IEkgbmVlZCB0byBsb2FkIHVwIHRoZSBwYWNrYWdlcyBJJ2xsIG5lZWQKCmBgYHtyfQpsaWJyYXJ5KHNmKQpsaWJyYXJ5KGdncGxvdDIpICNkZXZlbG9wbWVudCB2ZXJzaW9uIQojIyBkZXZ0b29sczo6aW5zdGFsbF9naXRodWIoInRpZHl2ZXJzZS9nZ3Bsb3QyIikKbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkocmVhZHIpCiMjIE5vdCBzdXJlIGFib3V0IHRoaXMgYml0CmxpYnJhcnkoInRpZHl2ZXJzZSIsIGxpYi5sb2M9Ii9MaWJyYXJ5L0ZyYW1ld29ya3MvUi5mcmFtZXdvcmsvVmVyc2lvbnMvMy40L1Jlc291cmNlcy9saWJyYXJ5IikKYGBgCgpOb3cgSSBuZWVkIHRvIGltcG9ydCBteSBkYXRhCkluIHRoaXMgY2FzZSAnQ29kZS1Qb2ludCBPcGVuIC0gR0InLCBhbHJlYWR5IGRvd25sb2FkZWQgZnJvbSBodHRwczovL3d3dy5vcmRuYW5jZXN1cnZleS5jby51ay9vcGVuZGF0YWRvd25sb2FkL3Byb2R1Y3RzLmh0bWwuIApJJ3ZlIGFscmVhZHkgc2VsZWN0ZWQgdGhlIE5hdGlvbmFsIEdyaWQgUmVmZXJlbmNlIHNxdWFyZSBJIG5lZWRlZCBhbmQgcHV0IG9uIHRoZSBkZXNrdG9wLgoKYGBge3J9CiMjIEltcG9ydCBkYXRhCmthIDwtIHJlYWQuY3N2KCJhbGxkYXRhL2thLmNzdiIpCmBgYAoKRmlkZGxlIGFib3V0IHdpdGggaXQuCgpgYGB7cn0KIyMgUHJpbnQgaXQgaWYgeW91IGxpa2UgYnkgaW5wdXR0aW5nICJrYSIuCgojIyBTdW1tYXJpc2UgaXQKc3VtbWFyeShrYSkKCiMjIEZpbmQgb3V0IGNsYXNzZXMKc2FwcGx5KGthLGNsYXNzKQoKIyMgVXNlIHRoaXMgYml0IHRvIGNoZWNrIHdoaWNoIGNvbHVtbnMgaGFkIHVuaXF1ZSB2YWx1ZXMKIyMgRS5nIFBvc2l0aW9uYWxfcXVhbGl0eV9pbmRpY2F0b3IgY29sdW1uCmxlbmd0aCh1bmlxdWUoa2EkUG9zaXRpb25hbF9xdWFsaXR5X2luZGljYXRvcikpCmBgYAoKTm93IEkgcGxvdCB0aGUgZW50aXJlIGdyaWQgcmVmZXJlbmNlIHNxdWFyZSBhcyBjby1vcmRpbmF0ZXMuCgpgYGB7cn0KIyMgUGxvdCBQb3N0Y29kZXMgYXMgY28tb3JkaW5hdGVzCmdncGxvdChkYXRhID0ga2EpICsKICBnZW9tX3BvaW50KG1hcHBpbmcgPSBhZXMoeCA9IEVhc3RpbmdzLCB5ID0gTm9ydGhpbmdzKSkKYGBgCgpOb3cgSSBzdWJzZWxlY3QgZnJvbSB0aGUgS0EgZGF0YS4KSW5pdGlhbGx5IEkgaGFkIHRvIGRvIHRoaXMgYnkgbG9va2luZyBhdCB0aGUgZGF0YSB3aGljaCB3YXMgb3JnYW5pc2VkIGFscGhhYmV0aWNhbGx5IGJ5IHBvc3Rjb2RlLgpTaW5jZSBBcnJhbiBhbGwgYmVnaW5zICdLQTI3JyBpdCBtZWFucyBJIGNvdWxkIHNpbXBseSBzZWxlY3Qgb3V0IHRoZSByb3dzIGNvbnRhaW5pbmcgQXJyYW4gcG9zdGNvZGVzIHRvZ2V0aGVyLgoKYGBge3J9CiMjIFNlbGVjdGluZyBjb2x1bW5zCnBvc3Rjb2RlY29vcmQgPC0gZGF0YS5mcmFtZShrYSRQb3N0Y29kZSxrYSRFYXN0aW5ncyxrYSROb3J0aGluZ3MpCiMjIE9SCnBvc3Rjb2RlY29vcmQgPC0ga2FbLGMoIlBvc3Rjb2RlIiwiRWFzdGluZ3MiLCJOb3J0aGluZ3MiKV0KCiMjIFNlbGVjdGluZyByb3dzCkFycmFuIDwtIGthW2MoNjcwMDo2ODk2KSxjKCJQb3N0Y29kZSIsIkVhc3RpbmdzIiwiTm9ydGhpbmdzIildCmBgYAoKTm93IEkgcGxvdCBpdC4gKFdpdGggYSBmZXcgbGFiZWxzLCBldGMpCmBgYHtyfQojIyBOZWF0ZXIgdmVyc2lvbgpnZ3Bsb3QoZGF0YSA9IEFycmFuKSArCiAgZ2VvbV9wb2ludChtYXBwaW5nID0gYWVzKHggPSBFYXN0aW5ncywgeSA9IE5vcnRoaW5ncykpICsKICBnZ3RpdGxlKCJBcnJhbiBQb3N0Y29kZXMiKSArCiAgbGFicyh0aXRsZSA9ICJBcnJhbiBQb3N0Y29kZXMiLCB4ID0gIkVhc3RpbmdzIiwgeSA9ICJOb3J0aGluZ3MiKSArCiAgdGhlbWUocGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChoanVzdCA9IDAuNSkpCmBgYAoKLS0KLS0KCk5vdyBJIHRyeSBzb21ldGhpbmcgZGlmZmVyZW50LiBJIGZvdW5kIHNvbWUgbmV3IGRhdGEgZnJvbSBzb21ld2hlcmUuCkkgaW1wb3J0IGl0LiBJIGZpbHRlciBmb3IgdGhlIEFycmFuIHBvc3Rjb2RlcyB1c2luZyBhIG1vcmUgY2xldmVyIGNvZGUgdGhlbiBsYXN0IHRpbWUuCgpgYGB7cn0KIyMgRmluZGluZyB0aGUgQXJyYW4gY29vcmRpbmF0ZXMKbGlicmFyeShkcGx5cikKYWxsY29vcmRpbmF0ZXMgPC0gcmVhZC5jc3YoImFsbGRhdGEvdWtwb3N0Y29kZXMuY3N2IikKYXJyYW5jb29yZGluYXRlcyA8LSBmaWx0ZXIoYWxsY29vcmRpbmF0ZXMsc3Vic3RyKHBvc3Rjb2RlLDEsNCk9PSJLQTI3IikKYGBgCgpOb3cgSSBwbG90IHRoYXQgaW5zdGVhZC4KYGBge3J9CiMjIFBsb3R0aW5nIHRoZSBBcnJhbiBjb29yZGluYXRlcwpnZ3Bsb3QoZGF0YSA9IGFycmFuY29vcmRpbmF0ZXMpICsKICBnZW9tX3BvaW50KG1hcHBpbmcgPSBhZXMoeCA9IGxvbmdpdHVkZSwgeSA9IGxhdGl0dWRlKSkgKwogIGdndGl0bGUoIkFycmFuIFBvc3Rjb2RlcyIpICsKICBsYWJzKHRpdGxlID0gIkFycmFuIFBvc3Rjb2RlcyIsIHggPSAiTG9uZ2l0dWRlIiwgeSA9ICJMYXRpdHVkZSIpICsKICB0aGVtZShwbG90LnRpdGxlID0gZWxlbWVudF90ZXh0KGhqdXN0ID0gMC41KSkKYGBgCgpOb3cgSSBjcmVhdGUgc29tZSBwaWN0dXJlcy4gRW1iYXJyYXNzaW5nbHkgSSdtIG1pc3NpbmcgYSBmZXcgYml0cyBvZiBjb2RlLCBhbmQgY2FuJ3QgcmVtZW1iZXIgaG93IEkgbWFkZSBzZXZlcmFsIHBsb3RzLgoKYGBge3J9CnBjcyA8LSByZWFkX3NmKCJhbGxkYXRhL1Njb3RsYW5kX3Bjc18yMDExIikKCiNQcmludCBQb3N0IGNvZGVzIGxpc3RzCmFycmFuc3Vic2VjdCA8LSBmaWx0ZXIocGNzLHN1YnN0cihsYWJlbCwxLDQpPT0iS0EyNyIpCmFycmFuc3Vic2VjdCAlPiUKICBnZ3Bsb3QoKSArCiAgZ2VvbV9zZigpCgpnZ3Bsb3QoKSArCiAgZ2VvbV9zZihhZXMoZmlsbCA9IEQpKQpgYGAKCk5vdyBJIGhhdmUgdG8gbG9hZCB1cCBhIG5ldyBmdW5jdGlvbi4KCmBgYHtyfQojTXVsdGlwbG90IGNvZGUKI011bHRpcGxvdCBjb2RlCiNodHRwOi8vd3d3LmNvb2tib29rLXIuY29tL0dyYXBocy9NdWx0aXBsZV9ncmFwaHNfb25fb25lX3BhZ2VfKGdncGxvdDIpLwojIGdncGxvdCBvYmplY3RzIGNhbiBiZSBwYXNzZWQgaW4gLi4uLCBvciB0byBwbG90bGlzdCAoYXMgYSBsaXN0IG9mIGdncGxvdCBvYmplY3RzKQojIC0gY29sczogICBOdW1iZXIgb2YgY29sdW1ucyBpbiBsYXlvdXQKIyAtIGxheW91dDogQSBtYXRyaXggc3BlY2lmeWluZyB0aGUgbGF5b3V0LiBJZiBwcmVzZW50LCAnY29scycgaXMgaWdub3JlZC4KIwojIElmIHRoZSBsYXlvdXQgaXMgc29tZXRoaW5nIGxpa2UgbWF0cml4KGMoMSwyLDMsMyksIG5yb3c9MiwgYnlyb3c9VFJVRSksCiMgdGhlbiBwbG90IDEgd2lsbCBnbyBpbiB0aGUgdXBwZXIgbGVmdCwgMiB3aWxsIGdvIGluIHRoZSB1cHBlciByaWdodCwgYW5kCiMgMyB3aWxsIGdvIGFsbCB0aGUgd2F5IGFjcm9zcyB0aGUgYm90dG9tLgojCm11bHRpcGxvdCA8LSBmdW5jdGlvbiguLi4sIHBsb3RsaXN0PU5VTEwsIGZpbGUsIGNvbHM9MSwgbGF5b3V0PU5VTEwpIHsKICBsaWJyYXJ5KGdyaWQpCiAgCiAgIyBNYWtlIGEgbGlzdCBmcm9tIHRoZSAuLi4gYXJndW1lbnRzIGFuZCBwbG90bGlzdAogIHBsb3RzIDwtIGMobGlzdCguLi4pLCBwbG90bGlzdCkKICAKICBudW1QbG90cyA9IGxlbmd0aChwbG90cykKICAKICAjIElmIGxheW91dCBpcyBOVUxMLCB0aGVuIHVzZSAnY29scycgdG8gZGV0ZXJtaW5lIGxheW91dAogIGlmIChpcy5udWxsKGxheW91dCkpIHsKICAgICMgTWFrZSB0aGUgcGFuZWwKICAgICMgbmNvbDogTnVtYmVyIG9mIGNvbHVtbnMgb2YgcGxvdHMKICAgICMgbnJvdzogTnVtYmVyIG9mIHJvd3MgbmVlZGVkLCBjYWxjdWxhdGVkIGZyb20gIyBvZiBjb2xzCiAgICBsYXlvdXQgPC0gbWF0cml4KHNlcSgxLCBjb2xzICogY2VpbGluZyhudW1QbG90cy9jb2xzKSksCiAgICAgICAgICAgICAgICAgICAgIG5jb2wgPSBjb2xzLCBucm93ID0gY2VpbGluZyhudW1QbG90cy9jb2xzKSkKICB9CiAgCiAgaWYgKG51bVBsb3RzPT0xKSB7CiAgICBwcmludChwbG90c1tbMV1dKQogICAgCiAgfSBlbHNlIHsKICAgICMgU2V0IHVwIHRoZSBwYWdlCiAgICBncmlkLm5ld3BhZ2UoKQogICAgcHVzaFZpZXdwb3J0KHZpZXdwb3J0KGxheW91dCA9IGdyaWQubGF5b3V0KG5yb3cobGF5b3V0KSwgbmNvbChsYXlvdXQpKSkpCiAgICAKICAgICMgTWFrZSBlYWNoIHBsb3QsIGluIHRoZSBjb3JyZWN0IGxvY2F0aW9uCiAgICBmb3IgKGkgaW4gMTpudW1QbG90cykgewogICAgICAjIEdldCB0aGUgaSxqIG1hdHJpeCBwb3NpdGlvbnMgb2YgdGhlIHJlZ2lvbnMgdGhhdCBjb250YWluIHRoaXMgc3VicGxvdAogICAgICBtYXRjaGlkeCA8LSBhcy5kYXRhLmZyYW1lKHdoaWNoKGxheW91dCA9PSBpLCBhcnIuaW5kID0gVFJVRSkpCiAgICAgIAogICAgICBwcmludChwbG90c1tbaV1dLCB2cCA9IHZpZXdwb3J0KGxheW91dC5wb3Mucm93ID0gbWF0Y2hpZHgkcm93LAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxheW91dC5wb3MuY29sID0gbWF0Y2hpZHgkY29sKSkKICAgIH0KICB9Cn0KYGBgCgpUaGVuIEkgY2FuIGxvYWQgdGhlIHNoYXBlIGZpbGVzLgoKYGBge3J9CiNJbXBvcnQgU0lNRCBkYXRhIGZyb20gaHR0cDovL3d3dy5nb3Yuc2NvdC9Ub3BpY3MvU3RhdGlzdGljcy9TSU1ECiNUaGUgIm5ldyBkYXRhIHpvbmUgYm91bmRhcmllcyB3aXRoIFNJTUQxNiByYW5rcyAoemlwcGVkIHNoYXBlZmlsZSkiCiMnMjAxMSBEYXRhIFpvbmUgYm91bmRhcmllcycKCkRaQm91bmRhcmllczIwMTYgPC0gcmVhZF9zZigiLi9hbGxkYXRhL1NHX1NJTURfMjAxNiIpCgojaHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhc2V0L3Njb3R0aXNoLWluZGV4LW9mLW11bHRpcGxlLWRlcHJpdmF0aW9uLXNpbWQtMjAxMgojaHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhc2V0L3Njb3R0aXNoLWluZGV4LW9mLW11bHRpcGxlLWRlcHJpdmF0aW9uLXNpbWQtMjAxMi9yZXNvdXJjZS9kNmZhODkyNC04M2RhLTRlODAtYTU2MC00ZWYwNDc3ZjIzMGIKRFpCb3VuZGFyaWVzMjAxMiA8LSByZWFkX3NmKCIuL2FsbGRhdGEvU0dfU0lNRF8yMDEyIikKRFpCb3VuZGFyaWVzMjAwOSA8LSByZWFkX3NmKCIuL2FsbGRhdGEvU0dfU0lNRF8yMDA5IikKRFpCb3VuZGFyaWVzMjAwNiA8LSByZWFkX3NmKCIuL2FsbGRhdGEvU0dfU0lNRF8yMDA2IikKRFpCb3VuZGFyaWVzMjAwNCA8LSByZWFkX3NmKCIuL2FsbGRhdGEvU0dfU0lNRF8yMDA0IikKYGBgCgpUaGVuIChoYXZpbmcgYWxyZWFkeSBkb3dubG9hZGVkIGl0KSwgSSBjYW4gbG9hZCB0aGUgU0lNRCBkYXRhLgpgYGB7cn0KI0xvb2sgYXQgZGF0YSBmcm9tIDIwMTYKU0lNRDIwMTYgPC1yZWFkLmNzdigiLi9hbGxkYXRhLzAwNTA1MjQ0LmNzdiIpClNJTUQyMDE2MiA8LXJlYWRfc2YoIi4vYWxsZGF0YS9TR19TSU1EXzIwMTYiKQoKI0xvb2sgYXQgZGF0YSBmcm9tIDIwMTIKU0lNRDIwMTIgPC0gcmVhZHhsOjpyZWFkX2V4Y2VsKCIuL2FsbGRhdGEvU0lNRDIwMTIvMDA0MTA3NzAueGxzIikKU0lNRDIwMTIyIDwtIHJlYWR4bDo6cmVhZF9leGNlbCgiLi9hbGxkYXRhL1NJTUQyMDEyLzAwNDE2NTUyLnhscyIpCgojTG9vayBhdCBkYXRhIGZyb20gMjAwOQpTSU1EMjAwOSA8LSByZWFkeGw6OnJlYWRfZXhjZWwoIi4vYWxsZGF0YS9TSU1EMjAwOS8wMDk2NTc4LnhscyIpClNJTUQyMDA5MiA8LSByZWFkeGw6OnJlYWRfZXhjZWwoIi4vYWxsZGF0YS9TSU1EMjAwOS8wMDk3ODA2LnhscyIpCgojTG9vayBhdCBkYXRhIGZyb20gMjAwNgojIDIwMDkgZGF0YSAtIFNJTUQyMDA2IDwtIHJlYWR4bDo6cmVhZF9leGNlbCgiLi9hbGxkYXRhL1NJTUQyMDA2LzAwOTY1NzgueGxzIikKU0lNRDIwMDYyIDwtIHJlYWR4bDo6cmVhZF9leGNlbCgiLi9hbGxkYXRhL1NJTUQyMDA2LzAwOTc4ODAueGxzIikKCiNMb29rIGF0IGRhdGEgZnJvbSAyMDA0ClNJTUQyMDA0IDwtIHJlYWR4bDo6cmVhZF9leGNlbCgiLi9hbGxkYXRhL1NJTUQyMDA0LzAwMjcwMDMueGxzIikKYGBgCgpJIGhhdmUgdG8gY2hvb3NlIHRoZSByaWdodCBjb2x1bW5zIG1hbnVhbGx5IGluIG9yZGVyIHRvIHNlbGVjdCB0aGUgQXJyYW4gZGF0YS4KCmBgYHtyfQojU2VsZWN0aW5nIEFycmFuRFoyMDE2CkFycmFuZHogPC0gYyg0NjcyLDQ2NjYsNDY2OSw0NjcxLDQ2NjcsNDY2OCw0NjcwKQoKI0hlYWx0aCBkb21haW4gcmFuawojMjAxNgphcnJhbjIwMTYgPC0gU0lNRDIwMTYyW0FycmFuZHosXQoKI0ZpbmQgcG9zdGNvZGUgbG9vay11cCwgS0EyNyBwb3N0Y29kZXMuIEZpbmQgdW5pcXVlIERaLiBGaW5kIHJvdyBwb3NpdGlvbnMuCgojU2VsZWN0aW5nIEFycmFuRFoyMDEyCkFycmFuZHoyMDEyIDwtIGMoNDQwOSw0MzcyLDQzNTMsNDM1Miw0MzUxLDQzNTAsNDM0OSkKCiMyMDEyCmFycmFuMjAxMiA8LSBEWkJvdW5kYXJpZXMyMDEyW0FycmFuZHoyMDEyLF0KIzIwMDkKYXJyYW4yMDA5IDwtIERaQm91bmRhcmllczIwMDlbQXJyYW5kejIwMTIsXQojMjAwNgphcnJhbjIwMDYgPC0gRFpCb3VuZGFyaWVzMjAwNltBcnJhbmR6MjAxMixdCiMyMDA0CmFycmFuMjAwNCA8LSBEWkJvdW5kYXJpZXMyMDA0W0FycmFuZHoyMDEyLF0KYGBgCgpOb3cgSSBjYW4gcGxvdCBhbGwgdGhlIGRhdGEuCgpgYGB7cn0KI1Bsb3QgMjAxNgpwMSA8LSBhcnJhbjIwMTYgJT4lCiAgZ2dwbG90KCkgKwogIGdlb21fc2YoYWVzKGZpbGwgPSBQZXJjZW50aWxlKSkgKwogIGdndGl0bGUoIjIwMTYiKQoKI1Bsb3QgMjAxMgpwMiA8LSBhcnJhbjIwMTIgJT4lCiAgZ2dwbG90KCkgKwogIGdlb21fc2YoYWVzKGZpbGwgPSBQZXJjZW50aWxlKSkgKwogIGdndGl0bGUoIjIwMTIiKQoKI1Bsb3QgMjAwOQpwMyA8LSBhcnJhbjIwMDkgJT4lCiAgZ2dwbG90KCkgKwogIGdlb21fc2YoYWVzKGZpbGwgPSBQZXJjZW50aWxlKSkgKwogIGdndGl0bGUoIjIwMDkiKQoKI1Bsb3QgMjAwNgpwNCA8LSBhcnJhbjIwMDYgJT4lCiAgZ2dwbG90KCkgKwogIGdlb21fc2YoYWVzKGZpbGwgPSBQZXJjZW50aWxlKSkgKwogIGdndGl0bGUoIjIwMDYiKQoKI1Bsb3QgMjAwNApwNSA8LSBhcnJhbjIwMDQgJT4lCiAgZ2dwbG90KCkgKwogIGdlb21fc2YoYWVzKGZpbGwgPSBQZXJjZW50aWxlKSkgKwogIGdndGl0bGUoIjIwMDQiKQoKI1Bsb3QgMjAwNC0yMDE2IFRvZ2V0aGVyCm11bHRpcGxvdChwMSwgcDIsIHAzLCBwNCwgcDUsIGNvbHM9MykKYGBg</div>
 
 
 

@@ -2,7 +2,7 @@ library(sf)
 library(ggplot2) #development version!
 library(tidyverse)
 
-pcs <- read_sf("./Scotland_pcs_2011")
+pcs <- read_sf("alldata/Scotland_pcs_2011")
 
 #Print Post codes lists
 arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
