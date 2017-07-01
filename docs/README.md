@@ -1,4 +1,4 @@
-# Arran
+
 
 ## Introduction
 This is an early project based on SIMD data that I'm using to try and learn R.
