@@ -42,4 +42,4 @@ If you'd like to add lists:
 
 [Back to main site](https://fergustaylor.github.io) 
 
-[Another example readme](https://github.com/fergustaylor/Arran/raw/master/docs/CopyOfREADME.md)
+[Another example readme](CopyOfREADME.md)
