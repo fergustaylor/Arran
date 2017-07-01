@@ -43,17 +43,6 @@ The next steps for me are to join the yearly data frames together and use facet_
 
 Then to overlay the coordinates onto the maps.
 
-### Example coding
-```yml
-title: [The title of your site]
-description: [A short description of your site's purpose]
-```
-### Other examples
+[Other projects I'm working on](https://fergustaylor.github.io) 
 
-If you'd like to add lists:
-
-1. Bullet-pointing
-
-[Back to main site](https://fergustaylor.github.io) 
-
-[Another section in Arran](CopyOfREADME.md)
+[Page 2](CopyOfREADME.md)
