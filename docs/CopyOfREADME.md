@@ -10,3 +10,5 @@ description: [A short description of your site's purpose]
 If you'd like to add lists:
 
 1. Bullet-pointing
+
+[Point coordinates](README.Rmd)
