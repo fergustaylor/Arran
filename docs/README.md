@@ -45,4 +45,4 @@ Then to overlay the coordinates onto the maps.
 
 [Other projects I'm working on.](https://fergustaylor.github.io) 
 
-[Page 2.](CopyOfREADME.md)
+[Page 2.](page2.md)
