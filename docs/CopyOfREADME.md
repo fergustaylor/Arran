@@ -12,3 +12,10 @@ If you'd like to add lists:
 1. Bullet-pointing
 
 [Point coordinates](README.Rmd)
+
+[]()
+
+RMarkdownHTML.Rmd
+RHTML.html
+RHTML.Rhtml
+Shinydocumentexample.Rmd
