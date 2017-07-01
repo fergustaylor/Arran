@@ -47,6 +47,8 @@ Then to overlay the coordinates onto the maps.
 
 [See the code.](Code.md)
 
+[See the code.](blanktemplate.html)
+
 [Page 2.](page2.md)
 
 [Other projects I'm working on.](https://fergustaylor.github.io) 
