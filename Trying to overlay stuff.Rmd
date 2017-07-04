@@ -1,39 +1,44 @@
+---
+title: "R Notebook"
+output:
+  html_document: default
+  html_notebook: default
+---
+```{r}
 library(sf)
 library(ggplot2) #development version!
 library(tidyverse)
 
 pcs <- read_sf("alldata/Scotland_pcs_2011")
+```
 
+```{r}
 #Print Post codes lists
 arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
 arransubsect %>%
   ggplot() +
   geom_sf()
+```
+```{r}
+## Finding the Arran coordinates
+library(dplyr)
+allcoordinates <- read.csv("alldata/ukpostcodes.csv")
+arrancoordinates <- filter(allcoordinates,substr(postcode,1,4)=="KA27")
+```
 
-#Colour in post code maps (Arran)
-#No colour fill
-arransubsect %>%
-  ggplot() +
-  geom_sf(aes())
-
+```{r}
 ## Plotting the Arran coordinates
 ggplot(data = arrancoordinates) +
   geom_point(mapping = aes(x = longitude, y = latitude)) +
   ggtitle("Arran Postcodes") +
   labs(title = "Arran Postcodes", x = "Longitude", y = "Latitude") +
   theme(plot.title = element_text(hjust = 0.5))
+```
 
-#Colour in post code maps (Arran)
-#No colour fill
-arransubsect %>%
-  ggplot() +
-  geom_sf(aes())
-
+```{r}
 ggplot(data = arrancoordinates) +
   geom_point(mapping = aes(x = longitude, y = latitude)) +
   ggtitle("Arran Postcodes") +
   labs(title = "Arran Postcodes", x = "Longitude", y = "Latitude") +
   theme(plot.title = element_text(hjust = 0.5))
-
-  
-  
+```

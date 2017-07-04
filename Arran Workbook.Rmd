@@ -6,7 +6,6 @@ output:
 ---
 
 First I need to load up the packages I'll need
-
 ```{r}
 library(sf)
 library(ggplot2) #development version!
@@ -20,14 +19,12 @@ library("tidyverse", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resou
 Now I need to import my data
 In this case 'Code-Point Open - GB', already downloaded from https://www.ordnancesurvey.co.uk/opendatadownload/products.html. 
 I've already selected the National Grid Reference square I needed and put on the desktop.
-
 ```{r}
 ## Import data
 ka <- read.csv("alldata/ka.csv")
 ```
 
 Fiddle about with it.
-
 ```{r}
 ## Print it if you like by inputting "ka".
 
@@ -43,7 +40,6 @@ length(unique(ka$Positional_quality_indicator))
 ```
 
 Now I plot the entire grid reference square as co-ordinates.
-
 ```{r}
 ## Plot Postcodes as co-ordinates
 ggplot(data = ka) +
@@ -53,7 +49,6 @@ ggplot(data = ka) +
 Now I subselect from the KA data.
 Initially I had to do this by looking at the data which was organised alphabetically by postcode.
 Since Arran all begins 'KA27' it means I could simply select out the rows containing Arran postcodes together.
-
 ```{r}
 ## Selecting columns
 postcodecoord <- data.frame(ka$Postcode,ka$Eastings,ka$Northings)
@@ -79,7 +74,6 @@ ggplot(data = Arran) +
 
 Now I try something different. I found some new data from somewhere.
 I import it. I filter for the Arran postcodes using a more clever code then last time.
-
 ```{r}
 ## Finding the Arran coordinates
 library(dplyr)
@@ -98,7 +92,6 @@ ggplot(data = arrancoordinates) +
 ```
 
 Now I create some pictures. Embarrassingly I'm missing a few bits of code, and can't remember how I made several plots.
-
 ```{r}
 pcs <- read_sf("alldata/Scotland_pcs_2011")
 
@@ -107,13 +100,16 @@ arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
 arransubsect %>%
   ggplot() +
   geom_sf()
-
-ggplot() +
-  geom_sf(aes(fill = D))
 ```
 
-Now I have to load up a new function.
+```{r}
+arransubsect %>%
+ggplot() +
+  geom_sf(aes(fill = name))
+```
 
+
+Now I have to load up a new function.
 ```{r}
 #Multiplot code
 #Multiplot code
@@ -164,7 +160,6 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 ```
 
 Then I can load the shape files.
-
 ```{r}
 #Import SIMD data from http://www.gov.scot/Topics/Statistics/SIMD
 #The "new data zone boundaries with SIMD16 ranks (zipped shapefile)"
@@ -203,7 +198,6 @@ SIMD2004 <- readxl::read_excel("./alldata/SIMD2004/0027003.xls")
 ```
 
 I have to choose the right columns manually in order to select the Arran data.
-
 ```{r}
 #Selecting ArranDZ2016
 Arrandz <- c(4672,4666,4669,4671,4667,4668,4670)
@@ -228,7 +222,6 @@ arran2004 <- DZBoundaries2004[Arrandz2012,]
 ```
 
 Now I can plot all the data.
-
 ```{r}
 #Plot 2016
 p1 <- arran2016 %>%
