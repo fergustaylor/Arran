@@ -43,13 +43,17 @@ pcs <- read_sf("alldata/Scotland_pcs_2011")
 arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
 arransubsect %>%
   ggplot() +
-  geom_sf()
+  geom_sf() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 ```
 
 ```{r}
 arransubsect %>%
 ggplot() +
-  geom_sf(aes(fill = name))
+  geom_sf(aes(fill = name)) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 ```
 
 Now I have to load up a new function.
@@ -168,50 +172,215 @@ The reason I've downloaded all the datazones shapefiles individually (three step
 See below.
 
 ```{r}
-#Try to plot side-by-side
-#Plot 2016
-arran2016 %>%
-  ggplot() +
-  geom_sf(aes(fill = DataZone))
+arran20162 <- arran2016 %>%
+  select(DataZone, geometry, Percentile)  %>%
+  mutate(year="2016")
 
-#Plot 2012
-arran2012 %>%
-  ggplot() +
-  geom_sf(aes(fill = DataZone))
+arran20122 <- arran2012 %>%
+  select(DataZone, geometry, Percentile) %>%
+  mutate(year="2012")
 ```
 
-Now I can plot all the data.
 ```{r}
-#Plot 2016
-p1 <- arran2016 %>%
+arran1612 <- rbind(arran20162,arran20122)
+```
+
+```{r}
+arran1612 %>%
+  ggplot() +
+  geom_sf(aes(fill = DataZone)) +
+  facet_wrap('year') +
+  theme(legend.position="none") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
+
+Now I want to plot all the data, first I combine it all into one table.
+
+```{r}
+arran20092 <- arran2009 %>%
+  select(DataZone, geometry, Percentile) %>%
+  mutate(year="2009")
+
+arran20062 <- arran2006 %>%
+  select(DataZone, geometry, Percentile) %>%
+  mutate(year="2006")
+
+arran20042 <- arran2004 %>%
+  select(DataZone, geometry, Percentile) %>%
+  mutate(year="2004")
+```
+
+```{r}
+arransimd <- rbind(arran20162,arran20122,arran20092,arran20062,arran20042)
+```
+
+Then I plot the data zones to look at them. (It looks like the only change was between 2012 and 2016).
+```{r}
+arransimd %>%
+  ggplot() +
+  geom_sf(aes(fill = DataZone)) +
+  facet_wrap('year') +
+  theme(legend.position="none") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
+
+Now I plot the percentiles.
+```{r}
+arransimd %>%
   ggplot() +
   geom_sf(aes(fill = Percentile)) +
-  ggtitle("2016")
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
 
-#Plot 2012
-p2 <- arran2012 %>%
+There we are. Not the SIMD health percentiles of Arran zones throughout SIMD history. And I've learned a little bit about graphics in R.
+
+If I wanted to I could show the zones individually..
+
+First I find the unique zones. (There are 14. 7 Zones 2016, 7 Zones pre-2016)
+
+```{r}
+datazones <- unique(arransimd$DataZone)
+```
+
+I'll have to find out a simpler way to do this but..
+
+#Pre-2016
+
+```{r}
+S01004409 <- filter(arransimd, DataZone=="S01004409")
+
+S01004409 %>%
   ggplot() +
   geom_sf(aes(fill = Percentile)) +
-  ggtitle("2012")
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 
-#Plot 2009
-p3 <- arran2009 %>%
+S01004372 <- filter(arransimd, DataZone=="S01004372")
+
+S01004372 %>%
   ggplot() +
   geom_sf(aes(fill = Percentile)) +
-  ggtitle("2009")
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 
-#Plot 2006
-p4 <- arran2006 %>%
+S01004353 <- filter(arransimd, DataZone=="S01004353")
+
+S01004353 %>%
   ggplot() +
   geom_sf(aes(fill = Percentile)) +
-  ggtitle("2006")
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 
-#Plot 2004
-p5 <- arran2004 %>%
+S01004352 <- filter(arransimd, DataZone=="S01004352")
+
+S01004352 %>%
   ggplot() +
   geom_sf(aes(fill = Percentile)) +
-  ggtitle("2004")
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 
-#Plot 2004-2016 Together
-multiplot(p1, p2, p3, p4, p5, cols=3)
+S01004351 <- filter(arransimd, DataZone=="S01004351")
+
+S01004351 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+S01004350 <- filter(arransimd, DataZone=="S01004350")
+
+S01004350 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+S01004349 <- filter(arransimd, DataZone=="S01004349")
+
+S01004349 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
+
+#2016
+
+```{r}
+S01011177 <- filter(arransimd, DataZone=="S01011177")
+
+S01011171 <- filter(arransimd, DataZone=="S01011171")
+
+S01011174 <- filter(arransimd, DataZone=="S01011174")
+
+S01011176 <- filter(arransimd, DataZone=="S01011176")
+
+S01011172 <- filter(arransimd, DataZone=="S01011172")
+
+S01011173 <- filter(arransimd, DataZone=="S01011173")
+
+S01011175 <- filter(arransimd, DataZone=="S01011175")
+```
+
+```{r}
+S01011177 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+S01011171 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+S01011174 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+S01011176 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+S01011172 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+S01011173 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+S01011175 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
 ```

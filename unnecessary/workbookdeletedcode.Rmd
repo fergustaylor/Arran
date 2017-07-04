@@ -1,0 +1,122 @@
+---
+title: "R Notebook"
+output:
+  html_document: default
+  html_notebook: default
+---
+
+Now I need to import my data
+In this case 'Code-Point Open - GB', already downloaded from https://www.ordnancesurvey.co.uk/opendatadownload/products.html. 
+I've already selected the National Grid Reference square I needed and put on the desktop.
+```{r}
+## Import data
+ka <- read.csv("alldata/ka.csv")
+```
+
+Fiddle about with it.
+```{r}
+## Print it if you like by inputting "ka".
+
+## Summarise it
+summary(ka)
+
+## Find out classes
+sapply(ka,class)
+
+## Use this bit to check which columns had unique values
+## E.g Positional_quality_indicator column
+length(unique(ka$Positional_quality_indicator))
+```
+
+Now I plot the entire grid reference square as co-ordinates.
+```{r}
+## Plot Postcodes as co-ordinates
+ggplot(data = ka) +
+  geom_point(mapping = aes(x = Eastings, y = Northings))
+```
+
+Now I subselect from the KA data.
+Initially I had to do this by looking at the data which was organised alphabetically by postcode.
+Since Arran all begins 'KA27' it means I could simply select out the rows containing Arran postcodes together.
+```{r}
+## Selecting columns
+postcodecoord <- data.frame(ka$Postcode,ka$Eastings,ka$Northings)
+## OR
+postcodecoord <- ka[,c("Postcode","Eastings","Northings")]
+
+## Selecting rows
+Arran <- ka[c(6700:6896),c("Postcode","Eastings","Northings")]
+```
+
+Now I plot it. (With a few labels, etc)
+```{r}
+## Neater version
+ggplot(data = Arran) +
+  geom_point(mapping = aes(x = Eastings, y = Northings)) +
+  ggtitle("Arran Postcodes") +
+  labs(title = "Arran Postcodes", x = "Eastings", y = "Northings") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+#Try to plot side-by-side
+#Plot 2016
+arran2016 %>%
+  ggplot() +
+  geom_sf(aes(fill = DataZone))
+
+#Plot 2012
+arran2012 %>%
+  ggplot() +
+  geom_sf(aes(fill = DataZone))
+```
+
+```{r}
+#Plot 2016
+p1 <- arran2016 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle("2016")
+
+#Plot 2012
+p2 <- arran2012 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle("2012")
+
+#Plot 2009
+p3 <- arran2009 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle("2009")
+
+#Plot 2006
+p4 <- arran2006 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle("2006")
+
+#Plot 2004
+p5 <- arran2004 %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  ggtitle("2004")
+
+#Plot 2004-2016 Together
+multiplot(p1, p2, p3, p4, p5, cols=3)
+```
+
+not sure how to get this to work
+
+```{r}
+arransimd2 <- group_by(arransimd, DataZone)
+```
+
+```{r}
+datazones  %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
