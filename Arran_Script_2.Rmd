@@ -15,4 +15,10 @@ ggplot(data = arrancoordinates) +
 ggplot(data = arransubsect) +
 geom_sf(data = arransubsect)
 ```
+```{r}
+ggplot(data = arransubsect) +
+  geom_sf(data = arransubsect) +
+  geom_point(data = arrancoordinates, mapping = aes(x = longitude, y = latitude))
+  
+```
 
