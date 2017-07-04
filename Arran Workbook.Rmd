@@ -168,6 +168,7 @@ The reason I've downloaded all the datazones shapefiles individually (three step
 See below.
 
 ```{r}
+#Try to plot side-by-side
 #Plot 2016
 arran2016 %>%
   ggplot() +
