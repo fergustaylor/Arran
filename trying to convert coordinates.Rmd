@@ -1,0 +1,129 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+#install.packages("measurements")
+```
+
+
+```{r}
+library(ggmap)
+library(measurements)
+```
+
+
+```{r}
+pcs <- read_sf("alldata/Scotland_pcs_2011")
+
+#Print Post codes lists
+arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
+arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1))
+```
+
+```{r}
+head(arransubsect)
+```
+
+
+```{r}
+ggplot() +
+  geom_point(data= arrancoordinates, mapping = aes(x = longitude, y = latitude))
+```
+```{r}
+ggplot() +
+  geom_point(data= arrancoord2, mapping = aes(x = longitude, y = latitude))
+```
+
+```{r}
+head(arrancoordinates)
+```
+
+```{r}
+arrancoord2<- arrancoordinates
+```
+
+```{r}
+arrancoord3<- arrancoordinates
+```
+
+```{r}
+library("sp")
+?char2dms
+```
+
+```{r}
+
+# change the space symbol to a degree
+arrancoord2$latitude = gsub(' ', '°', arrancoord2$latitude)
+arrancoord2$longitude = gsub(' ', '°', arrancoord2$longitude)
+
+# convert from decimal degrees to decimal minutes
+arrancoord2$latitude = measurements::conv_unit(arrancoord2$latitude, from = 'dec_deg', to = 'deg_dec_min')
+arrancoord2$longitude = measurements::conv_unit(arrancoord2$longitude, from = 'dec_deg', to = 'deg_dec_min')
+```
+
+```{r}
+head(arrancoord2)
+```
+
+
+```{r}
+coordinates <- select(arrancoordinates, latitude, longitude)
+```
+
+```{r}
+coordinates
+```
+
+```{r}
+arrancoordinates %>% 
+    select(latitude, longitude) %>% 
+    head
+```
+
+```{r}
+# change the degree symbol to a space
+#arrancoordinates$latitude = gsub(' ', '°', arrancoordinates$latitude)
+#arrancoordinates$longitude = gsub(' ', '°', arrancoordinates$longitude)
+
+# convert from decimal minutes to decimal degrees
+#arrancoordinates$latitude = #measurements::conv_unit(arrancoordinates$latitude, from = 'dec_deg', to = 'deg_dec_min')
+#arrancoordinates$longitude = #measurements::conv_unit(arrancoordinates$longitude, from = 'dec_deg', to = 'deg_dec_min')
+```
+
+```{r}
+
+```
+
+
+```{r}
+msleep %>% 
+    mutate(rem_proportion = sleep_rem / sleep_total) %>%
+    head
+```
+
+
+```{r}
+msleep %>% 
+    mutate(rem_proportion = sleep_rem / sleep_total, 
+           bodywt_grams = bodywt * 1000) %>%
+    head
+```
+
+
+```{r}
+require(maps)
+d = data.frame(map(database="italy", plot=F)[c("x", "y")])
+```
+
+```{r}
+ggplot() +
+coord_map() +
+geom_polygon(data=d, mapping=aes(x=x, y=y))
+```
+

@@ -1,0 +1,62 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+ggplot(arransimd, aes(x = year, y = Percentile)) +
+  geom_line() +
+  facet_wrap('DataZone') +
+  scale_x_continuous(breaks = c(2004, 2006, 2009, 2012)) +
+  scale_y_continuous(breaks = c(20, 40, 60, 80)) +
+  labs(title = "Arran SIMD Datazones", x = "Year", y = "Percentile") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+```{r}
+#label <- arransimd %>%
+#  summarise(
+#   displ = max(year),
+#    hwy = max(Percentile),
+#    label = "New DataZones from 2016"
+#  )
+```
+
+
+
+```{r}
+namemygrid <- data.frame(
+  row = c(1, 1, 2, 2, 3, 3, 4),
+  col = c(2, 1, 2, 3, 1, 2, 3),
+  code = c("2", "1", "3", "4", "7", "5", "6"),
+  name = c("S01004409", "S01004372", "S01004353", "S01004352", "S01004349", "S01004351", "S01004350"),
+  stringsAsFactors = FALSE
+)
+```
+
+```{r}
+grid_preview(namemygrid)
+```
+
+
+```{r}
+mutate(arransimd2)
+```
+
+
+```{r}
+ggplot(data=arransimd2, aes(x=year, y=Percentile)) +
+  geom_bar(stat="identity") +
+  facet_geo(~ 'name', "namemygrid")
+
+, label = 'name')
+```
+
+
+
++
+  labs(title = "Arran SIMD Datazones", x = "Year", y = "Percentile")
+  theme(plot.title = element_text(hjust = 0.5))
+```
+

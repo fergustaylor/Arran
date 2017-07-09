@@ -13,7 +13,7 @@ library(ggplot2) #development version!
 library(tidyverse)
 library(readr)
 ## Not sure about this bit
-#library("tidyverse", #lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+#library("tidyverse",lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
 ```
 
 Now I import my data. I filter for the Arran postcodes, (since Arran all begins 'KA27').
@@ -132,6 +132,15 @@ arran20122 <- arran2012 %>%
 
 ```{r}
 arran1612 <- rbind(arran20162,arran20122)
+```
+
+```{r}
+arran20162 %>%
+  ggplot() +
+  geom_sf(aes(fill = DataZone)) +
+  facet_wrap('year') +
+  theme(legend.position="none") +
+  theme(axis.text.x=element_text(angle=45, hjust = 1))
 ```
 
 ```{r}
@@ -334,3 +343,42 @@ S01011175 %>%
         axis.ticks.x=element_blank())
 
 ```
+
+```{r}
+arransimd %>%
+ggplot(aes(x=year, y=Percentile)) +
+  geom_bar(stat="identity") +
+  facet_wrap('DataZone') +
+  labs(title = "Arran SIMD Datazones", x = "Year", y = "Percentile") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+Ideally now I'd like to annotate the above data to highlight the 2016 plots, and show where the change in DZ occurs. (I.e draw a polygon around S01011171-S01011177).
+I don't know how to do that yet, so what I'll do now is seperate it into 2 plots.
+
+Pre-2016
+```{r}
+
+arransimd2 <- dplyr::filter(arransimd, year < 2016)
+
+arransimd2 %>%
+ggplot(aes(x=year, y=Percentile)) +
+  geom_bar(stat="identity") +
+  facet_wrap('DataZone') +
+  labs(title = "Arran SIMD Datazones", x = "Year", y = "Percentile") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+Post-2016
+```{r}
+arransimd3 <- dplyr::filter(arransimd, year <= 2016)
+
+arransimd3 %>%
+ggplot(aes(x=year, y=Percentile)) +
+  geom_bar(stat="identity") +
+  facet_wrap('DataZone') +
+  labs(title = "Arran SIMD Datazones", x = "Year", y = "Percentile") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+

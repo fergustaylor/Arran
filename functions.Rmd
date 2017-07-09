@@ -1,0 +1,31 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+function1 <- function(filename) {
+  # Filters arransimd into individual shape files
+  ggplot(filename) +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+}
+```
+
+
+```{r}
+function2 <-function(filename) {
+  # Filters arransimd into DataZones
+  (filename) <- filter(arransimd, DataZone=="(filename)")
+}
+```
+
+```{r}
+function2(S01004409)
+```
+
+
+S01004409 <- filter(arransimd, DataZone=="S01004409")
