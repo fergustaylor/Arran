@@ -372,7 +372,7 @@ ggplot(aes(x=year, y=Percentile)) +
 
 Post-2016
 ```{r}
-arransimd3 <- dplyr::filter(arransimd, year <= 2016)
+arransimd3 <- dplyr::filter(arransimd, year >= 2016)
 
 arransimd3 %>%
 ggplot(aes(x=year, y=Percentile)) +
