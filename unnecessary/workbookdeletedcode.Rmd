@@ -13,6 +13,16 @@ I've already selected the National Grid Reference square I needed and put on the
 ka <- read.csv("alldata/ka.csv")
 ```
 
+```{r}
+arran20162 %>%
+  ggplot() +
+  geom_sf(aes(fill = DataZone)) +
+  facet_wrap('year') +
+  theme(legend.position="none") +
+  theme(axis.text.x=element_text(angle=45, hjust = 1))
+```
+
+
 Fiddle about with it.
 ```{r}
 ## Print it if you like by inputting "ka".
@@ -26,6 +36,13 @@ sapply(ka,class)
 ## Use this bit to check which columns had unique values
 ## E.g Positional_quality_indicator column
 length(unique(ka$Positional_quality_indicator))
+```
+
+```{r}
+arransubsect %>%
+ggplot() +
+  geom_sf(aes(fill = name)) +
+  theme(axis.text.x=element_text(angle=45, hjust = 1))
 ```
 
 Now I plot the entire grid reference square as co-ordinates.
