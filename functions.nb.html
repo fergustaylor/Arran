@@ -172,13 +172,13 @@ $(document).ready(function () {
 
 
 <!-- rnb-text-begin -->
-<p>function.displayfunction &lt;- function(arguments) { ‘arguments’ %&gt;% ggplot() + geom_sf(data = arransubsect) + geom_sf(aes(fill = Percentile)) + facet_wrap(‘year’) + theme(axis.text.x=element_blank(), axis.ticks.x=element_blank()) }</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZnVuY3Rpb24xIDwtIGZ1bmN0aW9uKGZpbGVuYW1lKSB7XG4gICMgRmlsdGVycyBhcnJhbnNpbWQgaW50byBpbmRpdmlkdWFsIHNoYXBlIGZpbGVzXG4gIGdncGxvdChmaWxlbmFtZSkgK1xuICBnZW9tX3NmKGFlcyhmaWxsID0gUGVyY2VudGlsZSkpICtcbiAgZmFjZXRfd3JhcCgneWVhcicpICtcbiAgdGhlbWUoYXhpcy50ZXh0Lng9ZWxlbWVudF9ibGFuaygpLFxuICAgICAgICBheGlzLnRpY2tzLng9ZWxlbWVudF9ibGFuaygpKVxufVxuYGBgIn0= -->
-<pre class="r"><code>function1 &lt;- function(filename) {
-  # Filters arransimd into individual shape files
-  ggplot(filename) +
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZnVuY3Rpb24xIDwtIGZ1bmN0aW9uKGFyZ3VtZW50KSBcbntcbiAgYXJndW1lbnQgJT4lXG4gIGdncGxvdCgpICtcbiAgZ2VvbV9zZihhZXMoZmlsbCA9IFBlcmNlbnRpbGUpKSArXG4gIGZhY2V0X3dyYXAoJ3llYXInKSArXG4gIHRoZW1lKGF4aXMudGV4dC54PWVsZW1lbnRfYmxhbmsoKSxcbiAgICAgICAgYXhpcy50aWNrcy54PWVsZW1lbnRfYmxhbmsoKSlcbn1cbmBgYCJ9 -->
+<pre class="r"><code>function1 &lt;- function(argument) 
+{
+  argument %&gt;%
+  ggplot() +
   geom_sf(aes(fill = Percentile)) +
   facet_wrap('year') +
   theme(axis.text.x=element_blank(),
@@ -189,15 +189,46 @@ $(document).ready(function () {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZnVuY3Rpb24yIDwtZnVuY3Rpb24oZmlsZW5hbWUpIHtcbiAgIyBGaWx0ZXJzIGFycmFuc2ltZCBpbnRvIERhdGFab25lc1xuICAoZmlsZW5hbWUpIDwtIGZpbHRlcihhcnJhbnNpbWQsIERhdGFab25lPT1cIihmaWxlbmFtZSlcIilcbn1cbmBgYCJ9 -->
-<pre class="r"><code>function2 &lt;-function(filename) {
-  # Filters arransimd into DataZones
-  (filename) &lt;- filter(arransimd, DataZone==&quot;(filename)&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZnVuY3Rpb24yIDwtIGZ1bmN0aW9uKGFyZ3VtZW50KSBcbntcbiAgYXJyYW5zdWJzZWN0ICU+JVxuICBnZ3Bsb3QoKSArXG4gIGdlb21fc2YoKSArXG4gIHRoZW1lKGF4aXMudGV4dC54PWVsZW1lbnRfdGV4dChhbmdsZT00NSwgaGp1c3QgPSAxKSkgK1xuICBnZW9tX3NmKGRhdGE9IGFyZ3VtZW50LCBhZXMoZmlsbCA9IERhdGFab25lKSlcbn1cbmBgYCJ9 -->
+<pre class="r"><code>function2 &lt;- function(argument) 
+{
+  arransubsect %&gt;%
+  ggplot() +
+  geom_sf() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  geom_sf(data= argument, aes(fill = DataZone))
 }</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZnVuY3Rpb24xIDwtIGZ1bmN0aW9uKGFyZ3VtZW50KSBcbntcbiAgYXJndW1lbnQgJT4lXG4gIGdncGxvdCgpICtcbiAgZ2VvbV9zZihkYXRhID0gYXJyYW5zdWJzZWN0KSArXG4gIGdlb21fc2YoYWVzKGZpbGwgPSBQZXJjZW50aWxlKSkgK1xuICBmYWNldF93cmFwKCd5ZWFyJykgK1xuICB0aGVtZShheGlzLnRleHQueD1lbGVtZW50X2JsYW5rKCksXG4gICAgICAgIGF4aXMudGlja3MueD1lbGVtZW50X2JsYW5rKCkpXG59XG5gYGAifQ== -->
+<pre class="r"><code>function1 &lt;- function(argument) 
+{
+  argument %&gt;%
+  ggplot() +
+  geom_sf(data = arransubsect) +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Trying to apply function to each value in list.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQXJyYW5QcmUyMDE2IDwtIGMoUzAxMDA0NDA5LFMwMTAwNDM3MixTMDEwMDQzNTMsUzAxMDA0MzUyLFMwMTAwNDM1MSxTMDEwMDQzNTAsUzAxMDA0MzQ5KVxuZnVuY3Rpb24xKEFycmFuUHJlMjAxNilcblxubGFwcGx5KEFycmFuUHJlMjAxNiwgZnVuY3Rpb24xKVxuYGBgIn0= -->
+<pre class="r"><code>ArranPre2016 &lt;- c(S01004409,S01004372,S01004353,S01004352,S01004351,S01004350,S01004349)
+function1(ArranPre2016)
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKZnVuY3Rpb24uZGlzcGxheWZ1bmN0aW9uIDwtIGZ1bmN0aW9uKGFyZ3VtZW50cykgCnsKICAnYXJndW1lbnRzJyAlPiUKICBnZ3Bsb3QoKSArCiAgZ2VvbV9zZihkYXRhID0gYXJyYW5zdWJzZWN0KSArCiAgZ2VvbV9zZihhZXMoZmlsbCA9IFBlcmNlbnRpbGUpKSArCiAgZmFjZXRfd3JhcCgneWVhcicpICsKICB0aGVtZShheGlzLnRleHQueD1lbGVtZW50X2JsYW5rKCksCiAgICAgICAgYXhpcy50aWNrcy54PWVsZW1lbnRfYmxhbmsoKSkKfQoKYGBge3J9CmZ1bmN0aW9uMSA8LSBmdW5jdGlvbihmaWxlbmFtZSkgewogICMgRmlsdGVycyBhcnJhbnNpbWQgaW50byBpbmRpdmlkdWFsIHNoYXBlIGZpbGVzCiAgZ2dwbG90KGZpbGVuYW1lKSArCiAgZ2VvbV9zZihhZXMoZmlsbCA9IFBlcmNlbnRpbGUpKSArCiAgZmFjZXRfd3JhcCgneWVhcicpICsKICB0aGVtZShheGlzLnRleHQueD1lbGVtZW50X2JsYW5rKCksCiAgICAgICAgYXhpcy50aWNrcy54PWVsZW1lbnRfYmxhbmsoKSkKfQpgYGAKCgpgYGB7cn0KZnVuY3Rpb24yIDwtZnVuY3Rpb24oZmlsZW5hbWUpIHsKICAjIEZpbHRlcnMgYXJyYW5zaW1kIGludG8gRGF0YVpvbmVzCiAgKGZpbGVuYW1lKSA8LSBmaWx0ZXIoYXJyYW5zaW1kLCBEYXRhWm9uZT09IihmaWxlbmFtZSkiKQp9CmBgYAo=</div>
+lapply(ArranPre2016, function1)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CmZ1bmN0aW9uMSA8LSBmdW5jdGlvbihhcmd1bWVudCkgCnsKICBhcmd1bWVudCAlPiUKICBnZ3Bsb3QoKSArCiAgZ2VvbV9zZihhZXMoZmlsbCA9IFBlcmNlbnRpbGUpKSArCiAgZmFjZXRfd3JhcCgneWVhcicpICsKICB0aGVtZShheGlzLnRleHQueD1lbGVtZW50X2JsYW5rKCksCiAgICAgICAgYXhpcy50aWNrcy54PWVsZW1lbnRfYmxhbmsoKSkKfQpgYGAKCmBgYHtyfQpmdW5jdGlvbjIgPC0gZnVuY3Rpb24oYXJndW1lbnQpIAp7CiAgYXJyYW5zdWJzZWN0ICU+JQogIGdncGxvdCgpICsKICBnZW9tX3NmKCkgKwogIHRoZW1lKGF4aXMudGV4dC54PWVsZW1lbnRfdGV4dChhbmdsZT00NSwgaGp1c3QgPSAxKSkgKwogIGdlb21fc2YoZGF0YT0gYXJndW1lbnQsIGFlcyhmaWxsID0gRGF0YVpvbmUpKQp9CmBgYAoKYGBge3J9CmZ1bmN0aW9uMyA8LSBmdW5jdGlvbihhcmd1bWVudCkgCnsKICBhcmd1bWVudCAlPiUKICBnZ3Bsb3QoKSArCiAgZ2VvbV9zZihkYXRhID0gYXJyYW5zdWJzZWN0KSArCiAgZ2VvbV9zZihhZXMoZmlsbCA9IFBlcmNlbnRpbGUpKSArCiAgZmFjZXRfd3JhcCgneWVhcicpICsKICB0aGVtZShheGlzLnRleHQueD1lbGVtZW50X2JsYW5rKCksCiAgICAgICAgYXhpcy50aWNrcy54PWVsZW1lbnRfYmxhbmsoKSkKfQpgYGAKClRyeWluZyB0byBhcHBseSBmdW5jdGlvbiB0byBlYWNoIHZhbHVlIGluIGxpc3QuCmBgYHtyfQpBcnJhblByZTIwMTYgPC0gYyhTMDEwMDQ0MDksUzAxMDA0MzcyLFMwMTAwNDM1MyxTMDEwMDQzNTIsUzAxMDA0MzUxLFMwMTAwNDM1MCxTMDEwMDQzNDkpCmZ1bmN0aW9uMShBcnJhblByZTIwMTYpCgpsYXBwbHkoQXJyYW5QcmUyMDE2LCBmdW5jdGlvbjEpCmBgYAo=</div>
 
 
 

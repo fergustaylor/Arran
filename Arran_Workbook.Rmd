@@ -4,7 +4,6 @@ output:
   html_document: default
   html_notebook: default
 ---
-
 #Load Packages
 First I need to load up the packages I'll need
 ```{r}
@@ -38,7 +37,6 @@ ggplot(data = arrancoordinates) +
 ```
 
 Now I create some plots.
-
 #Arran Borders
 ```{r}
 pcs <- read_sf("alldata/Scotland_pcs_2011")
@@ -206,167 +204,82 @@ S01004349 <- filter(arransimd, DataZone=="S01004349")
 ```
 
 ```{r}
-S01004409 %>%
+function1 <- function(argument) 
+{
+  argument %>%
   ggplot() +
   geom_sf(aes(fill = Percentile)) +
   facet_wrap('year') +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
+}
+```
 
-S01004372 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01004353 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01004352 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01004351 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01004350 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01004349 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
+```{r}
+function1(S01004409)
+function1(S01004372)
+function1(S01004353)
+function1(S01004352)
+function1(S01004351)
+function1(S01004350)
+function1(S01004349)
 ```
 
 This is all well and good. But I found it difficult to remember which zone went where. So I've plotted a reference image to go beside the charts.
-
 #Pre-2016 Reference Images
+```{r}
+function2 <- function(argument) 
+{
+  arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  geom_sf(data= argument, aes(fill = DataZone))
+}
+```
+
 ```{r}
 arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
 
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= S01004409, aes(fill = DataZone))
-
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= S01004372, aes(fill = DataZone))
-
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= S01004353, aes(fill = DataZone))
-
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= S01004352, aes(fill = DataZone))
-
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= S01004351, aes(fill = DataZone))
-
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= S01004350, aes(fill = DataZone))
-
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= S01004349, aes(fill = DataZone))
+function2(S01004409)
+function2(S01004372)
+function2(S01004353)
+function2(S01004352)
+function2(S01004351)
+function2(S01004350)
+function2(S01004349)
 ```
 
 But thinking about it, I could plot all the years together like this.
 #Pre-2016 Individual Zones shown on whole island
 ```{r}
-S01004409 %>%
+function3 <- function(argument) 
+{
+  argument %>%
   ggplot() +
   geom_sf(data = arransubsect) +
   geom_sf(aes(fill = Percentile)) +
   facet_wrap('year') +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
+}
+```
 
-S01004372 %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01004353 %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01004352 %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01004351 %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01004350 %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01004349 %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
+```{r}
+function3(S01004409)
+function3(S01004372)
+function3(S01004353)
+function3(S01004352)
+function3(S01004351)
+function3(S01004350)
+function3(S01004349)
 ```
 
 #2016
+Now I apply the same functions to the post-2016 Zones
 ```{r}
+arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
+
 S01011177 <- filter(arransimd, DataZone=="S01011177")
 S01011171 <- filter(arransimd, DataZone=="S01011171")
 S01011174 <- filter(arransimd, DataZone=="S01011174")
@@ -377,162 +290,35 @@ S01011175 <- filter(arransimd, DataZone=="S01011175")
 ```
 
 ```{r}
-S01011177 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01011171 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01011174 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01011176 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01011172 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01011173 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01011175 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
+function1(S01011177)
+function1(S01011171)
+function1(S01011174)
+function1(S01011176)
+function1(S01011172)
+function1(S01011173)
+function1(S01011175)
+```
+```{r}
+function2(S01011177)
+function2(S01011171)
+function2(S01011174)
+function2(S01011176)
+function2(S01011172)
+function2(S01011173)
+function2(S01011175)
 ```
 
 ```{r}
-arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
-
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= S01011177, aes(fill = DataZone))
-
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= S01011171, aes(fill = DataZone))
-
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= S01011174, aes(fill = DataZone))
-
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= S01011176, aes(fill = DataZone))
-
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= S01011172, aes(fill = DataZone))
-
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= S01011173, aes(fill = DataZone))
-
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= S01011175, aes(fill = DataZone))
-
+function3(S01011177)
+function3(S01011171)
+function3(S01011174)
+function3(S01011176)
+function3(S01011172)
+function3(S01011173)
+function3(S01011175)
 ```
 
-```{r}
-S01011177 %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01011171 %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01011174 %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01011176 %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01011172 %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01011173 %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-S01011175 %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-```
-
+#Plot the percentiles as bar charts.
 ```{r}
 arransimd %>%
 ggplot(aes(x=year, y=Percentile)) +
@@ -542,6 +328,7 @@ ggplot(aes(x=year, y=Percentile)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
+#Splitting the bar charts up.
 Ideally now I'd like to annotate the above data to highlight the 2016 plots, and show where the change in DZ occurs. (I.e draw a polygon around S01011171-S01011177).
 I don't know how to do that yet, so what I'll do now is seperate it into 2 plots.
 
