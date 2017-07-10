@@ -1,0 +1,38 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+p1 <- arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme_grey() 
+```
+
+```{r}
+p1
+```
+
+```{r}
+p2
+```
+
+
+```{r}
+## Plotting the Arran coordinates
+p2 <- ggplot(data = arrancoordinates) +
+  geom_point(mapping = aes(x = longitude, y = latitude)) +
+  ggtitle("Arran Postcodes") +
+  labs(title = "Arran Postcodes", x = "Longitude", y = "Latitude") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_grey() +
+  coord_map()
+```
+
+```{r}
+p1 + p2 %>%
+ggplot()
+
+```

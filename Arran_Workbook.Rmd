@@ -15,6 +15,7 @@ library(tidyverse)
 library(readr)
 ## Not sure about this bit
 #library("tidyverse",lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+library(cowplot)
 ```
 
 #Import Data
@@ -34,7 +35,9 @@ ggplot(data = arrancoordinates) +
   geom_point(mapping = aes(x = longitude, y = latitude)) +
   ggtitle("Arran Postcodes") +
   labs(title = "Arran Postcodes", x = "Longitude", y = "Latitude") +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_grey() +
+  coord_map()
 ```
 
 Now I create some plots.
@@ -47,7 +50,8 @@ arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
 arransubsect %>%
   ggplot() +
   geom_sf() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1))
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme_grey()
 ```
 
 #Shape files
@@ -135,6 +139,7 @@ arran1612 %>%
   ggplot() +
   geom_sf(aes(fill = DataZone)) +
   facet_wrap('year') +
+  theme_grey() +
   theme(legend.position="none") +
   theme(axis.text.x=element_text(angle=45, hjust = 1))
 ```
@@ -157,18 +162,6 @@ arran20042 <- arran2004 %>%
 arransimd <- rbind(arran20162,arran20122,arran20092,arran20062,arran20042)
 ```
 
-Then I plot the data zones to look at all of them, just to double-check nothing else changed. (It looks like the only change was between 2012 and 2016).
-```{r}
-arransimd %>%
-  ggplot() +
-  geom_sf(aes(fill = DataZone)) +
-  facet_wrap('year') +
-  theme(legend.position="none") +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(), axis.text.y=element_blank(),
-        axis.ticks.y=element_blank())
-```
-
 #Arran Percentile Plots
 Now I plot the percentiles.
 ```{r}
@@ -176,6 +169,7 @@ arransimd %>%
   ggplot() +
   geom_sf(aes(fill = Percentile)) +
   facet_wrap('year') +
+  theme_grey() +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank(), axis.text.y=element_blank(),
         axis.ticks.y=element_blank())
@@ -205,44 +199,34 @@ S01004349 <- filter(arransimd, DataZone=="S01004349")
 ```
 
 ```{r}
+pre2016list <- list(S01004409, S01004372, S01004353, S01004352, S01004351, S01004350, S01004349)
+```
+
+```{r}
 function1 <- function(argument) 
 {
   argument %>%
   ggplot() +
   geom_sf(aes(fill = Percentile)) +
   facet_wrap('year') +
+  theme_grey() +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 }
 ```
 
 ```{r}
-pre2016list <- list(S01004409, S01004372, S01004353, S01004352, S01004351, S01004350, S01004349)
-
-lapply(pre2016list, function1)
-```
-
-This is all well and good. But I found it difficult to remember which zone went where. So I've plotted a reference image to go beside the charts.
-#Pre-2016 Reference Images
-```{r}
 function2 <- function(argument) 
 {
   arransubsect %>%
   ggplot() +
   geom_sf() +
+  theme_grey() +
   theme(axis.text.x=element_text(angle=45, hjust = 1)) +
   geom_sf(data= argument, aes(fill = DataZone))
 }
 ```
 
-```{r}
-arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
-
-lapply(pre2016list, function2)
-```
-
-But thinking about it, I could plot all the years together like this.
-#Pre-2016 Individual Zones shown on whole island
 ```{r}
 function3 <- function(argument) 
 {
@@ -251,13 +235,21 @@ function3 <- function(argument)
   geom_sf(data = arransubsect) +
   geom_sf(aes(fill = Percentile)) +
   facet_wrap('year') +
+  theme_grey() +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 }
 ```
 
 ```{r}
-lapply(pre2016list, function3)
+function4 <- function(argument) 
+{
+  plot_grid((function1(argument)), (function2(argument)), labels = c("A", "B"))
+}
+```
+
+```{r}
+lapply(pre2016list, function4)
 ```
 
 #2016
@@ -276,30 +268,13 @@ S01011175 <- filter(arransimd, DataZone=="S01011175")
 
 ```{r}
 post2016list <- list(S01011177, S01011171, S01011174, S01011176, S01011172, S01011173, S01011175)
-
-lapply(post2016list, function1)
-```
-```{r}
-lapply(post2016list, function2)
 ```
 
 ```{r}
-lapply(post2016list, function3)
+lapply(pre2016list, function4)
 ```
 
 #Plot the percentiles as bar charts.
-```{r}
-arransimd %>%
-ggplot(aes(x=year, y=Percentile)) +
-  geom_bar(stat="identity") +
-  facet_wrap('DataZone') +
-  labs(title = "Arran SIMD Datazones", x = "Year", y = "Percentile") +
-  theme(plot.title = element_text(hjust = 0.5))
-```
-
-#Splitting the bar charts up.
-Ideally now I'd like to annotate the above data to highlight the 2016 plots, and show where the change in DZ occurs. (I.e draw a polygon around S01011171-S01011177).
-I don't know how to do that yet, so what I'll do now is seperate it into 2 plots.
 
 Pre-2016
 ```{r}
@@ -309,6 +284,7 @@ arransimd2 %>%
 ggplot(aes(x=year, y=Percentile)) +
   geom_bar(stat="identity") +
   facet_wrap('DataZone') +
+  theme_grey() +
   labs(title = "Arran SIMD Datazones", x = "Year", y = "Percentile") +
   theme(plot.title = element_text(hjust = 0.5))
 ```
@@ -321,6 +297,7 @@ arransimd3 %>%
 ggplot(aes(x=year, y=Percentile)) +
   geom_bar(stat="identity") +
   facet_wrap('DataZone') +
+  theme_grey() +
   labs(title = "Arran SIMD Datazones", x = "Year", y = "Percentile") +
   theme(plot.title = element_text(hjust = 0.5))
 ```

@@ -4,6 +4,17 @@ output:
   html_document: default
   html_notebook: default
 ---
+Then I plot the data zones to look at all of them, just to double-check nothing else changed. (It looks like the only change was between 2012 and 2016).
+```{r}
+arransimd %>%
+  ggplot() +
+  geom_sf(aes(fill = DataZone)) +
+  facet_wrap('year') +
+  theme(legend.position="none") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(), axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
 
 Now I need to import my data
 In this case 'Code-Point Open - GB', already downloaded from https://www.ordnancesurvey.co.uk/opendatadownload/products.html. 
