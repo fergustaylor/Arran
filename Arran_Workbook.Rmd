@@ -54,8 +54,28 @@ arransubsect %>%
   theme_grey()
 ```
 
+After a little editing I can overlay the two.
+```{r}
+simple.sf <- st_as_sf(arrancoordinates, coords=c('longitude','latitude'))
+st_crs(simple.sf) <- 4326
+```
+
+```{r}
+simple.sf %>% ggplot() + geom_sf() +
+theme_grey() 
+```
+
+```{r}
+arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme_grey() +
+  geom_sf(data=simple.sf)
+```
+
 #Shape files
-Then I can load the shape files.
+Now I can load the SIMD data, starting with the shape files.
 ```{r}
 #Import SIMD data from http://www.gov.scot/Topics/Statistics/SIMD
 #The "new data zone boundaries with SIMD16 ranks (zipped shapefile)"
