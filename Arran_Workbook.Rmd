@@ -4,6 +4,7 @@ output:
   html_document: default
   html_notebook: default
 ---
+
 #Load Packages
 First I need to load up the packages I'll need
 ```{r}
@@ -216,13 +217,9 @@ function1 <- function(argument)
 ```
 
 ```{r}
-function1(S01004409)
-function1(S01004372)
-function1(S01004353)
-function1(S01004352)
-function1(S01004351)
-function1(S01004350)
-function1(S01004349)
+pre2016list <- list(S01004409, S01004372, S01004353, S01004352, S01004351, S01004350, S01004349)
+
+lapply(pre2016list, function1)
 ```
 
 This is all well and good. But I found it difficult to remember which zone went where. So I've plotted a reference image to go beside the charts.
@@ -241,13 +238,7 @@ function2 <- function(argument)
 ```{r}
 arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
 
-function2(S01004409)
-function2(S01004372)
-function2(S01004353)
-function2(S01004352)
-function2(S01004351)
-function2(S01004350)
-function2(S01004349)
+lapply(pre2016list, function2)
 ```
 
 But thinking about it, I could plot all the years together like this.
@@ -266,13 +257,7 @@ function3 <- function(argument)
 ```
 
 ```{r}
-function3(S01004409)
-function3(S01004372)
-function3(S01004353)
-function3(S01004352)
-function3(S01004351)
-function3(S01004350)
-function3(S01004349)
+lapply(pre2016list, function3)
 ```
 
 #2016
@@ -290,32 +275,16 @@ S01011175 <- filter(arransimd, DataZone=="S01011175")
 ```
 
 ```{r}
-function1(S01011177)
-function1(S01011171)
-function1(S01011174)
-function1(S01011176)
-function1(S01011172)
-function1(S01011173)
-function1(S01011175)
+post2016list <- list(S01011177, S01011171, S01011174, S01011176, S01011172, S01011173, S01011175)
+
+lapply(post2016list, function1)
 ```
 ```{r}
-function2(S01011177)
-function2(S01011171)
-function2(S01011174)
-function2(S01011176)
-function2(S01011172)
-function2(S01011173)
-function2(S01011175)
+lapply(post2016list, function2)
 ```
 
 ```{r}
-function3(S01011177)
-function3(S01011171)
-function3(S01011174)
-function3(S01011176)
-function3(S01011172)
-function3(S01011173)
-function3(S01011175)
+lapply(post2016list, function3)
 ```
 
 #Plot the percentiles as bar charts.
