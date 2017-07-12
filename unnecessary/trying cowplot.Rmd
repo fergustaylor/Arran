@@ -1,0 +1,35 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Pre-2106
+```{r}
+pre2016list <- list(S01004409, S01004372, S01004353, S01004352, S01004351, S01004350, S01004349)
+
+lapply(pre2016list, function1)
+```
+
+```{r}
+lapply(pre2016list, function2)
+```
+
+```{r}
+require(cowplot)
+plot_grid((function1(S01004409)), (function2(S01004409)), labels = c("A", "B"))
+
+S01004409
+
+function1(S01004409)
+function2(S01004409)
+```
+
+
+
+```{r}
+function4 <- function(argument) 
+{
+  plot_grid((function1(argument)), (function2(argument)), labels = c("A", "B"))
+}
+```
+

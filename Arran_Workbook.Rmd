@@ -16,6 +16,7 @@ library(readr)
 ## Not sure about this bit
 #library("tidyverse",lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
 library(cowplot)
+library(sp)
 ```
 
 #Import Data
@@ -321,3 +322,76 @@ ggplot(aes(x=year, y=Percentile)) +
   labs(title = "Arran SIMD Datazones", x = "Year", y = "Percentile") +
   theme(plot.title = element_text(hjust = 0.5))
 ```
+
+Now I want to overlay the postcodes for a particular shapefile, in this case by Datazone.
+To do this I've converted both the Arran coordinates and Arran (2016) shapefiles into Spatial Points/Polygons, converted them into a common CRS, and then compared them by using over().
+```{r}
+exampleshapes <- sf:::as_Spatial(arran2016$geom)
+examplepoints <- sf:::as_Spatial(simple.sf$geom)
+
+examplepoints <- spTransform(examplepoints, CRS("+proj=longlat +datum=WGS84"))
+exampleshapes <- spTransform(exampleshapes, CRS("+proj=longlat +datum=WGS84"))
+
+namingdzpostcode <- over(exampleshapes, examplepoints, returnList = TRUE)
+```
+
+I can then take a member reference from the orginal postcode list, which gives me a selection of the rows in that DZ. For simplicity I've written this as a new function. 
+
+Unfortunately, I haven't worked out how to coordinate the new ID with the original DZ names yet, so I have to select by using the appropriate ID for each DZ.
+#Function selecting simple.sf by DZ ID.
+```{r}
+function6 <- function(argument) 
+{
+  simple.sf[namingdzpostcode[[argument]],]
+}
+```
+
+I can then use the above, and plot over the appropriate DZ shapefile.
+e.g
+
+#Projecting the coordinate selections
+```{r}
+function1(S01004372) +
+  geom_sf(data=function6(2))
+function2(S01004372) +
+  geom_sf(data=function6(2))
+function3(S01004372) +
+  geom_sf(data=function6(2))
+```
+
+If I edit function 4 a little so that the geom_sf layer is a second argument then I can also use function 4.
+
+```{r}
+function4.5 <- function(argument, argument2) 
+{
+  a <- function1(argument)
+  b <- function2(argument) +
+  geom_sf(data=function6(argument2))
+
+  plot_grid(a, b, labels = c("A", "B"))
+}
+```
+
+```{r}
+function4.5(S01004372,2)
+```
+
+I've also made another function to plot the DZ on it's own with coordinates.
+```{r}
+function5 <- function(argument, argument2) 
+{
+  argument %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_sf(data=function6(argument2)) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+}
+```
+
+```{r}
+function5(S01004372,2)
+```
+
+

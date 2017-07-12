@@ -1,0 +1,135 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+function2(S01004409) +
+  geom_sf(data=simple.sf)
+```
+
+```{r}
+#Import SIMD data from http://www.gov.scot/Topics/Statistics/SIMD
+#The "new data zone boundaries with SIMD16 ranks (zipped shapefile)"
+#'2011 Data Zone boundaries'
+sg <- read_sf("./alldata/SG_SIMD_2016")
+
+#Create Arran DZ vector of sg rows
+#From observation of unique DZ in arransimdgroups2
+#Filter sg by dz from unique DZ, note row no.
+
+Arrandz <- c(4672,4666,4669,4671,4667,4668,4670)
+
+#Select arran rows in sg by using arrandz vector
+arran <- sg[Arrandz,]
+
+#Blank 2016! Arran map
+arran %>%
+  ggplot() +
+  geom_sf() +
+  theme_gray() +
+  geom_sf(data=simple.sf)
+  
+```
+
+```{r}
+arran %>%
+  ggplot() +
+  geom_sf() +
+  theme_gray() +
+  geom_sf(data=simple.sf)
+```
+
+```{r}
+function2(S01004409) +
+  geom_sf(data=simple.sf)
+```
+```{r}
+library(rgeos)
+library(sp)
+library(rgdal)
+
+plot(arran, max.plot = 1)
+
+```
+#Naming each postcode by DZ
+```{r}
+over(examplepoints, exampleshapes, returnList = TRUE)
+```
+
+#Naming each DZ by postcode
+```{r}
+over(exampleshapes, examplepoints, returnList = TRUE)
+```
+
+```{r}
+namingdzpostcode <- over(exampleshapes, examplepoints, returnList = TRUE)
+```
+
+```{r}
+namingdzpostcode[[1]]
+```
+
+
+#Selecting 1stDZ, showing postcodes
+```{r}
+exampleshapes2 <- exampleshapes[1,]
+over(exampleshapes2, examplepoints, returnList = TRUE)
+```
+
+--
+--
+
+Other examples
+
+```{r}
+
+sodo <- exampleshapes
+dat <- examplepoints
+
+```
+
+# Don't use df as name, it is an R function
+# Better to set longitudes as the first column and latitudes as the second
+dat <- data.frame(Longitude = c(-122.332271,-122.353985,-122.331639),
+                  Latitude =c(47.591351, 47.62212,47.595152),
+                  names = c("Safeco Field", "Key Arena", "Century Link"))
+
+```{r}
+# Assignment modified according
+coordinates(dat) <- ~ Longitude + Latitude
+proj4string(dat) <- CRS("+proj=longlat")
+# Set the projection of the SpatialPointsDataFrame using the projection of the shapefile
+dat <- spTransform(dat, proj4string(sodo))
+proj4string(dat) <- proj4string(sodo)
+
+over(dat, sodo)
+#  STATE COUNTY    CITY                NAME REGIONID
+#1    WA   King Seattle Industrial District   271892
+#2  <NA>   <NA>    <NA>                <NA>       NA
+#3  <NA>   <NA>    <NA>                <NA>       NA
+
+over(sodo, dat)
+#           names
+#122 Safeco Field
+```
+
+```{r}
+x = c(0.5, 0.5, 1.0, 1.5)
+y = c(1.5, 0.5, 0.5, 0.5)
+xy = cbind(x,y)
+dimnames(xy)[[1]] = c("a", "b", "c", "d")
+pts = SpatialPoints(xy)
+xpol = c(0,1,1,0,0)
+ypol = c(0,0,1,1,0)
+pol = SpatialPolygons(list(
+Polygons(list(Polygon(cbind(xpol-1.05,ypol))), ID="x1"),
+Polygons(list(Polygon(cbind(xpol,ypol))), ID="x2"),
+Polygons(list(Polygon(cbind(xpol,ypol - 1.0))), ID="x3"),
+Polygons(list(Polygon(cbind(xpol + 1.0, ypol))), ID="x4"),
+Polygons(list(Polygon(cbind(xpol+.4, ypol+.1))), ID="x5")
+))
+
+over(pts,pol)
+```
+

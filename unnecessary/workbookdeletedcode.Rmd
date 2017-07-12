@@ -204,3 +204,12 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 }
 ```
 
+#Also works
+```{r}
+DZpostcodes2 <- simple.sf2[simple.sf2$row %in% DZ1postcodes[[1]], ] 
+```
+
+```{r}
+DZ1 <- exampleshapes[1,]
+over(DZ1, examplepoints, returnList = TRUE)
+```
