@@ -197,6 +197,17 @@ arransimd %>%
         axis.ticks.y=element_blank())
 ```
 
+```{r}
+arransimd %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year', nrow = 1) +
+  theme_grey() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(), axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
+
 There we are. Not the SIMD health percentiles of Arran zones throughout SIMD history. And I've learned a little bit about graphics in R.
 
 If I wanted to I could show the zones individually..

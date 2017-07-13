@@ -1,0 +1,60 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+plot1 <- simple.sf %>% ggplot() + geom_sf() +
+theme_grey() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
+
+```{r}
+plot2 <- arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  geom_sf(data=simple.sf)
+```
+
+```{r}
+plot3 <- arran2016 %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  theme(legend.position="none") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  geom_sf(data=simple.sf)
+```
+
+```{r}
+plot4 <-   arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  theme(legend.position="none") +
+  geom_sf(data= S01004372, aes()) +
+  geom_sf(data=function6(2))
+  
+```
+
+```{r}
+plot5 <- S01004372 %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_sf(data=function6(2)) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
+
+```{r}
+grid.arrange(plot1, plot2, plot3, plot4, plot5, nrow = 1)
+```
+
