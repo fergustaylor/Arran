@@ -7,7 +7,8 @@ I intend to explore the package ['ggplot2'](http://ggplot2.tidyverse.org/referen
 
 Initially I used map cordinates given by [Ordinance Survey](https://www.ordnancesurvey.co.uk/opendatadownload/products.html) to find the centre of any KA27 postcode on a map.
 (KA27 being the prefix or 'postcode area' that denotes all Aran Island postcodes).
-I then read the coordinates into sf with st_as_sf(), and plotted over a shape file map of Arran.
+
+I then read the coordinates into sf with st_as_sf(), and plotted over a shape file map of Arran; over the SIMD data zones, as well as the section of coordinates contained in one data zone/
 ![Coordinate plots](Rplot11.png)
 
 With the postcodes sorted, I then wanted to relate some other information about these areas.
@@ -22,8 +23,12 @@ Then after faffing about with individual shape files for every year, (The data z
 
 ![Percentile Facet_wrap](Rplot10.png)
 
-Combining the coordinate and SIMD data, I've summarised one of the zones () below.
+Combining the coordinate and SIMD data, I've summarised one of the zones (S01004372) below.
 ![Summary plots](Rplot12.png)
+
+The next steps will be to overlay this data over a map using leaflet.
+
+The overall aim of this project will be to create an easy template by which a user with no prior programming knowledge can create interactive graphs by overlaying some form of data attributed to a postcode alone.
 
 [See the code.](Arran_Workbook.html)
 
