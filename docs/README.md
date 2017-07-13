@@ -26,6 +26,8 @@ Then after faffing about with individual shape files for every year, (The data z
 Combining the coordinate and SIMD data, I've summarised one of the zones (S01004372) below.
 ![Summary plots](Rplot12.png)
 
+The next steps will be to overlay this data over a map using leaflet.
+
 [See the code.](Arran_Workbook.html)
 
 [Other projects I'm working on.](https://fergustaylor.github.io) 
