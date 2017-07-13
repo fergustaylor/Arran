@@ -89,3 +89,38 @@ plot8 <- arran2016 %>%
 ```{r}
 grid.arrange(plot6, plot7, plot8, nrow = 1)
 ```
+
+```{r}
+function2.5(S01004372)
+```
+
+```{r}
+function2.5.1 <- function(argument) 
+{
+  arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme(legend.position="bottom") +
+  geom_sf(data= argument, aes(fill = DataZone))
+}
+```
+
+```{r}
+function2.5.1(S01004372)
+```
+
+```{r}
+function7.5.1 <- function(argument, argument2) 
+{
+  a <- function1.5(argument)
+  b <- function2.5.1(argument) 
+  c <- function5(argument, argument2)
+  grid.arrange(a, b, c, nrow = 1)
+}
+```
+
+```{r}
+function7.5.1(S01004372,2)
+```
