@@ -45,6 +45,5 @@ Then to overlay the coordinates onto the maps.
 
 [See the code.](Arran_Workbook.html)
 [See the code.](../Arran_Workbook.html)
-[See the code.](Arran_Workbook.html)
 
 [Other projects I'm working on.](https://fergustaylor.github.io) 
