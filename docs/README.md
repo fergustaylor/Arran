@@ -8,6 +8,7 @@ I intend to explore the package ['ggplot2'](http://ggplot2.tidyverse.org/referen
 Initially I used map cordinates given by [Ordinance Survey](https://www.ordnancesurvey.co.uk/opendatadownload/products.html) to find the centre of any KA27 postcode on a map.
 (KA27 being the prefix or 'postcode area' that denotes all Aran Island postcodes).
 I then read the coordinates into sf with st_as_sf(), and plotted over a shape file map of Arran.
+![Coordinate plots](Rplot11.png)
 
 ![CoordinatesMap](.png)
 
@@ -28,6 +29,9 @@ Having worked that out, I wanted to show some health data about the zones. I ove
 Then after faffing about with individual shape files for every year, (The data zone labels changed after 2012), I did the same for all the SIMD data periods and used facet_wrap to plot them all together.
 
 ![Percentile Facet_wrap](Rplot10.png)
+
+Combining the coordinate and SIMD data, I've summarised one of the zones () below.
+![Summary plots](Rplot12.png)
 
 [See the code.](Arran_Workbook.html)
 
