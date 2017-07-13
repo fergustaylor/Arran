@@ -48,5 +48,5 @@ Then to overlay the coordinates onto the maps.
 [See the code3.](Arran_Workbook.nb.html)
 [See the code4.](../Arran_Workbook.html)
 [See the code5.](/example/Arran_Workbook.nb.html)
-[See the code5.](./example/Arran_Workbook.nb.html)
+[See the code6.](./example/Arran_Workbook.nb.html)
 [Other projects I'm working on.](https://fergustaylor.github.io) 
