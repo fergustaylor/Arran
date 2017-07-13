@@ -44,8 +44,7 @@ The next steps for me are to join the yearly data frames together and use facet_
 Then to overlay the coordinates onto the maps.
 
 [See the code.](Arran_Workbook.html)
-[See the code.](/Arran_Workbook.html)
-[See the code.](./Arran_Workbook.html)
 [See the code.](../Arran_Workbook.nb.html)
+[See the code.](../Arran_Workbook.html)
 
 [Other projects I'm working on.](https://fergustaylor.github.io) 
