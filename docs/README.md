@@ -10,8 +10,6 @@ Initially I used map cordinates given by [Ordinance Survey](https://www.ordnance
 I then read the coordinates into sf with st_as_sf(), and plotted over a shape file map of Arran.
 ![Coordinate plots](Rplot11.png)
 
-![CoordinatesMap](.png)
-
 With the postcodes sorted, I then wanted to relate some other information about these areas.
 I used [SIMD](www.gov.scot/Topics/Statistics/SIMD) 'DataZone boundraries' and plotted their ERSI Shapefiles using 'geom_sf.' 
 First the data zones onto the island.
