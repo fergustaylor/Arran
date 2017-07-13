@@ -13,16 +13,10 @@ I then read the coordinates into sf with st_as_sf(), and plotted over a shape fi
 With the postcodes sorted, I then wanted to relate some other information about these areas.
 I used [SIMD](www.gov.scot/Topics/Statistics/SIMD) 'DataZone boundraries' and plotted their ERSI Shapefiles using 'geom_sf.' 
 First the data zones onto the island.
-
-![DZ Outlines2](Rplot05.png)
-
 Then I coloured/labelled the individual data zones.
-
-![DZ Outlines Coloured](Rplot06.png)
-
 Having worked that out, I wanted to show some health data about the zones. I overlayed 'percentile' data about the areas for 2016.
 
-![DZ Outlines Coloured](Rplot07.png)
+![DZ Outlines2](Rplot13.png)
 
 Then after faffing about with individual shape files for every year, (The data zone labels changed after 2012), I did the same for all the SIMD data periods and used facet_wrap to plot them all together.
 
