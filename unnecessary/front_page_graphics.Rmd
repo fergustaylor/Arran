@@ -6,7 +6,7 @@ output:
 ---
 
 ```{r}
-plot1 <- simple.sf %>% ggplot() + geom_sf() +
+plot1 <- simple.sf %>% ggplot() + geom_sf(shape=20) +
 theme_grey() +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
@@ -19,7 +19,7 @@ plot2 <- arransubsect %>%
   theme_grey() +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) +
-  geom_sf(data=simple.sf)
+  geom_sf(data=simple.sf, shape=20)
 ```
 
 ```{r}
@@ -30,7 +30,7 @@ plot3 <- arran2016 %>%
   theme(legend.position="none") +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) +
-  geom_sf(data=simple.sf)
+  geom_sf(data=simple.sf, shape=20)
 ```
 
 ```{r}
@@ -42,7 +42,7 @@ plot4 <-   arransubsect %>%
         axis.ticks.x=element_blank()) +
   theme(legend.position="none") +
   geom_sf(data= S01004372, aes()) +
-  geom_sf(data=function6(2))
+  geom_sf(data=function6(2), shape=20)
   
 ```
 
@@ -51,7 +51,7 @@ plot5 <- S01004372 %>%
   ggplot() +
   geom_sf() +
   theme_grey() +
-  geom_sf(data=function6(2)) +
+  geom_sf(data=function6(2), shape=20) +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 ```

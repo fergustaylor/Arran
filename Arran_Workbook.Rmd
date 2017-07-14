@@ -34,7 +34,7 @@ Now I plot these coordinates.
 ```{r}
 ## Plotting the Arran coordinates
 ggplot(data = arrancoordinates) +
-  geom_point(mapping = aes(x = longitude, y = latitude)) +
+  geom_point(mapping = aes(x = longitude, y = latitude), shape=20) +
   ggtitle("Arran Postcodes") +
   labs(title = "Arran Postcodes", x = "Longitude", y = "Latitude") +
   theme(plot.title = element_text(hjust = 0.5)) +
@@ -63,8 +63,10 @@ st_crs(simple.sf) <- 4326
 ```
 
 ```{r}
-simple.sf %>% ggplot() + geom_sf() +
-theme_grey() 
+simple.sf %>% 
+  ggplot() + 
+  geom_sf(shape=20) +
+  theme_grey() 
 ```
 
 ```{r}
@@ -73,7 +75,7 @@ arransubsect %>%
   geom_sf() +
   theme(axis.text.x=element_text(angle=45, hjust = 1)) +
   theme_grey() +
-  geom_sf(data=simple.sf)
+  geom_sf(data=simple.sf, shape=20)
 ```
 
 #Shape files
@@ -364,11 +366,11 @@ e.g
 #Projecting the coordinate selections
 ```{r}
 function1(S01004372) +
-  geom_sf(data=function6(2))
+  geom_sf(data=function6(2), shape=20)
 function2(S01004372) +
-  geom_sf(data=function6(2))
+  geom_sf(data=function6(2), shape=20)
 function3(S01004372) +
-  geom_sf(data=function6(2))
+  geom_sf(data=function6(2), shape=20)
 ```
 
 If I edit function 4 a little so that the geom_sf layer is a second argument then I can also use function 4.
@@ -378,7 +380,7 @@ function4.5 <- function(argument, argument2)
 {
   a <- function1(argument)
   b <- function2(argument) +
-  geom_sf(data=function6(argument2))
+  geom_sf(data=function6(argument2), shape=20)
 
   plot_grid(a, b, labels = c("A", "B"))
 }
@@ -396,7 +398,7 @@ function5 <- function(argument, argument2)
   ggplot() +
   geom_sf() +
   theme_grey() +
-  geom_sf(data=function6(argument2)) +
+  geom_sf(data=function6(argument2), shape=20) +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 }
@@ -447,3 +449,5 @@ function7.5 <- function(argument, argument2)
 function7.5(S01004372,2)
 ```
 
+#annotate percentile!
+plot text of percentile, at centre of shape file coordinates.
