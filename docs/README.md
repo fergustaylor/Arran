@@ -10,6 +10,7 @@ Initially I used map cordinates given by [Ordinance Survey](https://www.ordnance
 
 I then read the coordinates into sf with st_as_sf(), and plotted over a shape file map of Arran; over the SIMD data zones, as well as the section of coordinates contained in one data zone/
 ![Coordinate plots](Rplot11.png)
+![Coordinate plots](Rplot11.5.png)
 
 With the postcodes sorted, I then wanted to relate some other information about these areas.
 I used [SIMD](www.gov.scot/Topics/Statistics/SIMD) 'DataZone boundraries' and plotted their ERSI Shapefiles using 'geom_sf.' 
@@ -31,5 +32,7 @@ The next steps will be to overlay this data over a map using leaflet.
 The overall aim of this project will be to create an easy template by which a user with no prior programming knowledge can create interactive graphs by overlaying some form of data attributed to a postcode alone.
 
 [See the code.](Arran_Workbook.html)
+
+[See the code specific to these graphics.](front_page_graphics.nb.html)
 
 [Other projects I'm working on.](https://fergustaylor.github.io) 
