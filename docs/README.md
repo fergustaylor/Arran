@@ -34,7 +34,7 @@ The overall aim of this project will be to create an easy template by which a us
 
 [See the full report.](full_report.html) 
 
-[See the code.](Arran_Workbook.html)
+[See the full code.](Arran_Workbook.html)
 
 [See the code specific to these graphics.](front_page_graphics.nb.html)
 
