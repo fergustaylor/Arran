@@ -5,6 +5,21 @@ output:
   html_notebook: default
 ---
 
+The following code has function and data dependancies from the main arran_workbook.
+```{r}
+library(sf)
+library(ggplot2) #development version!
+## devtools::install_github("tidyverse/ggplot2")
+library(tidyverse)
+library(readr)
+## Not sure about this bit
+#library("tidyverse",lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+library(cowplot)
+library(sp)
+library(gridExtra)
+library(dplyr)
+```
+
 ```{r}
 plot1 <- simple.sf %>% ggplot() + geom_sf(shape=20) +
 theme_grey() +
@@ -93,34 +108,14 @@ grid.arrange(plot6, plot7, plot8, nrow = 1)
 ```
 
 ```{r}
-function2.5(S01004372)
-```
-
-```{r}
-function2.5.1 <- function(argument) 
-{
-  arransubsect %>%
+arransimd %>%
   ggplot() +
-  geom_sf() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year', nrow = 1) +
   theme_grey() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  theme(legend.position="bottom") +
-  geom_sf(data= argument, aes(fill = DataZone))
-}
-```
-
-```{r}
-function2.5.1(S01004372)
-```
-
-```{r}
-function7.5.1 <- function(argument, argument2) 
-{
-  a <- function1.5(argument)
-  b <- function2.5.1(argument) 
-  c <- function5(argument, argument2)
-  grid.arrange(a, b, c, nrow = 1)
-}
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(), axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
 ```
 
 ```{r}

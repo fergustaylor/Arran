@@ -18,13 +18,13 @@ library(readr)
 library(cowplot)
 library(sp)
 library(gridExtra)
+library(dplyr)
 ```
 
 #Import Data
 Now I import my data. I filter for the Arran postcodes, (since Arran all begins 'KA27').
 ```{r}
 ## Finding the Arran coordinates
-library(dplyr)
 allcoordinates <- read.csv("alldata/ukpostcodes.csv")
 arrancoordinates <- filter(allcoordinates,substr(postcode,1,4)=="KA27")
 ```
@@ -56,6 +56,7 @@ arransubsect %>%
   theme_grey()
 ```
 
+#Simple.sf
 After a little editing I can overlay the two.
 ```{r}
 simple.sf <- st_as_sf(arrancoordinates, coords=c('longitude','latitude'))
@@ -446,8 +447,45 @@ function7.5 <- function(argument, argument2)
 ```
 
 ```{r}
-function7.5(S01004372,2)
+function2.5.1 <- function(argument) 
+{
+  arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme(legend.position="bottom") +
+  geom_sf(data= argument, aes(fill = DataZone))
+}
+```
+
+```{r}
+function7.5.1 <- function(argument, argument2) 
+{
+  a <- function1.5(argument)
+  b <- function2.5.1(argument) 
+  c <- function5(argument, argument2)
+  grid.arrange(a, b, c, nrow = 1)
+}
+```
+
+```{r}
+function7.5.1(S01004372, 2)
+```
+
+```{r}
+list1 <- list(S01004353, S01004372, S01004409, S01004352, S01004349, S01004350, S01004351)
+list2 <- list(1,2,3,4,5,6,7)
+
+function7.5.1.1 <- function(argument)
+{
+  function7.5.1(list1[[argument]],list2[[argument]])
+}
 ```
 
 #annotate percentile!
 plot text of percentile, at centre of shape file coordinates.
+overlay postcode labels.
+
+overlay info onto leaflet
+ then with labels.

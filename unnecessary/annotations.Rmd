@@ -1,0 +1,85 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+## Plotting the Arran coordinates
+ggplot(data = arrancoordinates) +
+  geom_point(mapping = aes(x = longitude, y = latitude), shape=20) +
+  ggtitle("Arran Postcodes") +
+  labs(title = "Arran Postcodes", x = "Longitude", y = "Latitude") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_grey() +
+  coord_map() +
+  geom_text(aes(label = postcode), data = arrancoordinates)
+```
+
+```{r}
+arransubsect %>%
+  ggplot() +
+  geom_sf()
+```
+
+
+```{r}
+
+nc_3857 <- sf::st_transform(arransubsect, "+init=epsg:3857")
+
+ggplot() +
+  geom_sf(data = arransubsect) +
+    geom_text(aes(label = postcode, x = longitude, y = latitude), data = arrancoordinates)
+
+```
+
+```{r}
+ggplot() +
+  geom_sf(data = arransubsect) +
+  geom_text(aes(label = postcode, x = longitude, y = latitude), data = arrancoordinates)
+```
+
+
+```{r}
+ggplot() +
+  geom_point(data = arrancoordinates, aes(x = longitude, y = latitude)) +
+  geom_text(aes(label = postcode, x = longitude, y = latitude), data = arrancoordinates)
+```
+
+```{r}
+ggplot() +
+  geom_text(aes(label = postcode, x = longitude, y = latitude), data = arrancoordinates)
+```
+
+```{r}
+centroids <- setNames(do.call("rbind.data.frame", by(tract_poly, tract_poly$group, function(x) {Polygon(x[c('long', 'lat')])@labpt})), c('long', 'lat')) 
+centroids$label <- tract_poly$state[match(rownames(centroids), tract_poly$group)]
+USMap + with(centroids, annotate(geom="text", x = long, y=lat, label = label, size = 2.5))
+```
+
+```{r}
+arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  coord_sf(crs=st_crs(3035)) +
+  annotate("point", x = -5.2, y = 55.5, colour = "red", size = 4)
+```
+
+```{r}
+library(ggmap)
+qmap('Arran')
+```
+```{r}
+map <- get_map(location = c(lon = 55.52347, lat = -5.282922))
+str(map)
+save(map, file="tmp1.RData")
+rm(map)
+load("tmp1.Rdata")
+ggmap("map")
+```
+
+```{r}
+if(file.exists("tmp1.RData")&file.info("tmp1.RData")$size>0)
+load("tmp1.Rdata")
+ggmap("map")
+```
+

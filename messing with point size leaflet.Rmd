@@ -14,7 +14,12 @@ arran2016 %>%
 
 ```
 
-  geom_sf(data=simple.sf)
+```{r}
+ggplot() +
+  geom_sf(data = arran2016)
+```
+
+  
   
   
   
@@ -23,26 +28,100 @@ arransubsect %>%
   ggplot() +
   geom_sf() +
   theme_grey() +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) +
   geom_sf(data=simple.sf, shape=20)
-  
 ```
 
 ```{r}
 longitude <- arrancoordinates[,"longitude"]
 latitude <- arrancoordinates[,"latitude"]
-```
 
-annotate("point", x = -80, y = 35, colour = "red", size = 4)
-
-```{r}
-world <- map_data("world")
-world2 <- filter(world, subregion == 'Scotland')
+annotate("point", x = -5.282922, y = 55.52347, colour = "red", size = 4)
 ```
 
 ```{r}
-ggplot(world2, aes(long, lat, group = group)) +
-  geom_polygon(fill = "white", colour = "black")
+arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  geom_sf(data=simple.sf, shape=20) +
+  annotate("text", x = 2:3, y= 20:21, label = c("my label", "label 3"))
+```
+
+```{r}
+#st_crs(arransubsect) <- 4326
+
+st_transform(arransubsect, crs =4326)
+
+ggplot() +
+  geom_sf(data = arransubsect) +
+  annotate("point", x = -5.282922, y = 55.52347, colour = "red", size = 4) + 
+  coord_sf(xlim = c(-81, -79), ylim = c(55.4, 55.75), datum = sf::st_crs(4326))
+```
+
+```{r}
+
+arransubsect3 <- st_as_sf(arransubsect, crs =4326)
+
+arransubsect2 <- st_transform(arransubsect, crs =4326)
+ggplot() +
+  geom_sf(data = arransubsect2) +
+  annotate("point", x = -5.282922, y = 55.52347, colour = "red", size = 4) + 
+  coord_sf(xlim = c(-81, -79), ylim = c(55.4, 55.75), datum = sf::st_crs(4326))
+```
+
+```{r}
+ggplot() +
+  geom_sf(data = exampleshapes) +
+  annotate("point", x = -5.282922, y = 55.52347, colour = "red", size = 4) + 
+  coord_sf(xlim = c(-81, -79), ylim = c(55.4, 55.75), datum = sf::st_crs(4326))
+```
+
+```{r}
+exampleshapes %>%
+  ggplot() +
+  geom_sf()
+```
+
+```{r}
+ggplot(exampleshapes, aes(x = "longitude", y = "latitude")) +
+  geom_polygon(aes(fill = "area", group = "id""))
+```
+
+```{r}
+geom_polygon(mapping = NULL, data = NULL, stat = "identity",
+  position = "identity", ..., na.rm = FALSE, show.legend = NA,
+  inherit.aes = TRUE)
+```
+
+```{r}
+ids <- factor(c("ID1", "ID2", "ID3", "ID4", "ID5", "ID6", "ID7"))
+
+values <- data.frame(
+  id = ids,
+  value = c(S01004353, S01004372, S01004409, S01004352, S01004349, S01004350, S01004351)
+)
+
+positions <- data.frame(
+  id = rep(ids, each = 4),
+  x = c(2, 1, 1.1, 2.2, 1, 0, 0.3, 1.1, 2.2, 1.1, 1.2, 2.5, 1.1, 0.3,
+  0.5, 1.2, 2.5, 1.2, 1.3, 2.7, 1.2, 0.5, 0.6, 1.3),
+  y = c(-0.5, 0, 1, 0.5, 0, 0.5, 1.5, 1, 0.5, 1, 2.1, 1.7, 1, 1.5,
+  2.2, 2.1, 1.7, 2.1, 3.2, 2.8, 2.1, 2.2, 3.3, 3.2)
+)
+
+# Currently we need to manually merge the two together
+datapoly <- merge(values, positions, by = c("id"))
+
+p <- ggplot(datapoly, aes(x = x, y = y)) +
+  geom_polygon(aes(fill = value, group = id))
+
+ggplot(exampleshapes, aes(x = "longitude", y = "latitude")) +
+  geom_polygon(aes(fill = area, group = id))
+```
+
+```{r}
+exampleshapes2 <- sf:::as_Spatial(arran20162$geom)
 ```
 
