@@ -5,21 +5,6 @@ output:
   html_notebook: default
 ---
 
-The following code has function and data dependancies from the main arran_workbook.
-```{r}
-library(sf)
-library(ggplot2) #development version!
-## devtools::install_github("tidyverse/ggplot2")
-library(tidyverse)
-library(readr)
-## Not sure about this bit
-#library("tidyverse",lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
-library(cowplot)
-library(sp)
-library(gridExtra)
-library(dplyr)
-```
-
 ```{r}
 plot1 <- simple.sf %>% ggplot() + geom_sf(shape=20) +
 theme_grey() +

@@ -174,23 +174,6 @@ $(document).ready(function () {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzZilcbmxpYnJhcnkoZ2dwbG90MikgI2RldmVsb3BtZW50IHZlcnNpb24hXG4jIyBkZXZ0b29sczo6aW5zdGFsbF9naXRodWIoXCJ0aWR5dmVyc2UvZ2dwbG90MlwiKVxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KHJlYWRyKVxuIyMgTm90IHN1cmUgYWJvdXQgdGhpcyBiaXRcbiNsaWJyYXJ5KFwidGlkeXZlcnNlXCIsbGliLmxvYz1cIi9MaWJyYXJ5L0ZyYW1ld29ya3MvUi5mcmFtZXdvcmsvVmVyc2lvbnMvMy40L1Jlc291cmNlcy9saWJyYXJ5XCIpXG5saWJyYXJ5KGNvd3Bsb3QpXG5saWJyYXJ5KHNwKVxubGlicmFyeShncmlkRXh0cmEpXG5saWJyYXJ5KGRwbHlyKVxuYGBgIn0= -->
-<pre class="r"><code>library(sf)
-library(ggplot2) #development version!
-## devtools::install_github(&quot;tidyverse/ggplot2&quot;)
-library(tidyverse)
-library(readr)
-## Not sure about this bit
-#library(&quot;tidyverse&quot;,lib.loc=&quot;/Library/Frameworks/R.framework/Versions/3.4/Resources/library&quot;)
-library(cowplot)
-library(sp)
-library(gridExtra)
-library(dplyr)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYXJyYW5zaW1kICU+JVxuICBnZ3Bsb3QoKSArXG4gIGdlb21fc2YoYWVzKGZpbGwgPSBQZXJjZW50aWxlKSkgK1xuICBmYWNldF93cmFwKCd5ZWFyJywgbnJvdyA9IDEpICtcbiAgdGhlbWVfZ3JleSgpICtcbiAgdGhlbWUoYXhpcy50ZXh0Lng9ZWxlbWVudF9ibGFuaygpLFxuICAgICAgICBheGlzLnRpY2tzLng9ZWxlbWVudF9ibGFuaygpLCBheGlzLnRleHQueT1lbGVtZW50X2JsYW5rKCksXG4gICAgICAgIGF4aXMudGlja3MueT1lbGVtZW50X2JsYW5rKCkpXG5gYGAifQ== -->
 <pre class="r"><code>arransimd %&gt;%
   ggplot() +
@@ -287,7 +270,7 @@ TableGrob (1 x 3) &quot;arrange&quot;: 3 grobs
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRnVsbCBSZXBvcnQiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OiBkZWZhdWx0CiAgaHRtbF9ub3RlYm9vazogZGVmYXVsdAotLS0KCmBgYHtyfQpsaWJyYXJ5KHNmKQpsaWJyYXJ5KGdncGxvdDIpICNkZXZlbG9wbWVudCB2ZXJzaW9uIQojIyBkZXZ0b29sczo6aW5zdGFsbF9naXRodWIoInRpZHl2ZXJzZS9nZ3Bsb3QyIikKbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkocmVhZHIpCiMjIE5vdCBzdXJlIGFib3V0IHRoaXMgYml0CiNsaWJyYXJ5KCJ0aWR5dmVyc2UiLGxpYi5sb2M9Ii9MaWJyYXJ5L0ZyYW1ld29ya3MvUi5mcmFtZXdvcmsvVmVyc2lvbnMvMy40L1Jlc291cmNlcy9saWJyYXJ5IikKbGlicmFyeShjb3dwbG90KQpsaWJyYXJ5KHNwKQpsaWJyYXJ5KGdyaWRFeHRyYSkKbGlicmFyeShkcGx5cikKYGBgCgpgYGB7cn0KYXJyYW5zaW1kICU+JQogIGdncGxvdCgpICsKICBnZW9tX3NmKGFlcyhmaWxsID0gUGVyY2VudGlsZSkpICsKICBmYWNldF93cmFwKCd5ZWFyJywgbnJvdyA9IDEpICsKICB0aGVtZV9ncmV5KCkgKwogIHRoZW1lKGF4aXMudGV4dC54PWVsZW1lbnRfYmxhbmsoKSwKICAgICAgICBheGlzLnRpY2tzLng9ZWxlbWVudF9ibGFuaygpLCBheGlzLnRleHQueT1lbGVtZW50X2JsYW5rKCksCiAgICAgICAgYXhpcy50aWNrcy55PWVsZW1lbnRfYmxhbmsoKSkKYGBgCgpCeSBEWi4KYGBge3J9CmxhcHBseSgxOjcsIGZ1bmN0aW9uNy41LjEuMSkKYGBgCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRnVsbCBSZXBvcnQiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OiBkZWZhdWx0CiAgaHRtbF9ub3RlYm9vazogZGVmYXVsdAotLS0KCmBgYHtyfQphcnJhbnNpbWQgJT4lCiAgZ2dwbG90KCkgKwogIGdlb21fc2YoYWVzKGZpbGwgPSBQZXJjZW50aWxlKSkgKwogIGZhY2V0X3dyYXAoJ3llYXInLCBucm93ID0gMSkgKwogIHRoZW1lX2dyZXkoKSArCiAgdGhlbWUoYXhpcy50ZXh0Lng9ZWxlbWVudF9ibGFuaygpLAogICAgICAgIGF4aXMudGlja3MueD1lbGVtZW50X2JsYW5rKCksIGF4aXMudGV4dC55PWVsZW1lbnRfYmxhbmsoKSwKICAgICAgICBheGlzLnRpY2tzLnk9ZWxlbWVudF9ibGFuaygpKQpgYGAKCkJ5IERaLgpgYGB7cn0KbGFwcGx5KDE6NywgZnVuY3Rpb243LjUuMS4xKQpgYGAKCgo=</div>
 
 
 

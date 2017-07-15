@@ -6,20 +6,6 @@ output:
 ---
 
 ```{r}
-library(sf)
-library(ggplot2) #development version!
-## devtools::install_github("tidyverse/ggplot2")
-library(tidyverse)
-library(readr)
-## Not sure about this bit
-#library("tidyverse",lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
-library(cowplot)
-library(sp)
-library(gridExtra)
-library(dplyr)
-```
-
-```{r}
 arransimd %>%
   ggplot() +
   geom_sf(aes(fill = Percentile)) +
@@ -34,4 +20,5 @@ By DZ.
 ```{r}
 lapply(1:7, function7.5.1.1)
 ```
+
 
