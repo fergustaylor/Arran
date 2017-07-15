@@ -32,6 +32,8 @@ The next steps will be to overlay this data over a map using leaflet.
 
 The overall aim of this project will be to create an easy template by which a user with no prior programming knowledge can create interactive graphs by overlaying some form of data attributed to a postcode alone.
 
+[See the full report.](full_report.html) 
+
 [See the code.](Arran_Workbook.html)
 
 [See the code specific to these graphics.](front_page_graphics.nb.html)
