@@ -1,0 +1,143 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+#select by row can get one object
+S010044092 <- arransimd[1,]
+```
+
+```{r}
+#S01004409 <- filter(arransimd, DataZone=="S01004409")
+#S01004372 <- filter(arransimd, DataZone=="S01004372")
+#S01004353 <- filter(arransimd, DataZone=="S01004353")
+#S01004352 <- filter(arransimd, DataZone=="S01004352")
+#S01004351 <- filter(arransimd, DataZone=="S01004351")
+#S01004350 <- filter(arransimd, DataZone=="S01004350")
+#S01004349 <- filter(arransimd, DataZone=="S01004349")
+```
+
+```{r}
+#Only works if already created objects
+#pre2016list <- list(S01004409, S01004372, S01004353, S01004352, S01004351, S01004350, S01004349)
+```
+
+```{r}
+#lapply(pre2016list, function4)
+#pre2016list = lapply(pre2016list2, function0.5)
+```
+
+```{r}
+#S01011177 <- filter(arransimd, DataZone=="S01011177")
+#S01011171 <- filter(arransimd, DataZone=="S01011171")
+#S01011174 <- filter(arransimd, DataZone=="S01011174")
+#S01011176 <- filter(arransimd, DataZone=="S01011176")
+#S01011172 <- filter(arransimd, DataZone=="S01011172")
+#S01011173 <- filter(arransimd, DataZone=="S01011173")
+#S01011175 <- filter(arransimd, DataZone=="S01011175")
+```
+
+```{r}
+#list1 <- list(S01004353, S01004372, S01004409, S01004352, S01004349, S01004350, S01004351)
+#list4 <- pre2016list
+#list4 <- lapply(pre2016list2, function0.5)
+
+#list1 <- list(S01004353, S01004372, S01004409, S01004352, S01004349, S01004350, S01004351)
+
+list3 <- arran2016$DataZone
+```
+
+```{r}
+#list1[[1]]
+#pre2016list[[1]]
+#lapply(pre2016list2, function0.5)[[1]]
+post2016list3 <- arran2016$DataZone[1:7]
+``` 
+
+#Pre-2016
+```{r}
+function7.5.1(function0.5("S01004372"), 2)
+
+lapply(1:7, function7.5.1)
+```
+
+#same outcome
+```{r}
+function7.5.1.1.5 <- function(argument2)
+{
+  function7.5.1(filter(arransimd, DataZone==pre2016list2[[argument2]]),list2[[argument2]])
+}
+
+list2[[2]]
+
+lapply(1:7, function7.5.1.1.5)
+```
+
+```{r}
+pre2016list[[1]]
+list5[[1]]
+
+function7.5.1(pre2016list[[argument]],list5[[argument]])
+function7.5.1(1,2)
+
+a <- function1.5(1)
+  b <- function2.5.1(1) 
+  c <- function5(1, 2)
+  grid.arrange(a, b, c, nrow = 1)
+
+  1 %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_sf(data=function6(2), shape=20) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+  
+simple.sf[namingdzpostcode[[2]],]
+    
+function7.5.1.1(1)
+
+
+ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_sf(data=function6(2), shape=20) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme_grey() +
+  geom_sf(data = simple.sf[namingdzpostcode[[7]],], shape=20)
+```
+
+```{r}
+list5 <- list(3,2,1,4,7,6,5)
+
+function7.5.1.1.5 <- function(argument)
+{
+  function7.5.1(pre2016list[[argument]],list5[[argument]])
+}
+
+lapply(1:7, function7.5.1.1)
+```
+
+```{r}
+#Pre-2016
+list5 <- list(3,2,1,4,7,6,5)
+
+function7.5.1.2 <- function(argument)
+{
+  function7.5.1(pre2016list[[argument]],list5[[argument]])
+}
+
+list2 <- list(1,2,3,4,5,6,7)
+
+function7.5.1.1 <- function(argument)
+{
+  function7.5.1(post2016list[[argument]],list2[[argument]])
+}
+```

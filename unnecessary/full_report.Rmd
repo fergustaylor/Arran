@@ -21,4 +21,7 @@ By DZ.
 lapply(1:7, function7.5.1.1)
 ```
 
+```{r}
+arran2016
+```
 
