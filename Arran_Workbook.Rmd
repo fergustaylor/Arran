@@ -257,25 +257,13 @@ function4 <- function(argument)
 }
 ```
 
-#Apply function4 to all Pre-2016.
-```{r}
-lapply(pre2016list, function4)
-```
-
 #2016
-Now I apply the same functions to the post-2016 Zones
+Now I apply the same functions to the post-2016 DataZones
 ```{r}
 arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
-```
 
-```{r}
-#post2016list <- list(S01011177, S01011171, S01011174, S01011176, S01011172, S01011173, S01011175)
 post2016list2 <- list("S01011177", "S01011171", "S01011174", "S01011176", "S01011172", "S01011173", "S01011175")
 post2016list <- lapply(post2016list2, function0.5)
-```
-
-```{r}
-lapply(post2016list, function4)
 ```
 
 #Plot the percentiles as bar charts.
@@ -348,7 +336,6 @@ function3(function0.5("S01004372")) +
 ```
 
 If I edit function 4 a little so that the geom_sf layer is a second argument then I can also use function 4.
-
 ```{r}
 function4.5 <- function(argument, argument2) 
 {

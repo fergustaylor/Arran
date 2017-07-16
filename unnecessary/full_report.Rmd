@@ -16,12 +16,13 @@ arransimd %>%
         axis.ticks.y=element_blank())
 ```
 
-By DZ.
+By DataZone.
+#Pre-2016
+```{r}
+lapply(1:7, function7.5.1.2)
+```
+
+#Post-2016
 ```{r}
 lapply(1:7, function7.5.1.1)
 ```
-
-```{r}
-arran2016
-```
-
