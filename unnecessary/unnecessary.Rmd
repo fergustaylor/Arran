@@ -1,0 +1,207 @@
+---
+title: "Unnecessary Code"
+output: html_notebook
+---
+
+#Plot Coordinates
+Now I plot these coordinates.
+```{r}
+## Plotting the Arran coordinates
+ggplot(data = arrancoordinates) +
+  geom_point(mapping = aes(x = longitude, y = latitude), size =0.0001) +
+  ggtitle("Arran Postcodes") +
+  labs(title = "Arran Postcodes", x = "Longitude", y = "Latitude") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_grey() +
+  coord_map()
+
+#size = works well with geom_point, but not geom_sf
+#want in crs=4326
+```
+
+```{r}
+#Print Post codes lists
+arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme_grey() +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme_grey()
+```
+##Find CRS of later plot
+
+###Code for converting
+```{r}
+simple.sf <- st_as_sf(arrancoordinates, coords=c('longitude','latitude'))
+st_crs(simple.sf) <- 4326
+```
+
+```{r}
+simple.sf %>% 
+  ggplot() + 
+  geom_sf(shape=20) +
+  theme_grey() 
+```
+
+pcs <- read_sf("alldata/Scotland_pcs_2011")
+
+ggplot() +
+  geom_sf(data = arransubsect) +
+  geom_point(data = arrancoordinates, mapping = aes(x = longitude, y = latitude), size=1) +
+  theme_grey() +
+  coord_map() +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_sf(data=simple.sf, shape=20) +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+
+```{r}
+exampleshapes <- sf:::as_Spatial(arran2016$geom)
+examplepoints <- sf:::as_Spatial(simple.sf$geom)
+```
+
+```{r}
+function1(function0.5("S01004372")) +
+  geom_sf(data=function6(2), shape=20)
+function2(function0.5("S01004372")) +
+  geom_sf(data=function6(2), shape=20)
+function3(function0.5("S01004372")) +
+  geom_sf(data=function6(2), shape=20)
+
+
+function4.5 <- function(argument, argument2) 
+{
+  a <- function1(argument)
+  b <- function2(argument) +
+  geom_sf(data=function6(argument2), shape=20)
+  
+
+  plot_grid(a, b, labels = c("A", "B"))
+}
+
+arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  geom_sf(data= function0.5("S01004372"), aes()) +
+  geom_sf(simple.sf[namingdzpostcode[[2]],], colour = function6(2)$postcode, shape=20)
+
+simple.sf[namingdzpostcode[[argument]],]
+
+function6 <- function(argument) 
+{
+  simple.sf[namingdzpostcode[[argument]],]
+}
+```
+```{r}
+plot1 <- simple.sf %>% ggplot() + geom_sf(shape=20) +
+theme_grey() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+plot2 <- arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  geom_sf(data=simple.sf, shape=20)
+
+plot3 <- arran2016 %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  theme(legend.position="none") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  geom_sf(data=simple.sf, shape=20)
+
+plot4 <-   arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  theme(legend.position="none") +
+  geom_sf(data= function0.5("S01004372"), aes()) +
+  geom_sf(data=simple.sf[namingdzpostcode[[2]],], shape=20)
+  
+  #geom_sf(data=function6(2), shape=20)
+
+plot5 <- function0.5("S01004372") %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_sf(data=simple.sf[namingdzpostcode[[2]],], shape=20) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+grid.arrange(plot1, plot2, plot3, plot4, plot5, nrow = 1)
+```
+
+```{r}
+set.seed(12345)
+dataset <- do.call(
+  rbind, 
+  lapply(seq_len(5), function(i){
+    data.frame(
+      ID = i,
+      Time = 1:100,
+      Temp = as.vector(arima.sim(model = list(ar = .8), n = 100))
+    )
+  }) 
+)
+dataset$ID <- factor(dataset$ID)
+Right <- subset(dataset, Time == max(Time))
+ggplot(dataset, aes(x = Time, y = Temp, colour = ID)) + geom_line() + geom_text(data = Right, aes(label = ID))
+
+#function6(2)$postcode <- factor(function6(2)$postcode)
+
+# download IND data, convert to sf, filter out 
+# desired area, and add NAME_3 label
+jnk <- getData("GADM",country="IND",level=3) %>%
+  st_as_sf() %>%
+  filter(OBJECTID %>% between(641, 664)) %>%
+  group_by(NAME_0) %>%
+  summarize() %>%
+  mutate(NAME_3 = "Put desired region name here")
+
+
+regionalValues <- runif(142)  # Simulate a value for each region between 0 and 1
+
+# combine the two dataframes, find the center for each
+# region, and the plot with ggplot
+pak %>% 
+  select(NAME_0, NAME_3, geometry) %>%
+  rbind(jnk) %>% 
+  mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    ) %>%
+  ggplot() + 
+  geom_sf(aes(fill = regionalValues)) +
+  geom_text(aes(label = NAME_3, x = lon, y = lat), size = 2) +
+  scale_fill_distiller(palette = "Spectral")
+```
+
+#Can't remember
+```{r}
+centroids <- setNames(do.call("rbind.data.frame", by(tract_poly, tract_poly$group, function(x) {Polygon(x[c('long', 'lat')])@labpt})), c('long', 'lat')) 
+
+centroids$label <- tract_poly$state[match(rownames(centroids), tract_poly$group)]
+USMap + with(centroids, annotate(geom="text", x = long, y=lat, label = label, size = 2.5))
+```
