@@ -33,18 +33,6 @@ pcs <- read_sf("alldata/Scotland_pcs_2011")
 arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
 ```
 
-Now I create some plots.
-```{r}
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  theme_grey() +
-  geom_point(data = arrancoordinates, mapping = aes(x = longitude, y = latitude), size=1) +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-```
-
 #Shape files
 Now I load the SIMD data, containing the geometries (shapefiles) and SIMD data (percentiles, etc)
 ```{r}
@@ -125,20 +113,6 @@ arran1612 %>%
   theme_grey() +
   theme(legend.position="none") +
   theme(axis.text.x=element_text(angle=45, hjust = 1))
-```
-
-#Arran Percentile Plots
-Now I plot the percentiles.
-```{r}
-arransimd %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year', nrow = 1) +
-  theme_grey() +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(), 
-        axis.text.y=element_blank(),
-        axis.ticks.y=element_blank())
 ```
 
 There we are. The SIMD health percentiles of Arran zones throughout SIMD history. And I've learned a little bit about graphics in R.
@@ -277,10 +251,6 @@ mutate(
 ```
 
 ```{r}
-function1.5.5(S01004372)
-```
-
-```{r}
 function2.5.1 <- function(argument) 
 {
   arransubsect %>%
@@ -304,10 +274,6 @@ function7.5.1 <- function(argument, argument2)
 ```
 
 ```{r}
-function7.5.1(S01004372,2)
-```
-
-```{r}
 function8.pre <- function(argument)
 {
   function7.5.1(pre2016list[[argument]],listID[[argument]])
@@ -320,114 +286,6 @@ function8.post <- function(argument)
 }
 lapply(1:7, function8.post)
 ```
-
-#Front-Page Graphics
-```{r}
-plot1 <- ggplot() +
-  theme_grey() +
-  geom_point(data = arrancoordinates, 
-             mapping = aes(x = longitude, y = latitude), size=1) +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-
-plot2 <- ggplot() +
-  geom_sf(data = arransubsect) +
-  theme_grey() +
-  geom_point(data = arrancoordinates, 
-             mapping = aes(x = longitude, y = latitude), size=1) +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-
-plot3 <- ggplot() +
-  geom_sf(data = arran2016) +
-  theme_grey() +
-  geom_point(data = arrancoordinates, 
-             mapping = aes(x = longitude, y = latitude), size=1) +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-
-plot4 <- ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(data= function0.5("S01004372")) +
-  geom_point(data = arrancoordinates[namingdzpostcode[[2]],], 
-             mapping = aes(x = longitude, y = latitude), size=1) +
-  theme_grey() +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-
-plot5 <- function0.5("S01004372") %>%
-  ggplot() +
-  geom_sf() +
-  theme_grey() +
-  geom_point(data = arrancoordinates[namingdzpostcode[[2]],], 
-             mapping = aes(x = longitude, y = latitude), size=1) +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-
-grid.arrange(plot1, plot2, plot3, plot4, plot5, nrow = 1)
-```
-
-```{r}
-plot6 <- arran2016 %>%
-  ggplot() +
-  geom_sf() +
-  theme_grey() +
-  theme(legend.position="none") +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-plot7 <- arran2016 %>%
-  ggplot() +
-  geom_sf(aes(fill = DataZone)) +
-  theme_grey() +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-plot8 <- arran2016 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  theme_grey() +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-
-grid.arrange(plot6, plot7, plot8, nrow = 1)
-```
-
-```{r}
-arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme_grey() +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) +
-  geom_sf(data= function0.5("S01004372")) +
-  geom_point(data=function6(2), mapping = aes(x = longitude, y = latitude), size=1) +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-
-#ID Postcodes
-#Use to edit function5
-```
-
-
-#Annotate percentile!
-plot text of percentile, at centre of shape file coordinates.
 
 overlay info onto leaflet
  then with labels.

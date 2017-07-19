@@ -178,3 +178,15 @@ function7.5.1.1 <- function(argument)
 
 lapply(1:7, function7.5.1.1)
 ```
+
+Now I create some plots.
+```{r}
+  ggplot() +
+  geom_sf(data = arransubsect) +
+  theme_grey() +
+  geom_point(data = arrancoordinates, mapping = aes(x = longitude, y = latitude), size=1) +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+```
