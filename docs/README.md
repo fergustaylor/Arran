@@ -36,6 +36,6 @@ The overall aim of this project will be to create an easy template by which a us
 
 [See the full code.](Arran_Workbook.html)
 
-[See the code specific to these graphics.](front_page_graphics.nb.html)
+[See the code specific to these graphics.](front_page_graphics.html)
 
 [Other projects I'm working on.](https://fergustaylor.github.io) 
