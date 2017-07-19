@@ -18,14 +18,18 @@ library(cowplot)
 library(sp)
 library(gridExtra)
 library(dplyr)
+library(ggrepel)
+library(plyr)
 ```
 
 #Import Data
 Now I import my data. I filter for the Arran postcodes, (since Arran all begins 'KA27').
 ```{r}
 ## Finding the Arran coordinates
-allcoordinates <- read.csv("alldata/ukpostcodes.csv")
-arrancoordinates <- filter(allcoordinates,substr(postcode,1,4)=="KA27")
+arrancoordinates <- read.csv("alldata/ukpostcodes.csv") %>%
+ filter(substr(postcode,1,4)=="KA27")
+
+pcs <- read_sf("alldata/Scotland_pcs_2011")
 arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
 ```
 
@@ -63,6 +67,10 @@ I have to choose the right columns manually in order to select the Arran data.
 #Selecting ArranDZ2016
 Arrandz2016 <- c(4672,4666,4669,4671,4667,4668,4670)
 arran2016 <- DZBoundaries2016[Arrandz2016,]
+#Reorder arran 2016
+reorderedvector<- c("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172" )
+arran2016 <- arran2016 %>%
+  slice(match(reorderedvector, DataZone))
 
 #Find postcode look-up, KA27 postcodes. Find unique DZ. Find row positions.
 #Selecting ArranDZ2012
@@ -121,7 +129,6 @@ arran1612 %>%
 
 #Arran Percentile Plots
 Now I plot the percentiles.
-
 ```{r}
 arransimd %>%
   ggplot() +
@@ -161,87 +168,11 @@ datazonelist <- lapply(datazones, function0.5)
 pre2016list2 <- list("S01004409", "S01004372", "S01004353", "S01004352", "S01004351", "S01004350", "S01004349")
 #Create a new way of making character list
 pre2016list <- lapply(pre2016list2, function0.5)
-```
 
-```{r}
-function1 <- function(argument) 
-{
-  argument %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme_grey() +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-}
-```
-
-```{r}
-function2 <- function(argument) 
-{
-  arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme_grey() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  geom_sf(data= argument, aes(fill = DataZone))
-}
-```
-
-```{r}
-function3 <- function(argument) 
-{
-  argument %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme_grey() +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-}
-```
-
-```{r}
-function4 <- function(argument) 
-{
-  plot_grid((function1(argument)), (function2(argument)), labels = c("A", "B"))
-}
-```
-
-#2016
-Now I apply the same functions to the post-2016 DataZones
-```{r}
-post2016list2 <- list("S01011177", "S01011171", "S01011174", "S01011176", "S01011172", "S01011173", "S01011175")
+post2016list2 <- list("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172")
 post2016list <- lapply(post2016list2, function0.5)
 ```
 
-#Plot the percentiles as bar charts.
-Pre-2016
-```{r}
-arransimd2 <- dplyr::filter(arransimd, year < 2016)
-
-arransimd2 %>%
-ggplot(aes(x=year, y=Percentile)) +
-  geom_bar(stat="identity") +
-  facet_wrap('DataZone') +
-  theme_grey() +
-  labs(title = "Arran SIMD Datazones", x = "Year", y = "Percentile") +
-  theme(plot.title = element_text(hjust = 0.5))
-```
-
-Post-2016
-```{r}
-arransimd3 <- dplyr::filter(arransimd, year >= 2016)
-
-arransimd3 %>%
-ggplot(aes(x=year, y=Percentile)) +
-  geom_bar(stat="identity") +
-  facet_wrap('DataZone') +
-  theme_grey() +
-  labs(title = "Arran SIMD Datazones", x = "Year", y = "Percentile") +
-  theme(plot.title = element_text(hjust = 0.5))
-```
 
 Now I want to overlay the postcodes for a particular shapefile, in this case by Datazone.
 To do this I've converted both the Arran coordinates and Arran (2016) shapefiles into Spatial Points/Polygons, converted them into a common CRS, and then compared them by using over().
@@ -249,7 +180,7 @@ To do this I've converted both the Arran coordinates and Arran (2016) shapefiles
 simple.sf <- st_as_sf(arrancoordinates, coords=c('longitude','latitude'))
 st_crs(simple.sf) <- 4326
 
-exampleshapes <- sf:::as_Spatial(arran2016$geom)
+exampleshapes <- sf:::as_Spatial(arran2016$geometry)
 examplepoints <- sf:::as_Spatial(simple.sf$geom)
 
 examplepoints <- spTransform(examplepoints, CRS("+proj=longlat +datum=WGS84"))
@@ -262,8 +193,10 @@ I can then take a member reference from the orginal postcode list, which gives m
 
 Unfortunately, I haven't worked out how to coordinate the new ID with the original DZ names yet, so I have to select by using the appropriate ID for each DZ.
 ```{r}
-pre2016listID <- list(3,2,1,4,7,6,5)
+pre2016listID <- list(1,2,3,4,5,6,7)
 post2016listID <- list(1,2,3,4,5,6,7)
+
+listID <- list(1,2,3,4,5,6,7)
 ```
 
 #Function selecting simple.sf by DZ ID.
@@ -274,46 +207,20 @@ function6 <- function(argument)
 }
 ```
 
-I can then use the above, and plot over the appropriate DZ shapefile.
-e.g
-#Projecting the coordinate selections
-#Examples
+#mutate arrancoordinates
 ```{r}
-function1(function0.5("S01004372")) +
-  geom_point(data=function6(2), mapping = aes(x = longitude, y = latitude), size=1) +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-function2(function0.5("S01004372")) +
-  geom_point(data=function6(2), mapping = aes(x = longitude, y = latitude), size=1) +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-function3(function0.5("S01004372")) +
-  geom_point(data=function6(2), mapping = aes(x = longitude, y = latitude), size=1) +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-```
-
-If I edit function 4 a little so that the geom_sf layer is a second argument then I can also use function 4.
-```{r}
-function4.5 <- function(argument, argument2) 
+function100 <- function(argument) 
 {
-  a <- function1(argument)
-  b <- function2(argument) +
-  geom_point(data=function6(2), mapping = aes(x = longitude, y = latitude), size=1) +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-
-  plot_grid(a, b, labels = c("A", "B"))
+  argument <- arrancoordinates[namingdzpostcode[[argument]],] %>% mutate(DataZone=argument)
 }
-```
 
-#Examples
-```{r}
-function4.5(function0.5("S01004372"),2)
+function100(1)
+
+newarrancoordinates <- lapply(1:7,function100)
+newarrancoordinates <- rbind(newarrancoordinates[[1]], newarrancoordinates[[2]], newarrancoordinates[[3]], newarrancoordinates[[4]], newarrancoordinates[[5]], newarrancoordinates[[6]], newarrancoordinates[[7]])
+
+newarrancoordinates$listID <- revalue(as.character(newarrancoordinates$DataZone),
+               c('1'="S01004409/S01011174", '2'="S01004372/S01011171", '3'="S01004353/S01011177", '4'="S01004352/S01011176", '5'="S01004351/S01011175", '6'="S01004350/S01011173", '7'="S01004349/S01011172"))
 ```
 
 I've also made another function to plot the DZ on it's own with coordinates.
@@ -331,46 +238,46 @@ function5 <- function(argument, argument2)
 }
 ```
 
-#Examples
+#OK at sufficiently sized exports. looks crowded in previews
 ```{r}
-function5(function0.5("S01004372"),2)
+function5.5 <- function(argument, argument2) 
+{
+  argument %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_point(data=function6(argument2), mapping = aes(x = longitude, y = latitude), size=1) +
+  geom_text_repel(data = function6(2), 
+            aes(label = function6(2)$postcode, x = longitude, y = latitude), size=2) +
+    theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+}
 ```
 
 ```{r}
-function1.5 <- function(argument) 
+function1.5.5 <- function(argument) 
 {
   argument %>%
+mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    ) %>%
   ggplot() +
   geom_sf(aes(fill = Percentile)) +
   facet_wrap('year') +
   theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
   theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) +
+        axis.ticks.x=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
   theme(legend.position="bottom")  
 }
 ```
 
 ```{r}
-function2.5 <- function(argument) 
-{
-  arransubsect %>%
-  ggplot() +
-  geom_sf() +
-  theme_grey() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  theme(legend.position="none") +
-  geom_sf(data= argument, aes(fill = DataZone))
-}
-```
-
-```{r}
-function7.5 <- function(argument, argument2) 
-{
-  a <- function1.5(argument)
-  b <- function2.5(argument) 
-  c <- function5(argument, argument2)
-  grid.arrange(a, b, c, nrow = 1)
-}
+function1.5.5(S01004372)
 ```
 
 ```{r}
@@ -389,7 +296,7 @@ function2.5.1 <- function(argument)
 ```{r}
 function7.5.1 <- function(argument, argument2) 
 {
-  a <- function1.5(argument)
+  a <- function1.5.5(argument)
   b <- function2.5.1(argument) 
   c <- function5(argument, argument2)
   grid.arrange(a, b, c, nrow = 1)
@@ -400,24 +307,79 @@ function7.5.1 <- function(argument, argument2)
 function7.5.1(S01004372,2)
 ```
 
-#Pre-2016
 ```{r}
-function7.5.1.2 <- function(argument)
+function8.pre <- function(argument)
 {
-  function7.5.1(pre2016list[[argument]],pre2016listID[[argument]])
+  function7.5.1(pre2016list[[argument]],listID[[argument]])
 }
+lapply(1:7, function8.pre)
 
-lapply(1:7, function7.5.1.2)
+function8.post <- function(argument)
+{
+  function7.5.1(post2016list[[argument]],listID[[argument]])
+}
+lapply(1:7, function8.post)
 ```
 
-#Post-2016
+#Front-Page Graphics
 ```{r}
-function7.5.1.1 <- function(argument)
-{
-  function7.5.1(post2016list[[argument]],post2016listID[[argument]])
-}
+plot1 <- ggplot() +
+  theme_grey() +
+  geom_point(data = arrancoordinates, 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
 
-lapply(1:7, function7.5.1.1)
+plot2 <- ggplot() +
+  geom_sf(data = arransubsect) +
+  theme_grey() +
+  geom_point(data = arrancoordinates, 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+plot3 <- ggplot() +
+  geom_sf(data = arran2016) +
+  theme_grey() +
+  geom_point(data = arrancoordinates, 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+plot4 <- ggplot() +
+  geom_sf(data = arransubsect) +
+  geom_sf(data= function0.5("S01004372")) +
+  geom_point(data = arrancoordinates[namingdzpostcode[[2]],], 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  theme_grey() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+plot5 <- function0.5("S01004372") %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_point(data = arrancoordinates[namingdzpostcode[[2]],], 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+grid.arrange(plot1, plot2, plot3, plot4, plot5, nrow = 1)
 ```
 
 ```{r}
@@ -446,7 +408,6 @@ plot8 <- arran2016 %>%
 grid.arrange(plot6, plot7, plot8, nrow = 1)
 ```
 
-
 ```{r}
 arransubsect %>%
   ggplot() +
@@ -464,76 +425,9 @@ arransubsect %>%
 #Use to edit function5
 ```
 
-```{r}
-#Creates centre coordinates
-arran20163 <- arran2016 %>%
-mutate(
-    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
-    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
-    ) 
-
-#Creates long/lat of coordinates, one DZ
-zone2 <- function6(2) %>%
-mutate(
-    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
-    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
-    ) 
-
-#Overlay DZ labels
-arran20163 %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  theme_grey() +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) +
-  geom_text(aes(label = DataZone, x = lon, y = lat), size = 2)
-```
-
-```{r}
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  theme_grey() +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(), 
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
-  geom_sf(data= function0.5("S01004372")) +
-  geom_point(data=function6(2), mapping = aes(x = longitude, y = latitude), size=1) +
-  geom_text(data= zone2, aes(label = postcode, x = lon, y = lat), size = 2) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-
-#geom_sf(data=function6(2), colour = function6(2)$postcode, shape=20)
-#Different colour don't appear to work in geom_point
-```
-
-```{r}
-ggplot() +
-  geom_sf(data = arransubsect) +
-  geom_text(data = function6(2), 
-            aes(label = function6(2)$postcode, 
-                x = longitude, y = latitude)) +
-  theme_grey() +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-```
-
-```{r}
-ggplot() +
-  geom_text(data= zone2, aes(label = postcode, x = lon, y = lat), size = 2) +
-  theme_grey() +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-```
 
 #Annotate percentile!
 plot text of percentile, at centre of shape file coordinates.
-overlay postcode labels.
 
 overlay info onto leaflet
  then with labels.
