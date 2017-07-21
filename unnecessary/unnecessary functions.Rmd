@@ -163,7 +163,7 @@ ggplot(aes(x=year, y=Percentile)) +
 ```{r}
 function7.5.1.2 <- function(argument)
 {
-  function7.5.1(pre2016list[[argument]],pre2016listID[[argument]])
+  function7.5.1(pre2016list[[argument]],listID[[argument]])
 }
 
 lapply(1:7, function7.5.1.2)
@@ -173,7 +173,7 @@ lapply(1:7, function7.5.1.2)
 ```{r}
 function7.5.1.1 <- function(argument)
 {
-  function7.5.1(post2016list[[argument]],post2016listID[[argument]])
+  function7.5.1(post2016list[[argument]],listID[[argument]])
 }
 
 lapply(1:7, function7.5.1.1)
@@ -189,4 +189,18 @@ Now I create some plots.
   theme(axis.title.x = element_blank(),
         axis.title.y = element_blank()) +
   coord_sf(crs= 4326, datum = sf::st_crs(4326))
+```
+
+```{r}
+function8.pre <- function(argument)
+{
+  function7.5.1(pre2016list[[argument]],listID[[argument]])
+}
+lapply(1:7, function8.pre)
+
+function8.post <- function(argument)
+{
+  function7.5.1(post2016list[[argument]],listID[[argument]])
+}
+lapply(1:7, function8.post)
 ```

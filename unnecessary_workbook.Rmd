@@ -1,0 +1,86 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+#Describing DataZones individually
+First I find the unique zones. (There are 14. 7 Zones 2016, 7 Zones pre-2016)
+
+```{r}
+datazones <- unique(arransimd$DataZone)
+```
+
+If I wanted to I could show the zones individually..
+
+I'll have to find out a simpler way to do this but.. In order to turn the names into arguments I've made a function that filters the data into an individual name.
+#Pre-2016 Individual Zones
+```{r}
+function0.5 <- function(argument) 
+{
+  filter(arransimd, DataZone==argument)
+}
+```
+
+So by reading 'datazones' I've made a list of the output 
+```{r}
+#all datazones
+datazonelist <- lapply(datazones, function0.5)
+
+pre2016list <- list("S01004409", "S01004372", "S01004353", "S01004352", "S01004351", "S01004350", "S01004349") %>%
+lapply(function0.5)
+
+post2016list <- list("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172") %>%
+lapply(function0.5)
+```
+
+#Function selecting simple.sf by DZ ID.
+```{r}
+function6 <- function(argument) 
+{
+  arrancoordinates[namingdzpostcode[[argument]],]
+}
+```
+
+```{r}
+arransimd %>%
+filter(listID == "S01004353/S01011177") %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year', nrow=1) +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="bottom") +
+  scale_fill_continuous(breaks = c(70, 75, 80))
+```
+
+```{r}
+thisfunction <- function(argument) 
+{arransimd %>%
+filter(listID == argument)  %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year', nrow=1) +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="bottom") +
+  theme(legend.position="bottom") +
+  scale_fill_continuous(breaks = c(70, 75, 80))
+}
+
+output <- lapply(unique(arransimd$listID), thisfunction)
+grid.arrange(output[[1]], output[[2]], output[[3]], output[[4]], output[[5]], output[[6]], output[[7]], ncol = 1)
+```
+
+

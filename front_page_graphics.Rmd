@@ -1,12 +1,15 @@
 ---
 title: "Front Page Graphics"
 output:
-  html_document: default
+  html_document:
+    toc: yes
+    toc_float: yes
   html_notebook: default
 ---
 These are all the graphics used on the home (https://fergustaylor.github.io/Arran/) page.
 N.B The previews shown underneath their code often look cramped here. This is because the image elements shuffle themselves around depending on the available dimensions, rather than scaling at a set ratio. As such you can create much nicer images by running the same code through the console and exporting the image at custom (larger) dimensions. 
 
+#Pre-requisites/Dependencies
 ```{r}
 library(sf)
 library(ggplot2) #development version!
@@ -28,8 +31,8 @@ library(plyr)
 arrancoordinates <- read.csv("alldata/ukpostcodes.csv") %>%
  filter(substr(postcode,1,4)=="KA27")
 
-pcs <- read_sf("alldata/Scotland_pcs_2011")
-arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
+arransubsect <- read_sf("alldata/Scotland_pcs_2011") %>%
+filter(substr(label,1,4)=="KA27")
 ```
 
 ```{r}
@@ -48,8 +51,7 @@ DZBoundaries2004 <- read_sf("./alldata/SG_SIMD_2004")
 #Find postcode look-up from below file for KA27 postcodes. Find unique DZ. Find row positions.
 #SIMD2016 <-read.csv("./alldata/00505244.csv")
 #Selecting ArranDZ2016
-Arrandz2016 <- c(4672,4666,4669,4671,4667,4668,4670)
-arran2016 <- DZBoundaries2016[Arrandz2016,]
+arran2016 <- DZBoundaries2016[c(4672,4666,4669,4671,4667,4668,4670),]
 #Reorder arran 2016
 reorderedvector<- c("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172" )
 arran2016 <- arran2016 %>%
@@ -91,7 +93,11 @@ arran20042 <- arran2004 %>%
   mutate(year="2004")
 
 #Now I add it together
-arransimd <- rbind(arran20162,arran20122,arran20092,arran20062,arran20042)
+arransimd <- rbind(arran20162,arran20122,arran20092,arran20062,arran20042) %>%
+mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    )
 ```
 
 ```{r}
@@ -117,6 +123,8 @@ function0.5 <- function(argument)
   filter(arransimd, DataZone==argument)
 }
 ```
+
+///
 
 #Front-Page Graphics
 ```{r}
@@ -220,10 +228,6 @@ grid.arrange(plot6, plot7, plot8, nrow = 1)
 
 ```{r}
 arransimd %>%
-mutate(
-    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
-    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
-    ) %>%
 ggplot() +
   geom_sf(aes(fill = Percentile)) +
   facet_wrap('year', nrow = 1) +
@@ -295,9 +299,7 @@ function7.5.1 <- function(argument, argument2)
 ```
 
 ```{r}
-S01004372 <- function0.5("S01004372")
+function7.5.1(function0.5("S01004372"),2)
 ```
 
-```{r}
-function7.5.1(S01004372,2)
-```
+[See the rest of these plots.](plots.html)

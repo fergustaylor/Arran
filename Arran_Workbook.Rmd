@@ -15,8 +15,6 @@ library(ggplot2) #development version!
 ## devtools::install_github("tidyverse/ggplot2")
 library(tidyverse)
 library(readr)
-## Not sure about this bit
-#library("tidyverse",lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
 library(cowplot)
 library(sp)
 library(gridExtra)
@@ -25,18 +23,21 @@ library(ggrepel)
 library(plyr)
 ```
 
-#Import Data
+#Import Postcode Data
 Now I import my data. I filter for the Arran postcodes, (since Arran all begins 'KA27').
 ```{r}
 ## Finding the Arran coordinates
 arrancoordinates <- read.csv("alldata/ukpostcodes.csv") %>%
  filter(substr(postcode,1,4)=="KA27")
 
-pcs <- read_sf("alldata/Scotland_pcs_2011")
-arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
+arransubsect <- read_sf("alldata/Scotland_pcs_2011") %>%
+filter(substr(label,1,4)=="KA27")
+
+#pcs <- read_sf("alldata/Scotland_pcs_2011")
+#arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
 ```
 
-#Shape files
+#Import SIMD data
 Now I load the SIMD data, containing the geometries (shapefiles) and SIMD data (percentiles, etc)
 ```{r}
 #Import SIMD data from http://www.gov.scot/Topics/Statistics/SIMD
@@ -49,15 +50,16 @@ DZBoundaries2006 <- read_sf("./alldata/SG_SIMD_2006")
 DZBoundaries2004 <- read_sf("./alldata/SG_SIMD_2004")
 ```
 
-#Select Arran SIMD data
+#Select Arran-specific SIMD data
 I have to choose the right columns manually in order to select the Arran data.
 ```{r}
 #Selecting Arran data from Scotland (2016)
 #Find postcode look-up from below file for KA27 postcodes. Find unique DZ. Find row positions.
 #SIMD2016 <-read.csv("./alldata/00505244.csv")
 #Selecting ArranDZ2016
-Arrandz2016 <- c(4672,4666,4669,4671,4667,4668,4670)
-arran2016 <- DZBoundaries2016[Arrandz2016,]
+#Arrandz2016 <- c(4672,4666,4669,4671,4667,4668,4670)
+#arran2016 <- DZBoundaries2016[Arrandz2016,]
+arran2016 <- DZBoundaries2016[c(4672,4666,4669,4671,4667,4668,4670),]
 #Reorder arran 2016
 reorderedvector<- c("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172" )
 arran2016 <- arran2016 %>%
@@ -77,6 +79,7 @@ arran2006 <- DZBoundaries2006[Arrandz2012,]
 arran2004 <- DZBoundaries2004[Arrandz2012,]
 ```
 
+#Combine the data I want into one dataframe
 Now I want to plot all the data, first I combine it all into one table.
 First I subselect the data I want from the appropriate columns.
 ```{r}
@@ -101,15 +104,23 @@ arran20042 <- arran2004 %>%
   mutate(year="2004")
 
 #Now I add it together
-arransimd <- rbind(arran20162,arran20122,arran20092,arran20062,arran20042)
+arransimd <- rbind(arran20162,arran20122,arran20092,arran20062,arran20042) %>%
+mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    )
 ```
 
-The reason I've downloaded all the datazones shapefiles individually is because they change between 2016 and 2012.
+#Grouping the pre-2016/post-2016 DataZones
+```{r}
+arransimd$listID <- revalue(arransimd$DataZone,
+               c("S01004409"="S01004409/S01011174", "S01004372"="S01004372/S01011171", "S01004353"="S01004353/S01011177", "S01004352"="S01004352/S01011176", "S01004351"="S01004351/S01011175", "S01004350"="S01004350/S01011173", "S01004349"="S01004349/S01011172", "S01011174"="S01004409/S01011174", "S01011171"="S01004372/S01011171", "S01011177"="S01004353/S01011177", "S01011176"="S01004352/S01011176", "S01011175"="S01004351/S01011175", "S01011173"="S01004350/S01011173", "S01011172"="S01004349/S01011172"))
+```
+
+The reason I've downloaded all the DataZones shapefiles individually is because they change between 2016 and 2012.
 See the small differences.
 ```{r}
-arran1612 <- rbind(arran20162,arran20122)
-
-arran1612 %>%
+rbind(arran20162,arran20122) %>%
   ggplot() +
   geom_sf(aes(fill = DataZone)) +
   facet_wrap('year') +
@@ -118,41 +129,32 @@ arran1612 %>%
   theme(axis.text.x=element_text(angle=45, hjust = 1))
 ```
 
+#Arran SIMD Health Percentiles
+Now I want to look at percentile data.
+```{r}
+arransimd %>%
+filter(listID == unique(arransimd$listID))  %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year', nrow=1) +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="bottom")  
+```
+
 There we are. The SIMD health percentiles of Arran zones throughout SIMD history. And I've learned a little bit about graphics in R.
 
-If I wanted to I could show the zones individually..
-First I find the unique zones. (There are 14. 7 Zones 2016, 7 Zones pre-2016)
+[See this image at a larger size.](percentileplot.png)
 
-```{r}
-datazones <- unique(arransimd$DataZone)
-```
-
-I'll have to find out a simpler way to do this but.. In order to turn the names into arguments I've made a function that filters the data into an individual name.
-#Pre-2016 Individual Zones
-```{r}
-function0.5 <- function(argument) 
-{
-  filter(arransimd, DataZone==argument)
-}
-```
-
-So by reading 'datazones' I've made a list of the output 
-```{r}
-#all datazones
-datazonelist <- lapply(datazones, function0.5)
-
-#Pre-2016 lists
-pre2016list2 <- list("S01004409", "S01004372", "S01004353", "S01004352", "S01004351", "S01004350", "S01004349")
-#Create a new way of making character list
-pre2016list <- lapply(pre2016list2, function0.5)
-
-post2016list2 <- list("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172")
-post2016list <- lapply(post2016list2, function0.5)
-```
-
-
-Now I want to overlay the postcodes for a particular shapefile, in this case by Datazone.
-To do this I've converted both the Arran coordinates and Arran (2016) shapefiles into Spatial Points/Polygons, converted them into a common CRS, and then compared them by using over().
+Now I want to overlay the postcodes by Datazone.
+To do this I've converted both the Arran coordinates and Arran (2016) shapefiles into spatial points/polygons, converted them into a common CRS, and then compared them by using 'plyr::over()'.
+This gives me the object 'namingdzpostcode', with the postcode rows grouped into IDs (unidentified datazones).
 ```{r}
 simple.sf <- st_as_sf(arrancoordinates, coords=c('longitude','latitude'))
 st_crs(simple.sf) <- 4326
@@ -168,30 +170,17 @@ namingdzpostcode <- over(exampleshapes, examplepoints, returnList = TRUE)
 
 I can then take a member reference from the orginal postcode list, which gives me a selection of the rows in that DZ. For simplicity I've written this as a new function. 
 
-Unfortunately, I haven't worked out how to coordinate the new ID with the original DZ names yet, so I have to select by using the appropriate ID for each DZ.
+Unfortunately, I haven't worked out how to coordinate the new ID with the original DZ names yet, so I have to select by using the appropriate ID for each DZ. (I plotted each over a map to see where it fit.)
 ```{r}
-pre2016listID <- list(1,2,3,4,5,6,7)
-post2016listID <- list(1,2,3,4,5,6,7)
-
 listID <- list(1,2,3,4,5,6,7)
 ```
 
-#Function selecting simple.sf by DZ ID.
-```{r}
-function6 <- function(argument) 
-{
-  arrancoordinates[namingdzpostcode[[argument]],]
-}
-```
-
-#mutate arrancoordinates
+#Mutate arrancoordinates to label the IDs
 ```{r}
 function100 <- function(argument) 
 {
   argument <- arrancoordinates[namingdzpostcode[[argument]],] %>% mutate(DataZone=argument)
 }
-
-function100(1)
 
 newarrancoordinates <- lapply(1:7,function100)
 newarrancoordinates <- rbind(newarrancoordinates[[1]], newarrancoordinates[[2]], newarrancoordinates[[3]], newarrancoordinates[[4]], newarrancoordinates[[5]], newarrancoordinates[[6]], newarrancoordinates[[7]])
@@ -200,46 +189,87 @@ newarrancoordinates$listID <- revalue(as.character(newarrancoordinates$DataZone)
                c('1'="S01004409/S01011174", '2'="S01004372/S01011171", '3'="S01004353/S01011177", '4'="S01004352/S01011176", '5'="S01004351/S01011175", '6'="S01004350/S01011173", '7'="S01004349/S01011172"))
 ```
 
-I've also made another function to plot the DZ on it's own with coordinates.
+#Individual Datazones
 ```{r}
-function5 <- function(argument, argument2) 
-{
-  argument %>%
+filter(arransimd, year == 2016) %>%
   ggplot() +
-  geom_sf() +
   theme_grey() +
-  geom_point(data=function6(argument2), mapping = aes(x = longitude, y = latitude), size=1) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  theme(legend.position="none") +
+  facet_wrap('listID', nrow = 1) +
+  geom_sf(aes(fill = DataZone))
+```
+
+#Plotting DataZones by facet_grid
+```{r}
+arransimd %>%
+ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_grid(listID ~ year) +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="bottom")
+```
+
+[See this plot at a proper scale.](Rplotpercentiles.png)
+
+#Postcodes overlayed onto datazone.
+```{r}
+ggplot() +
+  geom_sf(data=arransimd) +
+  geom_point(data=newarrancoordinates, 
+             mapping = aes(x = longitude, y = latitude), 
+             size=1) +
+  theme_grey() +
   theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-}
+        axis.title.y = element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326)) +
+  facet_wrap('listID', nrow = 1)
 ```
 
-#OK at sufficiently sized exports. looks crowded in previews
 ```{r}
-function5.5 <- function(argument, argument2) 
-{
-  argument %>%
+thisfunction2 <- function(argument) 
+{arransimd %>%
+  filter(listID == argument)  %>%
   ggplot() +
   geom_sf() +
   theme_grey() +
-  geom_point(data=function6(argument2), mapping = aes(x = longitude, y = latitude), size=1) +
-  geom_text_repel(data = function6(2), 
-            aes(label = function6(2)$postcode, x = longitude, y = latitude), size=2) +
-    theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
+  geom_point(data = filter(newarrancoordinates, listID == argument), 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  geom_text_repel(data = filter(newarrancoordinates, listID == argument), 
+            aes(label = filter(newarrancoordinates, 
+                               listID == argument)$postcode, 
+                x = longitude, y = latitude), size=2) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
   coord_sf(crs= 4326, datum = sf::st_crs(4326))
 }
+
+output2 <- lapply(unique(arransimd$listID), thisfunction2)
+grid.arrange(output2[[1]], output2[[2]], output2[[3]], output2[[4]], output2[[5]], output2[[6]], output2[[7]], ncol = 7)
 ```
 
+#Plots
 ```{r}
-function1.5.5 <- function(argument) 
+function10 <- function(argument)
 {
-  argument %>%
+a <- arransimd %>%
 mutate(
     lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
     lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
     ) %>%
+filter(listID == argument)  %>%
   ggplot() +
   geom_sf(aes(fill = Percentile)) +
   facet_wrap('year') +
@@ -247,48 +277,93 @@ mutate(
   geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
         axis.title.x = element_blank(),
         axis.title.y = element_blank()) +
   theme(legend.position="bottom")  
-}
-```
 
-```{r}
-function2.5.1 <- function(argument) 
-{
-  arransubsect %>%
+b <- arransimd %>%
+  filter(listID == argument)  %>%
   ggplot() +
-  geom_sf() +
+  geom_sf(data = arransubsect) +
   theme_grey() +
   theme(axis.text.x=element_text(angle=45, hjust = 1)) +
   theme(legend.position="bottom") +
-  geom_sf(data= argument, aes(fill = DataZone))
+  geom_sf(aes(fill = DataZone))
+
+c <- arransimd %>%
+  filter(listID == argument)  %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_point(data = filter(newarrancoordinates, listID == argument), 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  geom_text_repel(data = filter(newarrancoordinates, listID == argument), 
+            aes(label = filter(newarrancoordinates, 
+                               listID == argument)$postcode, 
+                x = longitude, y = latitude), size=2) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+grid.arrange(a, b, c, nrow = 1)
 }
+lapply(unique(arransimd$listID), function10)
 ```
+
+[See these plots at a larger scale.](function10plots.html)
 
 ```{r}
-function7.5.1 <- function(argument, argument2) 
-{
-  a <- function1.5.5(argument)
-  b <- function2.5.1(argument) 
-  c <- function5(argument, argument2)
-  grid.arrange(a, b, c, nrow = 1)
-}
+a2 <- arransimd %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_grid(listID ~ year) +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="bottom")  
+
+b2 <- arransimd %>%
+  filter(year == 2016)  %>%
+  ggplot() +
+  facet_wrap("listID") +
+  geom_sf(data = arransubsect) +
+  theme_grey() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme(legend.position="none") +
+  geom_sf(aes(fill = DataZone))
+
+c2 <- arransimd %>%
+ filter(year == 2016)  %>%
+  ggplot() +
+  facet_wrap("listID") +
+  geom_sf() +
+  theme_grey() +
+  geom_point(data = newarrancoordinates, 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+ geom_text_repel(data = newarrancoordinates, aes(label = newarrancoordinates$postcode, 
+                x = longitude, y = latitude), size=2) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+grid.arrange(a2, b2, c2, ncol = 3)
 ```
 
-```{r}
-function8.pre <- function(argument)
-{
-  function7.5.1(pre2016list[[argument]],listID[[argument]])
-}
-#lapply(1:7, function8.pre)
+[See this plot at a proper scale.](RplotAll.png)
 
-function8.post <- function(argument)
-{
-  function7.5.1(post2016list[[argument]],listID[[argument]])
-}
-#lapply(1:7, function8.post)
-```
-
-overlay info onto leaflet
- then with labels.
+[See this data as an interactive map.](example.pdf)

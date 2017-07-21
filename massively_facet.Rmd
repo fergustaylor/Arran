@@ -115,8 +115,6 @@ function100 <- function(argument)
   argument <- arrancoordinates[namingdzpostcode[[argument]],] %>% mutate(DataZone=argument)
 }
 
-function100(1)
-
 newarrancoordinates <- lapply(1:7,function100)
 newarrancoordinates <- rbind(newarrancoordinates[[1]], newarrancoordinates[[2]], newarrancoordinates[[3]], newarrancoordinates[[4]], newarrancoordinates[[5]], newarrancoordinates[[6]], newarrancoordinates[[7]])
 
@@ -124,29 +122,43 @@ newarrancoordinates$listID <- revalue(as.character(newarrancoordinates$DataZone)
                c('1'="S01004409/S01011174", '2'="S01004372/S01011171", '3'="S01004353/S01011177", '4'="S01004352/S01011176", '5'="S01004351/S01011175", '6'="S01004350/S01011173", '7'="S01004349/S01011172"))
 ```
 
-///
-
+#Grouping the pre-2016/post-2016 Datazones
 ```{r}
 arransimd$listID <- revalue(arransimd$DataZone,
                c("S01004409"="S01004409/S01011174", "S01004372"="S01004372/S01011171", "S01004353"="S01004353/S01011177", "S01004352"="S01004352/S01011176", "S01004351"="S01004351/S01011175", "S01004350"="S01004350/S01011173", "S01004349"="S01004349/S01011172", "S01011174"="S01004409/S01011174", "S01011171"="S01004372/S01011171", "S01011177"="S01004353/S01011177", "S01011176"="S01004352/S01011176", "S01011175"="S01004351/S01011175", "S01011173"="S01004350/S01011173", "S01011172"="S01004349/S01011172"))
-
-arransimd %>%
-mutate(
-    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
-    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
-    ) %>%
-ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_grid(listID ~ year) +
-  theme_grey() +
-  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
-  theme(legend.position="bottom")
 ```
 
+```{r}
+listID <- list(1,2,3,4,5,6,7)
+
+#Pre-2016 lists
+pre2016list2 <- list("S01004409", "S01004372", "S01004353", "S01004352", "S01004351", "S01004350", "S01004349")
+pre2016list <- lapply(pre2016list2, function0.5)
+
+#post2016list2 <- list("S01011177", "S01011171", "S01011174", "S01011176", "S01011172", "S01011173", "S01011175")
+#post2016list <- lapply(post2016list2, function0.5)
+
+post2016list3 <- list("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172" )
+post2016list2 <- lapply(post2016list3, function0.5)
+```
+
+
+///
+
+##Outlines
+```{r}
+filter(arransimd, year == 2016) %>%
+  ggplot() +
+  theme_grey() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  theme(legend.position="none") +
+  facet_wrap('listID', nrow = 1) +
+  geom_sf() 
+```
+  
+#Plotting DataZones by facet_grid
+##On its side.
 ```{r}
 arransimd %>%
 mutate(
@@ -165,18 +177,6 @@ ggplot() +
   theme(legend.position="bottom")  
 ```
 
-
-```{r}
-filter(arransimd, year == 2016) %>%
-  ggplot() +
-  theme_grey() +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) +
-  theme(legend.position="none") +
-  facet_wrap('listID', nrow = 1) +
-  geom_sf(aes(fill = DataZone))
-```
-
 ```{r}
 function5 <- function(argument, argument2) 
 {
@@ -189,17 +189,9 @@ function5 <- function(argument, argument2)
         axis.title.y = element_blank()) +
   coord_sf(crs= 4326, datum = sf::st_crs(4326))
 }
-
-filter(arransimd, year == 2016) %>%
-  ggplot() +
-  theme_grey() +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) +
-  theme(legend.position="none") +
-  facet_wrap('listID', nrow = 1) +
-  geom_sf() 
 ```
 
+#Postcodes by datazone.
 ```{r}
 ggplot() +
   geom_point(data=newarrancoordinates, 
@@ -215,67 +207,92 @@ ggplot() +
 
 ```
 
-```{r}
-ggplot() +
-  geom_sf(data=arransimd) +
-  geom_point(data=newarrancoordinates, 
-             mapping = aes(x = longitude, y = latitude), 
-             size=1) +
-  theme_grey() +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326)) +
-  facet_wrap('listID', nrow = 1)
-```
-
-#Function 8
-```{r}
-simple.sf <- st_as_sf(arrancoordinates, coords=c('longitude','latitude'))
-st_crs(simple.sf) <- 4326
-
-exampleshapes <- sf:::as_Spatial(arran20162$geometry)
-examplepoints <- sf:::as_Spatial(simple.sf$geom)
-
-examplepoints <- spTransform(examplepoints, CRS("+proj=longlat +datum=WGS84"))
-exampleshapes <- spTransform(exampleshapes, CRS("+proj=longlat +datum=WGS84"))
-
-namingdzpostcode <- over(exampleshapes, examplepoints, returnList = TRUE)
-```
-
+#Old functions
 ```{r}
 function0.5 <- function(argument) 
 {
   filter(arransimd, DataZone==argument)
 }
-```
-
-```{r}
-#pre2016listID <- list(3,2,1,4,7,6,5)
-#post2016listID <- list(1,2,3,4,5,6,7)
-
-#pre2016listID2 <- list(1,2,3,4,5,6,7)
-#post2016listID2 <- list(1,2,3,4,5,6,7)
-
-listID <- list(1,2,3,4,5,6,7)
-
-#all datazones
 #datazonelist <- lapply(datazones, function0.5)
+```
 
-#Pre-2016 lists
-pre2016list2 <- list("S01004409", "S01004372", "S01004353", "S01004352", "S01004351", "S01004350", "S01004349")
-pre2016list <- lapply(pre2016list2, function0.5)
-
-#post2016list2 <- list("S01011177", "S01011171", "S01011174", "S01011176", "S01011172", "S01011173", "S01011175")
-#post2016list <- lapply(post2016list2, function0.5)
-
-post2016list3 <- list("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172" )
-post2016list2 <- lapply(post2016list3, function0.5)
+#OK at sufficiently sized exports. looks crowded in previews
+I've also made another function to plot the DZ on it's own with coordinates.
+```{r}
+function5 <- function(argument, argument2) 
+{
+  argument %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_point(data=function6(argument2), mapping = aes(x = longitude, y = latitude), size=1) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+}
 ```
 
 ```{r}
-#rearrange arrancoord
+function5.5 <- function(argument, argument2) 
+{
+  argument %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_point(data=function6(argument2), mapping = aes(x = longitude, y = latitude), size=1) +
+  geom_text_repel(data = function6(2), 
+            aes(label = function6(2)$postcode, x = longitude, y = latitude), size=2) +
+    theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+}
+```
+
+```{r}
+function1.5.5 <- function(argument) 
+{
+  argument %>%
+mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    ) %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="bottom")  
+}
+```
+
+```{r}
+function2.5.1 <- function(argument) 
+{
+  arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme(legend.position="bottom") +
+  geom_sf(data= argument, aes(fill = DataZone))
+}
+```
+
+```{r}
+function7.5.1 <- function(argument, argument2) 
+{
+  a <- function1.5.5(argument)
+  b <- function2.5.1(argument) 
+  c <- function5(argument, argument2)
+  grid.arrange(a, b, c, nrow = 1)
+}
+```
+
+```{r}
 function6 <- function(argument) 
 {
   arrancoordinates[namingdzpostcode[[argument]],]
@@ -368,66 +385,8 @@ function8.post <- function(argument)
 lapply(1:7, function8.post)
 ```
 
-```{r}
-function10 <- function(argument)
-{
-a <- arransimd %>%
-mutate(
-    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
-    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
-    ) %>%
-filter(listID == argument)  %>%
-  ggplot() +
-  geom_sf(aes(fill = Percentile)) +
-  facet_wrap('year') +
-  theme_grey() +
-  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.y=element_blank(),
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
-  theme(legend.position="bottom")  
-
-b <- arransimd %>%
-  filter(listID == argument)  %>%
-  ggplot() +
-  geom_sf(data = arransubsect) +
-  theme_grey() +
-  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
-  theme(legend.position="bottom") +
-  geom_sf(aes(fill = DataZone))
-
-c <- arransimd %>%
-  filter(listID == argument)  %>%
-  ggplot() +
-  geom_sf() +
-  theme_grey() +
-  geom_point(data = filter(newarrancoordinates, listID == argument), 
-             mapping = aes(x = longitude, y = latitude), size=1) +
-  geom_text_repel(data = filter(newarrancoordinates, listID == argument), 
-            aes(label = filter(newarrancoordinates, 
-                               listID == argument)$postcode, 
-                x = longitude, y = latitude), size=2) +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.y=element_blank()) +
-  coord_sf(crs= 4326, datum = sf::st_crs(4326))
-
-grid.arrange(a, b, c, nrow = 1)
-}
-```
-
 #create as list down side instead?
 #create template to selectively display postcodes
-
-```{r}
-lapply(unique(arransimd$listID), function10)
-```
 
 ```{r}
 function10.5 <- function(argument)
@@ -509,8 +468,11 @@ arransimd %>%
 }
 
 function11('S01004409/S01011174')
+
+lapply(unique(arransimd$listID), function11)
 ```
-  
+
+```{r}
 a <- arransimd %>%
 mutate(
     lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
@@ -537,6 +499,7 @@ b <- arransimd %>%
   theme(legend.position="bottom") +
   geom_sf(aes(fill = DataZone))
 
+```
 
 c <- arransimd %>%
   ggplot() +
