@@ -38,4 +38,6 @@ The overall aim of this project will be to create an easy template by which a us
 
 [See the code specific to these graphics.](front_page_graphics.html)
 
+[See more code for these graphics.](plots.html)
+
 [Other projects I'm working on.](https://fergustaylor.github.io) 
