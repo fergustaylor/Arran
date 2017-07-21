@@ -1,8 +1,11 @@
 ---
 title: "Arran"
 output:
-  html_document: default
+  html_document:
+    toc: yes
+    toc_float: yes
   html_notebook: default
+  github_document: default
 ---
 #Load Packages
 First I need to load up the packages I'll need
@@ -278,13 +281,13 @@ function8.pre <- function(argument)
 {
   function7.5.1(pre2016list[[argument]],listID[[argument]])
 }
-lapply(1:7, function8.pre)
+#lapply(1:7, function8.pre)
 
 function8.post <- function(argument)
 {
   function7.5.1(post2016list[[argument]],listID[[argument]])
 }
-lapply(1:7, function8.post)
+#lapply(1:7, function8.post)
 ```
 
 overlay info onto leaflet

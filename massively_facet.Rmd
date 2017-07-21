@@ -1,8 +1,11 @@
 ---
 title: "R Notebook"
 output:
-  html_document: default
+  html_document:
+    toc: yes
+    toc_float: yes
   html_notebook: default
+  github_document: default
 ---
 
 ```{r}
@@ -24,7 +27,7 @@ library(plyr)
 ```{r}
 ## Finding the Arran coordinates
 arrancoordinates <- read.csv("alldata/ukpostcodes.csv") %>%
- filter(substr(postcode,1,4)=="KA27")
+filter(substr(postcode,1,4)=="KA27")
 
 pcs <- read_sf("alldata/Scotland_pcs_2011")
 arransubsect <- filter(pcs,substr(label,1,4)=="KA27")
@@ -141,7 +144,7 @@ ggplot() +
         axis.ticks.x=element_blank(),
         axis.title.x = element_blank(),
         axis.title.y = element_blank()) +
-  theme(legend.position="bottom")  
+  theme(legend.position="bottom")
 ```
 
 ```{r}
@@ -228,4 +231,330 @@ ggplot() +
 ```
 
 #Function 8
+```{r}
+simple.sf <- st_as_sf(arrancoordinates, coords=c('longitude','latitude'))
+st_crs(simple.sf) <- 4326
+
+exampleshapes <- sf:::as_Spatial(arran20162$geometry)
+examplepoints <- sf:::as_Spatial(simple.sf$geom)
+
+examplepoints <- spTransform(examplepoints, CRS("+proj=longlat +datum=WGS84"))
+exampleshapes <- spTransform(exampleshapes, CRS("+proj=longlat +datum=WGS84"))
+
+namingdzpostcode <- over(exampleshapes, examplepoints, returnList = TRUE)
+```
+
+```{r}
+function0.5 <- function(argument) 
+{
+  filter(arransimd, DataZone==argument)
+}
+```
+
+```{r}
+#pre2016listID <- list(3,2,1,4,7,6,5)
+#post2016listID <- list(1,2,3,4,5,6,7)
+
+#pre2016listID2 <- list(1,2,3,4,5,6,7)
+#post2016listID2 <- list(1,2,3,4,5,6,7)
+
+listID <- list(1,2,3,4,5,6,7)
+
+#all datazones
+#datazonelist <- lapply(datazones, function0.5)
+
+#Pre-2016 lists
+pre2016list2 <- list("S01004409", "S01004372", "S01004353", "S01004352", "S01004351", "S01004350", "S01004349")
+pre2016list <- lapply(pre2016list2, function0.5)
+
+#post2016list2 <- list("S01011177", "S01011171", "S01011174", "S01011176", "S01011172", "S01011173", "S01011175")
+#post2016list <- lapply(post2016list2, function0.5)
+
+post2016list3 <- list("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172" )
+post2016list2 <- lapply(post2016list3, function0.5)
+```
+
+```{r}
+#rearrange arrancoord
+function6 <- function(argument) 
+{
+  arrancoordinates[namingdzpostcode[[argument]],]
+}
+```
+
+```{r}
+function5 <- function(argument, argument2) 
+{
+  argument %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_point(data=function6(argument2), mapping = aes(x = longitude, y = latitude), size=1) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+}
+```
+
+```{r}
+function7.5.1 <- function(argument, argument2) 
+{
+  a <- function1.5.5(argument)
+  b <- function2.5.1(argument) 
+  c <- function5(argument, argument2)
+  grid.arrange(a, b, c, nrow = 1)
+}
+```
+
+```{r}
+function1.5.5 <- function(argument) 
+{
+  argument %>%
+mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    ) %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="bottom")  
+}
+```
+
+```{r}
+function2.5.1 <- function(argument) 
+{
+  arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme(legend.position="bottom") +
+  geom_sf(data= argument, aes(fill = DataZone))
+}
+```
+
+```{r}
+function5 <- function(argument, argument2) 
+{
+  argument %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_point(data=function6(argument2), mapping = aes(x = longitude, y = latitude), size=1) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+}
+```
+
+```{r}
+function8.pre <- function(argument)
+{
+  function7.5.1(pre2016list[[argument]],listID[[argument]])
+}
+lapply(1:7, function8.pre)
+
+function8.post <- function(argument)
+{
+  function7.5.1(post2016list2[[argument]],listID[[argument]])
+}
+lapply(1:7, function8.post)
+```
+
+```{r}
+function10 <- function(argument)
+{
+a <- arransimd %>%
+mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    ) %>%
+filter(listID == argument)  %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="bottom")  
+
+b <- arransimd %>%
+  filter(listID == argument)  %>%
+  ggplot() +
+  geom_sf(data = arransubsect) +
+  theme_grey() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme(legend.position="bottom") +
+  geom_sf(aes(fill = DataZone))
+
+c <- arransimd %>%
+  filter(listID == argument)  %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_point(data = filter(newarrancoordinates, listID == argument), 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  geom_text_repel(data = filter(newarrancoordinates, listID == argument), 
+            aes(label = filter(newarrancoordinates, 
+                               listID == argument)$postcode, 
+                x = longitude, y = latitude), size=2) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+grid.arrange(a, b, c, nrow = 1)
+}
+```
+
+#create as list down side instead?
+#create template to selectively display postcodes
+
+```{r}
+lapply(unique(arransimd$listID), function10)
+```
+
+```{r}
+function10.5 <- function(argument)
+{
+a <- arransimd %>%
+mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    ) %>%
+filter(listID == argument)  %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="none") +
+  ggtitle(argument)  
+
+b <- arransimd %>%
+  filter(listID == argument)  %>%
+  ggplot() +
+  geom_sf(data = arransubsect) +
+  theme_grey() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme(legend.position="none") +
+  geom_sf(aes(fill = DataZone))
+
+c <- arransimd %>%
+  filter(listID == argument)  %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_point(data = filter(newarrancoordinates, listID == argument), 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  geom_text_repel(data = filter(newarrancoordinates, listID == argument), 
+            aes(label = filter(newarrancoordinates, 
+                               listID == argument)$postcode, 
+                x = longitude, y = latitude), size=2) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+grid.arrange(a, b, c, nrow = 1)
+}
+lapply(unique(arransimd$listID), function10.5)
+```
+
+```{r}
+function11 <- function(argument)
+{
+arransimd %>%
+  filter(listID == argument)  %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_point(data = filter(newarrancoordinates, listID == argument), 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  geom_text_repel(data = filter(newarrancoordinates, listID == argument), 
+            aes(label = filter(newarrancoordinates, 
+                               listID == argument)$postcode, 
+                x = longitude, y = latitude), size=2) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+}
+
+function11('S01004409/S01011174')
+```
+  
+a <- arransimd %>%
+mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    ) %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap(listID ~ year) +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="bottom")  
+
+b <- arransimd %>%
+  ggplot() +
+  geom_sf(data = arransubsect) +
+  theme_grey() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme(legend.position="bottom") +
+  geom_sf(aes(fill = DataZone))
+
+
+c <- arransimd %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_point(data = filter(newarrancoordinates, listID == argument), 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  geom_text_repel(data = filter(newarrancoordinates, listID == argument), 
+            aes(label = filter(newarrancoordinates, 
+                               listID == argument)$postcode, 
+                x = longitude, y = latitude), size=2) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+grid.arrange(a, b, c, nrow = 1)
 
