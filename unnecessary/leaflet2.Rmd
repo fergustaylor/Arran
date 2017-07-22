@@ -6,13 +6,11 @@ output: html_notebook
 ```{r}
 # !formatR
 library(leaflet)
+library(rgdal)
+library(leaflet)
+
 m = leaflet() %>% addTiles()
 ```
-
-```{r}
-states <- readOGR("/shp/cb_2013_us_state_20m.shp", layer = "cb_2013_us_state_20m")
-```
-
 
 ```{r}
 m %>% setView(-5.227680, 55.582338, zoom = 10) %>% 
@@ -20,7 +18,7 @@ addMarkers(
     lng = arrancoordinates$longitude, lat = arrancoordinates$latitude,
     label = arrancoordinates$postcode,
     labelOptions = labelOptions(noHide = F)) %>%
-  addPolygons(data=s2, weight = 3, color = "black")
+  addPolygons(data=exampleshapes, weight = 2)
 ```
 
 ```{r}
@@ -51,4 +49,6 @@ s2 <- s[Arrandz,]
 readOGR(dsn = "x:/alldata/SG_SIMD_2016", layer = "SG_SIMD_2016")
 ```
 
-
+```{r}
+states <- readOGR("/shp/cb_2013_us_state_20m.shp", layer = "cb_2013_us_state_20m")
+```

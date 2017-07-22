@@ -366,4 +366,5 @@ grid.arrange(a2, b2, c2, ncol = 3)
 
 [See this plot at a proper scale.](RplotAll.png)
 
-[See this data as an interactive map.](example.pdf)
+[See this data as an interactive map.](mapping.html)
+
