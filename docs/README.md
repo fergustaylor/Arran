@@ -38,21 +38,34 @@ Combining the coordinate and SIMD data, I've summarised one of the zones (S01004
 
 ![Summary plots](Rplot12.5.png)
 
-## All the datazones {.tabset}
+## All the datazones {.tabset .tabset-fade .tabset-pills}
 
 ### S01004409/S01011174
+
 ![Coordinate plots](function10plots.png)
+
 ### S01004372/S01011171
+
 ![Coordinate plots](function10plots2.png)
+
 ### S01004353/S01011177
+
 ![Coordinate plots](function10plots3.png)
+
 ### S01004352/S01011176
+
 ![Coordinate plots](function10plots4.png)
+
 ### S01004351/S01011175
+
 ![Coordinate plots](function10plots5.png)
+
 ### S01004350/S01011173
+
 ![Coordinate plots](function10plots6.png)
+
 ### S01004349/S01011172
+
 ![Coordinate plots](function10plots7.png)
 
 The next steps will be to overlay this data over a map using leaflet.
