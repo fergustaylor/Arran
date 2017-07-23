@@ -134,3 +134,76 @@ addLayersControl(
   )
   
 ```
+
+
+bins <- c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
+pal <- colorBin("YlOrRd", domain = arransimd$Percentile, bins = bins)
+
+arransimd10 <-arransimd
+st_crs(arransimd10) <- "+proj=longlat +datum=WGS84"
+
+arransimd10 %>% st_set_crs("+proj=longlat +datum=WGS84")
+
+
+
+addpolygonsarran2016 <- arransimd10 %>%
+  filter(year == 2016, DataZone == "S01011177")
+
+m %>% setView(-5.227680, 55.582338, zoom = 10) %>% 
+addPolygons(data = addpolygonsarran2016$geometry, 
+            weight = 2) %>% 
+
+m %>% setView(-5.227680, 55.582338, zoom = 10) %>% 
+addPolygons(data = arransimd10, 
+            weight = 2) %>% 
+  
+addLayersControl(
+    overlayGroups = c(datazonelist, datazonelist[3]),
+    options = layersControlOptions(collapsed = TRUE)
+  )
+  
+
+leaflet() %>% 
+addTiles() %>% 
+  addPolygons(filter(arransimd10$geom, DataZone == "S01011177"))
+  setView(-5.227680, 55.582338, zoom = 10)
+
+
+  addPolygons(data = exampleshapes[1] , 
+            weight = 2, label = datazonelist[1], group = datazonelist[1]) %>% 
+addPolygons(data = exampleshapes[2] , 
+            weight = 2, label = datazonelist[2], group = datazonelist[2]) %>% 
+addPolygons(data = exampleshapes[3] , 
+            weight = 2, label = datazonelist[3], group = datazonelist[3]) %>% 
+addPolygons(data = exampleshapes[4] , 
+            weight = 2, label = datazonelist[4], group = datazonelist[4]) %>% 
+addPolygons(data = exampleshapes[5] , 
+            weight = 2, label = datazonelist[5], group = datazonelist[5]) %>% 
+addPolygons(data = exampleshapes[6] , 
+            weight = 2, label = datazonelist[6], group = datazonelist[6]) %>% 
+addPolygons(data = exampleshapes[7] , 
+            weight = 2, label = datazonelist[7], group = datazonelist[7]) %>% 
+hideGroup(datazonelist[1]) %>%
+hideGroup(datazonelist[2]) %>%
+hideGroup(datazonelist[3]) %>%
+hideGroup(datazonelist[4]) %>%
+hideGroup(datazonelist[5]) %>%
+hideGroup(datazonelist[6]) %>%
+hideGroup(datazonelist[7]) %>%
+
+
+```{r}
+#install.packages("geojsonio")
+#library("geojsonio")
+
+#arranDZleaflet <-geojsonio::geojson_read("./alldata/SG_SIMD_2016/SG_SIMD_2016.shp", what = "sp")
+#class(arranDZleaflet)
+
+#m1 <- leaflet(arranDZleaflet) %>% 
+#  setView(-5.227680, 55.582338, zoom = 10) %>%
+#  addTiles()
+
+#m1 %>% addPolygons()
+```
+
+

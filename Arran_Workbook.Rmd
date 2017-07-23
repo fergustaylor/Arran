@@ -168,6 +168,21 @@ exampleshapes <- spTransform(exampleshapes, CRS("+proj=longlat +datum=WGS84"))
 namingdzpostcode <- over(exampleshapes, examplepoints, returnList = TRUE)
 ```
 
+#Labelling the namingdzpostcode list
+```{r}
+#Instead of using another list, I'm trying to standardise this, so I'll take the listID from arranSIMD
+#It's done earlier, but just to make sure it's run.
+arran2016 <- arran2016 %>%
+  slice(match(reorderedvector, DataZone))
+
+#namingdzpostcode
+names(namingdzpostcode) <- c(unique(arransimd$listID))
+
+#arrancoordinates[namingdzpostcode$`S01004409/S01011174`,]
+
+```
+
+
 I can then take a member reference from the orginal postcode list, which gives me a selection of the rows in that DZ. For simplicity I've written this as a new function. 
 
 Unfortunately, I haven't worked out how to coordinate the new ID with the original DZ names yet, so I have to select by using the appropriate ID for each DZ. (I plotted each over a map to see where it fit.)
@@ -368,3 +383,4 @@ grid.arrange(a2, b2, c2, ncol = 3)
 
 [See this data as an interactive map.](mapping.html)
 
+#Add download commands for data.
