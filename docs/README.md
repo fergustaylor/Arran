@@ -2,6 +2,16 @@
 This is an early project based on SIMD data that I'm using to try and learn R.
 I intend to explore the package ['ggplot2'](http://ggplot2.tidyverse.org/reference/ggsf.html) to practice a set of skills I'm attempting to learn through a combination of [DataCamp courses](https://www.datacamp.com/courses/free-introduction-to-r), [RStudio 'Cheat Sheets'](https://www.rstudio.com/resources/cheatsheets/) and [twitter](https://twitter.com/hashtag/Rstats?src=hash).
 
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
+
+[See the map.](map.html)
 
 ### Early progress
 
@@ -27,19 +37,6 @@ Then after faffing about with individual shape files for every year, (The data z
 Combining the coordinate and SIMD data, I've summarised one of the zones (S01004372) below.
 
 ![Summary plots](Rplot12.5.png)
-
-The next steps will be to overlay this data over a map using leaflet.
-
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map.html">
-</iframe>
-
-[See the map.](map.html)
 
 The overall aim of this project will be to create an easy template by which a user with no prior programming knowledge can create interactive graphs by overlaying some form of data attributed to a postcode alone.
 
