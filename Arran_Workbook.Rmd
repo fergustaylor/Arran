@@ -327,7 +327,6 @@ c <- arransimd %>%
 
 grid.arrange(a, b, c, nrow = 1)
 }
-lapply(unique(arransimd$listID), function10)
 ```
 
 [See these plots at a larger scale.](function10plots.html)
@@ -382,6 +381,6 @@ grid.arrange(a2, b2, c2, ncol = 3)
 
 [See this data as an interactive map.](map.html)
 
-[Go back to the main page.](https://fergustaylor.github.io/Arran)
+[Go back.](https://fergustaylor.github.io/Arran)
 
 #Add download commands for data.
