@@ -40,12 +40,8 @@ Combining the coordinate and SIMD data, I've summarised one of the zones (S01004
 
 The overall aim of this project will be to create an easy template by which a user with no prior programming knowledge can create interactive graphs by overlaying some form of data attributed to a postcode alone.
 
-[Current Progress.](massively_facet.html) 
-
 [See the full code.](Arran_Workbook.html)
 
 [See the code specific to these graphics.](front_page_graphics.html)
-
-[See more code for these graphics.](plots.html)
 
 [Other projects I'm working on.](https://fergustaylor.github.io) 
