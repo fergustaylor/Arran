@@ -32,7 +32,7 @@ library(leaflet)
 ```
 
 ```{r}
-DZBoundaries2016 <- read_sf("./alldata/SG_SIMD_2016")
+DZBoundaries2016 <- read_sf("../alldata/SG_SIMD_2016")
 ```
 
 ```{r}
@@ -207,4 +207,7 @@ hideGroup(datazonelist[7]) %>%
 #m1 %>% addPolygons()
 ```
 
+```{r}
+unique(newarrancoordinates$listID)
+```
 
