@@ -30,7 +30,65 @@ Combining the coordinate and SIMD data, I've summarised one of the zones (S01004
 
 The next steps will be to overlay this data over a map using leaflet.
 
-![Map](map.html)
+```{r}
+library(leaflet)
+library(rgdal)
+m = leaflet() %>% addTiles()
+
+mymap <- m %>% setView(-5.227680, 55.582338, zoom = 10) %>% 
+
+#allcoordinates
+addMarkers(
+    lng = newarrancoordinates$longitude, lat = newarrancoordinates$latitude,
+    label = newarrancoordinates$postcode,
+    labelOptions = labelOptions(noHide = F), group = "Postcode Plots") %>%
+hideGroup("All Postcode Plots") %>% 
+
+#alldatazones  
+addPolygons(data=exampleshapes, 
+            weight = 2, 
+            label = datazonelist,
+            group = "All Datazones") %>% 
+hideGroup("Datazones") %>% 
+  
+#selectcoordinates
+addMarkers(
+    lng = newarrancoordinates$longitude, lat = newarrancoordinates$latitude,
+    label = newarrancoordinates$postcode,
+    labelOptions = labelOptions(noHide = F), group = newarrancoordinates$listID) %>% 
+hideGroup(newarrancoordinates$listID) %>% 
+
+#selectdatazone
+addPolygons(data = exampleshapes[1] , 
+            weight = 2, label = datazonelist[1], group = datazonelist[1]) %>% 
+addPolygons(data = exampleshapes[2] , 
+            weight = 2, label = datazonelist[2], group = datazonelist[2]) %>% 
+addPolygons(data = exampleshapes[3] , 
+            weight = 2, label = datazonelist[3], group = datazonelist[3]) %>% 
+addPolygons(data = exampleshapes[4] , 
+            weight = 2, label = datazonelist[4], group = datazonelist[4]) %>% 
+addPolygons(data = exampleshapes[5] , 
+            weight = 2, label = datazonelist[5], group = datazonelist[5]) %>% 
+addPolygons(data = exampleshapes[6] , 
+            weight = 2, label = datazonelist[6], group = datazonelist[6]) %>% 
+addPolygons(data = exampleshapes[7] , 
+            weight = 2, label = datazonelist[7], group = datazonelist[7]) %>% 
+hideGroup(datazonelist[1]) %>%
+hideGroup(datazonelist[2]) %>%
+hideGroup(datazonelist[3]) %>%
+hideGroup(datazonelist[4]) %>%
+hideGroup(datazonelist[5]) %>%
+hideGroup(datazonelist[6]) %>%
+hideGroup(datazonelist[7]) %>%
+
+#Layers control
+addLayersControl(
+    baseGroups = c("All Datazones", "Postcode Plots", "Nothing"),
+    overlayGroups = c(newarrancoordinates$listID, datazonelist),
+    options = layersControlOptions(collapsed = TRUE)
+  )
+  
+```
 
 The overall aim of this project will be to create an easy template by which a user with no prior programming knowledge can create interactive graphs by overlaying some form of data attributed to a postcode alone.
 
