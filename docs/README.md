@@ -30,18 +30,6 @@ Combining the coordinate and SIMD data, I've summarised one of the zones (S01004
 
 The next steps will be to overlay this data over a map using leaflet.
 
-<style>
-	iframe {
-		position: absolute;
-		top: 50px;
-		left: 50px;
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map.html">
-</iframe>
-
 [See the map.](map.html)
 
 The overall aim of this project will be to create an easy template by which a user with no prior programming knowledge can create interactive graphs by overlaying some form of data attributed to a postcode alone.
@@ -55,3 +43,15 @@ The overall aim of this project will be to create an easy template by which a us
 [See more code for these graphics.](plots.html)
 
 [Other projects I'm working on.](https://fergustaylor.github.io) 
+
+<style>
+	iframe {
+		position: absolute;
+		top: 50px;
+		left: 50px;
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
