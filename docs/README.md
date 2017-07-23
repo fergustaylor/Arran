@@ -31,8 +31,6 @@ Combining the coordinate and SIMD data, I've summarised one of the zones (S01004
 The next steps will be to overlay this data over a map using leaflet.
 
 
-<iframe src="map"> </iframe>
-
 {% include map.html %}
 
 
