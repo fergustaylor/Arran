@@ -26,11 +26,11 @@ library(plyr)
 
 ```{r}
 ## Finding the Arran coordinates
-arrancoordinates <- read.csv("alldata/ukpostcodes.csv") %>%
- filter(substr(postcode,1,4)=="KA27")
+#arrancoordinates <- read.csv("alldata/ukpostcodes.csv") %>%
+# filter(substr(postcode,1,4)=="KA27")
 
-arransubsect <- read_sf("alldata/Scotland_pcs_2011") %>%
-filter(substr(label,1,4)=="KA27")
+#arransubsect <- read_sf("alldata/Scotland_pcs_2011") %>%
+#filter(substr(label,1,4)=="KA27")
 ```
 
 ```{r}

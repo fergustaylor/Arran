@@ -4,8 +4,7 @@ output:
   html_document:
     toc: yes
     toc_float: yes
-  html_notebook: default
-  github_document: default
+    toc_depth: 2
 ---
 #Load Packages
 First I need to load up the packages I'll need
@@ -379,8 +378,10 @@ c2 <- arransimd %>%
 grid.arrange(a2, b2, c2, ncol = 3)
 ```
 
-[See this plot at a proper scale.](RplotAll.png)
+[See this plot at a larger scale.](RplotAll.png)
 
-[See this data as an interactive map.](mapping.html)
+[See this data as an interactive map.](map.html)
+
+[Go back to the main page.](https://fergustaylor.github.io/Arran)
 
 #Add download commands for data.
