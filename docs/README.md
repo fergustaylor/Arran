@@ -31,7 +31,7 @@ Combining the coordinate and SIMD data, I've summarised one of the zones (S01004
 The next steps will be to overlay this data over a map using leaflet.
 
 
-{% include map.html %}
+{% map.html %}
 
 
 The overall aim of this project will be to create an easy template by which a user with no prior programming knowledge can create interactive graphs by overlaying some form of data attributed to a postcode alone.
