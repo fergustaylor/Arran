@@ -38,7 +38,8 @@ Combining the coordinate and SIMD data, I've summarised one of the zones (S01004
 
 ![Summary plots](Rplot12.5.png)
 
-##{.tabset}
+## {.tabset}
+
 ### S01004409/S01011174
 ![Coordinate plots](function10plots.png)
 ### S01004372/S01011171
