@@ -27,7 +27,7 @@ library(leaflet)
 ```
 
 ```{r}
-#arrancoordinates <- read.csv("alldata/ukpostcodes.csv") %>%
+#arrancoordinates <- read.csv("../alldata/ukpostcodes.csv") %>%
 # filter(substr(postcode,1,4)=="KA27")
 ```
 
@@ -80,7 +80,9 @@ postcodelist <- paste(unique(newarrancoordinates$listID), "Postcodes", sep=" ")
 datazonelist <- paste(unique(newarrancoordinates$listID), "Datazones", sep=" ")
 
 m = leaflet() %>% addTiles()
+```
 
+```{r}
 m %>% setView(-5.227680, 55.582338, zoom = 10) %>% 
 
 #allcoordinates
@@ -133,7 +135,141 @@ addLayersControl(
     overlayGroups = c(newarrancoordinates$listID, datazonelist),
     options = layersControlOptions(collapsed = TRUE)
   )
+```
+
+Inputing example markers.
+```{r}
+cliniccoordinates <- read.csv("../alldata/clinics.csv") %>%
+dplyr::left_join(arrancoordinates, by="postcode")
+#change to character
+cliniccoordinates$X <- as.character(cliniccoordinates$X)
+```
+
+```{r}
+m %>% setView(-5.227680, 55.582338, zoom = 10) %>% 
+
+#allcoordinates
+addMarkers(
+    lng = newarrancoordinates$longitude, lat = newarrancoordinates$latitude,
+    label = newarrancoordinates$postcode,
+    labelOptions = labelOptions(noHide = F), group = "All Postcode Plots") %>%
+hideGroup("All Postcode Plots") %>% 
+
+#alldatazones  
+addPolygons(data=exampleshapes, 
+            weight = 2, 
+            label = datazonelist,
+            group = "All Datazones") %>% 
+hideGroup("All Datazones") %>% 
   
+#selectcoordinates
+addMarkers(
+    lng = newarrancoordinates$longitude, lat = newarrancoordinates$latitude,
+    label = newarrancoordinates$postcode,
+    labelOptions = labelOptions(noHide = F), group = newarrancoordinates$listID) %>% 
+hideGroup(newarrancoordinates$listID) %>% 
+
+#selectdatazone
+addPolygons(data = exampleshapes[1] , 
+            weight = 2, label = datazonelist[1], group = datazonelist[1]) %>% 
+addPolygons(data = exampleshapes[2] , 
+            weight = 2, label = datazonelist[2], group = datazonelist[2]) %>% 
+addPolygons(data = exampleshapes[3] , 
+            weight = 2, label = datazonelist[3], group = datazonelist[3]) %>% 
+addPolygons(data = exampleshapes[4] , 
+            weight = 2, label = datazonelist[4], group = datazonelist[4]) %>% 
+addPolygons(data = exampleshapes[5] , 
+            weight = 2, label = datazonelist[5], group = datazonelist[5]) %>% 
+addPolygons(data = exampleshapes[6] , 
+            weight = 2, label = datazonelist[6], group = datazonelist[6]) %>% 
+addPolygons(data = exampleshapes[7] , 
+            weight = 2, label = datazonelist[7], group = datazonelist[7]) %>% 
+hideGroup(datazonelist[1]) %>%
+hideGroup(datazonelist[2]) %>%
+hideGroup(datazonelist[3]) %>%
+hideGroup(datazonelist[4]) %>%
+hideGroup(datazonelist[5]) %>%
+hideGroup(datazonelist[6]) %>%
+hideGroup(datazonelist[7]) %>%
+  
+#cliniccoordinates
+addMarkers(
+    lng = cliniccoordinates$longitude, lat = cliniccoordinates$latitude,
+    label = cliniccoordinates$X,
+    labelOptions = labelOptions(noHide = F), group = "All GP clinics") %>%
+  hideGroup("All GP clinics") %>%   
+
+#cliniccoordinates
+addMarkers(
+    lng = cliniccoordinates$longitude, lat = cliniccoordinates$latitude,
+    label = cliniccoordinates$X,
+    labelOptions = labelOptions(noHide = F), group = cliniccoordinates$X) %>%
+  hideGroup(cliniccoordinates$X) %>%   
+  
+#Layers control
+addLayersControl(
+    baseGroups = c("All Datazones", "All Postcode Plots", "All GP clinics", "Nothing"),
+    overlayGroups = c(newarrancoordinates$listID, datazonelist, cliniccoordinates$X),
+    options = layersControlOptions(collapsed = TRUE)
+  )
+```
+
+```{r}
+startofmap <- leaflet() %>% addTiles() %>% setView(-5.227680, 55.582338, zoom = 10) %>% 
+
+#allcoordinates
+addMarkers(
+    lng = newarrancoordinates$longitude, lat = newarrancoordinates$latitude,
+    label = newarrancoordinates$postcode,
+    labelOptions = labelOptions(noHide = F), group = "Postcode Plots") %>%
+hideGroup("All Postcode Plots") %>% 
+
+#alldatazones  
+addPolygons(data=exampleshapes, 
+            weight = 2, 
+            label = datazonelist,
+            group = "All Datazones") %>% 
+hideGroup("Datazones") %>% 
+  
+#selectcoordinates
+addMarkers(
+    lng = newarrancoordinates$longitude, lat = newarrancoordinates$latitude,
+    label = newarrancoordinates$postcode,
+    labelOptions = labelOptions(noHide = F), group = newarrancoordinates$listID) %>% 
+hideGroup(newarrancoordinates$listID) %>% 
+  
+#selectdatazone
+addPolygons(data = exampleshapes[1] , 
+            weight = 2, label = datazonelist[1], group = datazonelist[1]) %>% 
+addPolygons(data = exampleshapes[2] , 
+            weight = 2, label = datazonelist[2], group = datazonelist[2]) %>% 
+addPolygons(data = exampleshapes[3] , 
+            weight = 2, label = datazonelist[3], group = datazonelist[3]) %>% 
+addPolygons(data = exampleshapes[4] , 
+            weight = 2, label = datazonelist[4], group = datazonelist[4]) %>% 
+addPolygons(data = exampleshapes[5] , 
+            weight = 2, label = datazonelist[5], group = datazonelist[5]) %>% 
+addPolygons(data = exampleshapes[6] , 
+            weight = 2, label = datazonelist[6], group = datazonelist[6]) %>% 
+addPolygons(data = exampleshapes[7] , 
+            weight = 2, label = datazonelist[7], group = datazonelist[7]) %>% 
+hideGroup(datazonelist[1]) %>%
+hideGroup(datazonelist[2]) %>%
+hideGroup(datazonelist[3]) %>%
+hideGroup(datazonelist[4]) %>%
+hideGroup(datazonelist[5]) %>%
+hideGroup(datazonelist[6]) %>%
+hideGroup(datazonelist[7]) 
+
+
+startofmap %>%
+  
+#Layers control
+addLayersControl(
+    baseGroups = c("All Datazones", "Postcode Plots", "Nothing"),
+    overlayGroups = c(newarrancoordinates$listID, datazonelist, cliniccoordinates$X),
+    options = layersControlOptions(collapsed = TRUE)
+  )
 ```
 
 
