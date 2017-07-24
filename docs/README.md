@@ -36,8 +36,6 @@ Then after faffing about with individual shape files for every year, (The data z
 
 Combining the coordinate and SIMD data, I've summarised one of the zones (S01004372) below.
 
-![Summary plots](Rplot12.5.png)
-
 <style>
 	iframe {
 		width: 500px;
@@ -46,6 +44,8 @@ Combining the coordinate and SIMD data, I've summarised one of the zones (S01004
 </style>
 <iframe src="Function10.html">
 </iframe>
+
+[See these plots in a new window.](Function10.html)
 
 The next steps will be to overlay this data over a map using leaflet.
 
@@ -56,7 +56,5 @@ The overall aim of this project will be to create an easy template by which a us
 [See the full code.](Arran_Workbook.html)
 
 [See the code specific to these graphics.](front_page_graphics.html)
-
-[Back.](https://fergustaylor.github.io/Arran) 
 
 [Other projects I'm working on.](https://fergustaylor.github.io) 
