@@ -8,7 +8,6 @@ output:
 ---
 
 #Package Dependencies/ Data
-
 ```{r}
 library(sf)
 library(ggplot2) #development version!
@@ -24,11 +23,12 @@ library(plyr)
 library(leaflet)
 library(rgdal)
 library(leaflet)
+library(ggmap)
 ```
 
 ```{r}
-#arrancoordinates <- read.csv("../alldata/ukpostcodes.csv") %>%
-# filter(substr(postcode,1,4)=="KA27")
+arrancoordinates <- read.csv("../alldata/ukpostcodes.csv") %>%
+ filter(substr(postcode,1,4)=="KA27")
 ```
 
 ```{r}
@@ -216,10 +216,28 @@ addLayersControl(
   )
 ```
 
-```{r}
-class(arransimd)
-```
+Using GoogleMap images instead.
+E.g
 
+map <- get_map(location = "texas", zoom = 6, source = "stamen")
+ggmap(map, fullpage = TRUE)
+
+map <- get_map(
+location = c(-77.0425, 38.8925), # painfully picked by hand
+source = "google", zoom = 14, maptype = "satellite"
+)
+ggmap(map)
+
+
+Can plot over google maps, but not make it interactive.
+
+qmap(location = "arran")
+
+
+//
+//
+
+Chloropleth
 
 bins <- c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
 pal <- colorBin("YlOrRd", domain = arransimd$Percentile, bins = bins)
@@ -277,17 +295,24 @@ hideGroup(datazonelist[6]) %>%
 hideGroup(datazonelist[7]) %>%
 
 
-```{r}
-#install.packages("geojsonio")
-#library("geojsonio")
+
+install.packages("geojsonio")
+library("geojsonio")
 
 arranDZleaflet <-geojsonio::geojson_read("../alldata/SG_SIMD_2016/SG_SIMD_2016.shp", what = "sp")
-class(arranDZleaflet)
 
 leaflet() %>% 
   setView(-5.227680, 55.582338, zoom = 10) %>%
   addTiles() %>%
-  addPolygons(data = arranDZleaflet)
-```
+  addPolygons(data = arranDZleaflet, weight = 2)
+  
+  addPolygons(data = arranDZleaflet, weight = 2, label = arranDZleaflet, group = arranDZleaflet) %>%
+  hideGroup(arranDZleaflet) %>%
+addLayersControl(
+    baseGroups = c(arranDZleaflet),
+    overlayGroups = c(arranDZleaflet),
+    options = layersControlOptions(collapsed = TRUE)
+  )
+
 
 
