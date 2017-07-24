@@ -295,7 +295,8 @@ filter(listID == argument)  %>%
         axis.ticks.y=element_blank(),
         axis.title.x = element_blank(),
         axis.title.y = element_blank()) +
-  theme(legend.position="bottom")  
+  theme(legend.position="bottom") +
+  scale_fill_continuous(limits = c(40,80))
 
 b <- arransimd %>%
   filter(listID == argument)  %>%
