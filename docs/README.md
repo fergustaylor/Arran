@@ -80,7 +80,7 @@ I can then overlay onto the map+markers any information I want. In my first 2 ma
 
 If I used OS postcode tiles I could even overlay some information (a continuous/ variable matched to a colour palate) assigned to that postcode. (Like the percentile data, but showing many smaller areas over Arran).
 
-[See this example.](Arran_Workbook.html)
+[See this example.](mapping.html#example_markers)
 
 [See the full code.](Arran_Workbook.html)
 
