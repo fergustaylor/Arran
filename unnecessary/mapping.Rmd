@@ -33,6 +33,10 @@ arrancoordinates <- read.csv("../alldata/ukpostcodes.csv") %>%
 
 ```{r}
 DZBoundaries2016 <- read_sf("../alldata/SG_SIMD_2016")
+DZBoundaries2012 <- read_sf("../alldata/SG_SIMD_2012")
+DZBoundaries2009 <- read_sf("../alldata/SG_SIMD_2009")
+DZBoundaries2006 <- read_sf("../alldata/SG_SIMD_2006")
+DZBoundaries2004 <- read_sf("../alldata/SG_SIMD_2004")
 ```
 
 ```{r}
@@ -41,6 +45,48 @@ arran2016 <- DZBoundaries2016[c(4672,4666,4669,4671,4667,4668,4670),]
 reorderedvector<- c("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172" )
 arran2016 <- arran2016 %>%
   slice(match(reorderedvector, DataZone))
+```
+
+```{r}
+#Find postcode look-up, KA27 postcodes. Find unique DZ. Find row positions.
+#Selecting ArranDZ2012
+Arrandz2012 <- c(4409,4372,4353,4352,4351,4350,4349)
+
+#2012
+arran2012 <- DZBoundaries2012[Arrandz2012,]
+#2009
+arran2009 <- DZBoundaries2009[Arrandz2012,]
+#2006
+arran2006 <- DZBoundaries2006[Arrandz2012,]
+#2004
+arran2004 <- DZBoundaries2004[Arrandz2012,]
+
+arran20162 <- arran2016 %>%
+  select(DataZone, geometry, Percentile)  %>%
+  mutate(year="2016")
+
+arran20122 <- arran2012 %>%
+  select(DataZone, geometry, Percentile) %>%
+  mutate(year="2012")
+
+arran20092 <- arran2009 %>%
+  select(DataZone, geometry, Percentile) %>%
+  mutate(year="2009")
+
+arran20062 <- arran2006 %>%
+  select(DataZone, geometry, Percentile) %>%
+  mutate(year="2006")
+
+arran20042 <- arran2004 %>%
+  select(DataZone, geometry, Percentile) %>%
+  mutate(year="2004")
+
+#Now I add it together
+arransimd <- rbind(arran20162,arran20122,arran20092,arran20062,arran20042) %>%
+mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    )
 ```
 
 ```{r}
@@ -137,6 +183,7 @@ addLayersControl(
   )
 ```
 
+#Example Markers
 Inputing example markers.
 ```{r}
 cliniccoordinates <- read.csv("../alldata/clinics.csv") %>%
@@ -214,119 +261,6 @@ addLayersControl(
     overlayGroups = c(newarrancoordinates$listID, datazonelist, cliniccoordinates$X),
     options = layersControlOptions(collapsed = TRUE)
   )
-```
-
-```{r}
-pal <- colorNumeric(
-  palette = "Blues",
-  domain = exampleshapes2$Percentile)
-
-leaflet() %>% 
-  addTiles() %>% 
-  setView(-5.227680, 55.582338, zoom = 10) %>% 
-
-#alldatazones  
-addPolygons(data=exampleshapes, 
-            weight = 2, 
-            label = datazonelist,
-            group = "2004",
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("2004") %>% 
-  
-addPolygons(data=exampleshapes, 
-            weight = 2, 
-            label = datazonelist,
-            group = "2006",
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("2006") %>% 
-  
-addPolygons(data=exampleshapes, 
-            weight = 2, 
-            label = datazonelist,
-            group = "2009",
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("2009") %>% 
-  
-addPolygons(data=exampleshapes, 
-            weight = 2, 
-            label = datazonelist,
-            group = "2012",
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("2012") %>% 
-
-addPolygons(data=exampleshapes2, 
-            weight = 2, 
-            label = datazonelist,
-            group = "2016",
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("2016") %>% 
-  
-#cliniccoordinates
-addMarkers(
-    lng = cliniccoordinates$longitude, lat = cliniccoordinates$latitude,
-    label = cliniccoordinates$X,
-    labelOptions = labelOptions(noHide = F), group = cliniccoordinates$X) %>%
-  hideGroup(cliniccoordinates$X) %>%   
-  
-#Layers control
-addLayersControl(
-    baseGroups = c("2004", "2006", "2009", "2012", "2016", "Nothing"),
-    overlayGroups = c(cliniccoordinates$X),
-    options = layersControlOptions(collapsed = TRUE)
-  )
-```
-
-```{r}
-exampleshapes2 <- as(arran2016, "Spatial") %>%
-spTransform(CRS("+proj=longlat +datum=WGS84"))
-
-pal <- colorNumeric(
-  palette = "Blues",
-  domain = exampleshapes2$Percentile)
-
-leaflet() %>% 
-  addTiles() %>% 
-  setView(-5.227680, 55.582338, zoom = 10) %>% 
-addPolygons(data = exampleshapes2, 
-            weight = 2, 
-            label = datazonelist,
-            group = "2016",
-            fillOpacity =0.8,
-            color = ~pal(exampleshapes2$Percentile),
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE))
-
-```
-
-```{r}
-exampleshapes3 <- as(arransimd, "Spatial") %>%
-spTransform(CRS("+proj=longlat +datum=WGS84"))
-
-pal2 <- colorNumeric(
-  palette = "Blues",
-  domain = exampleshapes3$Percentile)
-
-#exampleshapes3$year=2016
-
-#exampleshapes3[exampleshapes3$year == 2016, ]
-  
-leaflet() %>% 
-  addTiles() %>% 
-  setView(-5.227680, 55.582338, zoom = 10) %>% 
-addPolygons(data = exampleshapes3[exampleshapes3$year == 2016, ], 
-            weight = 2, 
-            label = datazonelist,
-            group = "2016",
-            fillOpacity =0.8,
-            color = ~pal2(exampleshapes3$Percentile),
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE))
-
 ```
 
 ```{r}
@@ -423,16 +357,7 @@ addLayersControl(
   )
 ```
 
-```{r}
-listlist <- paste(datazonelist, exampleshapes3$Percentile, sep=" ")
-listlistlist <- paste(listlist, "%", sep="")
-
-listlistlist <- paste(datazonelist, exampleshapes3$Percentile, sep=" ") %>%
-paste("%", sep="")
-
-#listlistlist
-```
-
+#Other example stuff
 #Using GoogleMap images instead.
 E.g
 
