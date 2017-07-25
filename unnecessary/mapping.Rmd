@@ -216,7 +216,224 @@ addLayersControl(
   )
 ```
 
-Using GoogleMap images instead.
+```{r}
+pal <- colorNumeric(
+  palette = "Blues",
+  domain = exampleshapes2$Percentile)
+
+leaflet() %>% 
+  addTiles() %>% 
+  setView(-5.227680, 55.582338, zoom = 10) %>% 
+
+#alldatazones  
+addPolygons(data=exampleshapes, 
+            weight = 2, 
+            label = datazonelist,
+            group = "2004",
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2004") %>% 
+  
+addPolygons(data=exampleshapes, 
+            weight = 2, 
+            label = datazonelist,
+            group = "2006",
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2006") %>% 
+  
+addPolygons(data=exampleshapes, 
+            weight = 2, 
+            label = datazonelist,
+            group = "2009",
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2009") %>% 
+  
+addPolygons(data=exampleshapes, 
+            weight = 2, 
+            label = datazonelist,
+            group = "2012",
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2012") %>% 
+
+addPolygons(data=exampleshapes2, 
+            weight = 2, 
+            label = datazonelist,
+            group = "2016",
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2016") %>% 
+  
+#cliniccoordinates
+addMarkers(
+    lng = cliniccoordinates$longitude, lat = cliniccoordinates$latitude,
+    label = cliniccoordinates$X,
+    labelOptions = labelOptions(noHide = F), group = cliniccoordinates$X) %>%
+  hideGroup(cliniccoordinates$X) %>%   
+  
+#Layers control
+addLayersControl(
+    baseGroups = c("2004", "2006", "2009", "2012", "2016", "Nothing"),
+    overlayGroups = c(cliniccoordinates$X),
+    options = layersControlOptions(collapsed = TRUE)
+  )
+```
+
+```{r}
+exampleshapes2 <- as(arran2016, "Spatial") %>%
+spTransform(CRS("+proj=longlat +datum=WGS84"))
+
+pal <- colorNumeric(
+  palette = "Blues",
+  domain = exampleshapes2$Percentile)
+
+leaflet() %>% 
+  addTiles() %>% 
+  setView(-5.227680, 55.582338, zoom = 10) %>% 
+addPolygons(data = exampleshapes2, 
+            weight = 2, 
+            label = datazonelist,
+            group = "2016",
+            fillOpacity =0.8,
+            color = ~pal(exampleshapes2$Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE))
+
+```
+
+```{r}
+exampleshapes3 <- as(arransimd, "Spatial") %>%
+spTransform(CRS("+proj=longlat +datum=WGS84"))
+
+pal2 <- colorNumeric(
+  palette = "Blues",
+  domain = exampleshapes3$Percentile)
+
+#exampleshapes3$year=2016
+
+#exampleshapes3[exampleshapes3$year == 2016, ]
+  
+leaflet() %>% 
+  addTiles() %>% 
+  setView(-5.227680, 55.582338, zoom = 10) %>% 
+addPolygons(data = exampleshapes3[exampleshapes3$year == 2016, ], 
+            weight = 2, 
+            label = datazonelist,
+            group = "2016",
+            fillOpacity =0.8,
+            color = ~pal2(exampleshapes3$Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE))
+
+```
+
+```{r}
+arransimd$listID <- revalue(arransimd$DataZone,
+               c("S01004409"="S01004409/S01011174", "S01004372"="S01004372/S01011171", "S01004353"="S01004353/S01011177", "S01004352"="S01004352/S01011176", "S01004351"="S01004351/S01011175", "S01004350"="S01004350/S01011173", "S01004349"="S01004349/S01011172", "S01011174"="S01004409/S01011174", "S01011171"="S01004372/S01011171", "S01011177"="S01004353/S01011177", "S01011176"="S01004352/S01011176", "S01011175"="S01004351/S01011175", "S01011173"="S01004350/S01011173", "S01011172"="S01004349/S01011172"))
+
+#Check you have updated arransimd
+
+exampleshapes3 <- as(arransimd, "Spatial") %>%
+spTransform(CRS("+proj=longlat +datum=WGS84"))
+
+pal2 <- colorNumeric(
+  palette = "viridis",
+  domain = exampleshapes3$Percentile)
+
+#exampleshapes3
+
+listlistlist <- paste(datazonelist, exampleshapes3$Percentile, sep=" ") %>%
+paste("%", sep="")
+
+leaflet() %>% 
+  addTiles() %>% 
+  setView(-5.227680, 55.582338, zoom = 10) %>% 
+
+#alldatazones  
+addPolygons(data=exampleshapes3[exampleshapes3$year == 2004, ], 
+            weight = 2, 
+            label = listlistlist[29:35],
+            group = "2004",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2004") %>% 
+  
+addPolygons(data=exampleshapes3[exampleshapes3$year == 2006, ], 
+            weight = 2, 
+            label = listlistlist[22:28],
+            group = "2006",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2006") %>% 
+  
+addPolygons(data=exampleshapes3[exampleshapes3$year == 2009, ], 
+            weight = 2, 
+            label = listlistlist[15:21],
+            group = "2009",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2009") %>% 
+  
+addPolygons(data=exampleshapes3[exampleshapes3$year == 2012, ], 
+            weight = 2, 
+            label = listlistlist[8:14],
+            group = "2012",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2012") %>% 
+
+addPolygons(data=exampleshapes3[exampleshapes3$year == 2016, ], 
+            weight = 2, 
+            label = listlistlist[1:7],
+            group = "2016",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2016") %>% 
+  
+#cliniccoordinates
+addMarkers(
+    lng = cliniccoordinates$longitude, lat = cliniccoordinates$latitude,
+    label = cliniccoordinates$X,
+    labelOptions = labelOptions(noHide = F), group = cliniccoordinates$X) %>%
+  hideGroup(cliniccoordinates$X) %>%   
+
+addLegend("bottomleft", pal = pal2, values = exampleshapes3$Percentile,
+    title = "SIMD Percentile",
+    labFormat = labelFormat(suffix = "%"),
+    opacity = 1
+  )  %>%  
+
+#Layers control
+addLayersControl(
+    baseGroups = c("2004", "2006", "2009", "2012", "2016", "Nothing"),
+    overlayGroups = c(cliniccoordinates$X),
+    options = layersControlOptions(collapsed = TRUE)
+  )
+```
+
+```{r}
+listlist <- paste(datazonelist, exampleshapes3$Percentile, sep=" ")
+listlistlist <- paste(listlist, "%", sep="")
+
+listlistlist <- paste(datazonelist, exampleshapes3$Percentile, sep=" ") %>%
+paste("%", sep="")
+
+#listlistlist
+```
+
+#Using GoogleMap images instead.
 E.g
 
 map <- get_map(location = "texas", zoom = 6, source = "stamen")
@@ -237,7 +454,7 @@ qmap(location = "arran")
 //
 //
 
-Chloropleth
+#Trying to make a chloropleth.
 
 bins <- c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
 pal <- colorBin("YlOrRd", domain = arransimd$Percentile, bins = bins)
