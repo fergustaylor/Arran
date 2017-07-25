@@ -1,3 +1,14 @@
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map2.html">
+</iframe>
+
+[See the map.](map2.html)
+
 ## Introduction
 This is an early project based on SIMD data that I'm using to try and learn R.
 I intend to explore the package ['ggplot2'](http://ggplot2.tidyverse.org/reference/ggsf.html) to practice a set of skills I'm attempting to learn through a combination of [DataCamp courses](https://www.datacamp.com/courses/free-introduction-to-r), [RStudio 'Cheat Sheets'](https://www.rstudio.com/resources/cheatsheets/) and [twitter](https://twitter.com/hashtag/Rstats?src=hash).
@@ -14,19 +25,6 @@ SIMD Datazones and Example Markers
 </iframe>
 
 [See the map.](map.html)
-
-SIMD Percentiles
-
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map2.html">
-</iframe>
-
-[See the map.](map2.html)
 
 ### Early progress
 
@@ -62,11 +60,11 @@ Combining the coordinate and SIMD data, I've summarised one of the zones (S01004
 
 [See these plots in a new window.](Function10.html)
 
-I've since overlaid this data onto an interactive map using leaflet.
+As shown at the top, I've since overlaid this data onto interactive maps using leaflet.
 
-[Example map1.](map.html)
+[Map1.](map.html)
 
-[Example map2.](map2.html)
+[Map2.](map2.html)
 
 The overall aim of this project is to create an easy template by which a user with no prior programming knowledge can create interactive graphs by overlaying some form of data assigned to a postcode alone.
 
