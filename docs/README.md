@@ -72,6 +72,8 @@ The overall aim of this project will be to create an easy template by which a us
 Since I've already imported a list of all Arran Postcodes, I can create markers for any given address using one.
 For example, I had a list of each GP clinic taken from their website, (http://www.arranmedical.co.uk/contact/).
 If I put this information onto an excel chart, I can subsect the full postcode list by the clinic list, giving me a new list with coordinates I can then plot on a map.
+I can then overlay any information I wanted; zones dividing up the map by closest clinic, for example, or distance to the ferry.
+If I use the OS postcode tiles, I could even overlay some information (continuous/ variable matched to a colour palate) assigned to that postcode. Like the percentile data, but relevant to many smaller areas over Arran.
 [See this example.](Arran_Workbook.html)
 
 
