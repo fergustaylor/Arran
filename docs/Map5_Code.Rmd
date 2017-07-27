@@ -254,3 +254,5 @@ functionmap(exampleshapes2$GAccRank, "GAccRank")
 functionmap(exampleshapes2$HouseRank, "HouseRank")
 ```
 
+map51.html ->
+map512.html
