@@ -1,13 +1,13 @@
 <style>
 	iframe {
 		width: 500px;
-		height: 500px;
+		height: 700px;
 	}
 </style>
-<iframe src="map2.html">
+<iframe src="Map5view.html">
 </iframe>
 
-[See the map.](map2.html)
+[See these maps in a new window.](Map5view.html)
 
 ## Introduction
 This is an early project based on SIMD data that I'm using to try and learn R.
@@ -59,24 +59,12 @@ As shown at the top, I've since overlaid this data onto interactive maps using l
 		height: 500px;
 	}
 </style>
-<iframe src="map.html">
+<iframe src="map2.html">
 </iframe>
 
-[See the map.](map.html)
+[See the map.](map2.html)
 
-[Map2.](map2.html)
-
-<style>
-	iframe {
-		width: 500px;
-		height: 700px;
-	}
-</style>
-<iframe src="Map5view.html">
-</iframe>
-
-[See these plots in a new window.](Map5view.html)
-
+[First Version.](map.html)
 
 The overall aim of this project is to eventually create an easy template by which a user with no prior programming knowledge can create interactive graphs or static maps by overlaying some form of data assigned to a postcode alone.
 
