@@ -66,6 +66,18 @@ As shown at the top, I've since overlaid this data onto interactive maps using l
 
 [Map2.](map2.html)
 
+<style>
+	iframe {
+		width: 500px;
+		height: 700px;
+	}
+</style>
+<iframe src="Map5view.html">
+</iframe>
+
+[See these plots in a new window.](Map5view.html)
+
+
 The overall aim of this project is to eventually create an easy template by which a user with no prior programming knowledge can create interactive graphs or static maps by overlaying some form of data assigned to a postcode alone.
 
 The reason I've chosen postcode is that it's a prevalent measurement that can be integrated easily.

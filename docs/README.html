@@ -172,6 +172,15 @@ $(document).ready(function () {
 </iframe>
 <p><a href="map.html">See the map.</a></p>
 <p><a href="map2.html">Map2.</a></p>
+<style>
+    iframe {
+        width: 500px;
+        height: 700px;
+    }
+</style>
+<iframe src="Map5view.html">
+</iframe>
+<p><a href="Map5view.html">See these plots in a new window.</a></p>
 <p>The overall aim of this project is to eventually create an easy template by which a user with no prior programming knowledge can create interactive graphs or static maps by overlaying some form of data assigned to a postcode alone.</p>
 <p>The reason I’ve chosen postcode is that it’s a prevalent measurement that can be integrated easily. Since I’ve already imported a list of Arran Postcodes with coordinates, I can create markers for any given address using one. For example, I had a list of each GP clinic on Arran. If I put this information onto an excel chart, I can subsect the original full postcode list by the clinic list, giving me a new list with coordinates I can then plot as markers on a map with labels. This means I can plot anything I’d like to see the geographical spread of and using this method is the same amount of effort plotting the data for 10 markers as it would be for 100.</p>
 <p>I can then overlay onto the map+markers any information I want. In my first 2 maps I’ve shown SIMD DataZones (the units Scotland is subdivided into for measurement purposes), but I could create overlays dividing up the map by closest clinic for example (in 10/15/20 mile increments), or distance to the ferry for hospital transport.</p>
