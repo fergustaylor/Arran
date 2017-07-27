@@ -4,7 +4,150 @@ output: html_document
 
 ## {.tabset .tabset-fade .tabset-pills}
 
-### 
+###Rank 
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
+
+[Fullscreen.](.html)
+
+###Quintile
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
+
+[Fullscreen.](.html)
+
+###Decile
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
+
+[Fullscreen.](.html)
+
+###Vigintile
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
+
+[Fullscreen.](.html)
+
+###Percentile
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
+
+[Fullscreen.](.html)
+
+###IncRate
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
+
+[Fullscreen.](.html)
+
+###IncRank
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
+
+[Fullscreen.](.html)
+
+###EmpRate
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
+
+[Fullscreen.](.html)
+
+###HlthRank
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
+
+[Fullscreen.](.html)
+
+###EduRank
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
+
+[Fullscreen.](.html)
+
+###GAccRank
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
+
+[Fullscreen.](.html)
+
+###HouseRank
 
 <style>
 	iframe {

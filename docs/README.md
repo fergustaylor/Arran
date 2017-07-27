@@ -15,19 +15,6 @@ I've used the package ['ggplot2'](http://ggplot2.tidyverse.org/reference/ggsf.ht
 
 I thought Arran would make nice maps.
 
-*SIMD Datazones and Example Markers*
-
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map.html">
-</iframe>
-
-[See the map.](map.html)
-
 ### Early progress
 
 Initially I used map cordinates given by [Ordinance Survey](https://www.ordnancesurvey.co.uk/opendatadownload/products.html) to find the centre of any KA27 postcode on a map.
@@ -64,7 +51,18 @@ Combining the postcode and SIMD data, I've summarised each of the zones below.
 
 As shown at the top, I've since overlaid this data onto interactive maps using leaflet.
 
-[Map1.](map.html)
+*SIMD Datazones and Example Markers*
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
+
+[See the map.](map.html)
 
 [Map2.](map2.html)
 
