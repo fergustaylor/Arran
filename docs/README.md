@@ -1,12 +1,12 @@
 
-<style>
-	iframe {
-		width: 500px;
-		height: 700px;
-	}
-</style>
-<iframe src="Map5view.html">
-</iframe>
+<script>
+  function resizeIframe(obj) {
+    obj.style.width = obj.contentWindow.document.body.scrollWidth + 'px';
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+  }
+</script>
+
+<iframe src="Map5view.html" frameborder="0" scrolling="no" onload="resizeIframe(this)" />
 
 
 [See these maps in a new window.](Map5view.html)
