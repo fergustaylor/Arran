@@ -6,7 +6,9 @@
   }
 </script>
 
+</style>
 <iframe src="Map5view.html" frameborder="0" scrolling="no" onload="resizeIframe(this)" />
+</iframe>
 
 [See these maps in a new window.](Map5view.html)
 
