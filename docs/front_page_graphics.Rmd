@@ -1,0 +1,305 @@
+---
+title: "Front Page Graphics"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+  html_notebook: default
+---
+These are all the graphics used on the home (https://fergustaylor.github.io/Arran/) page.
+N.B The previews shown underneath their code often look cramped here. This is because the image elements shuffle themselves around depending on the available dimensions, rather than scaling at a set ratio. As such you can create much nicer images by running the same code through the console and exporting the image at custom (larger) dimensions. 
+
+#Pre-requisites/Dependencies
+```{r}
+library(sf)
+library(ggplot2) #development version!
+## devtools::install_github("tidyverse/ggplot2")
+library(tidyverse)
+library(readr)
+## Not sure about this bit
+#library("tidyverse",lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+library(cowplot)
+library(sp)
+library(gridExtra)
+library(dplyr)
+library(ggrepel)
+library(plyr)
+```
+
+```{r}
+## Finding the Arran coordinates
+arrancoordinates <- read.csv("../alldata/ukpostcodes.csv") %>%
+ filter(substr(postcode,1,4)=="KA27")
+
+arransubsect <- read_sf("../alldata/Scotland_pcs_2011") %>%
+filter(substr(label,1,4)=="KA27")
+```
+
+```{r}
+#Import SIMD data from http://www.gov.scot/Topics/Statistics/SIMD
+#https://data.gov.uk/dataset/scottish-index-of-multiple-deprivation-simd-2012
+#https://data.gov.uk/dataset/scottish-index-of-multiple-deprivation-simd-2012/resource/d6fa8924-83da-4e80-a560-4ef0477f230b
+DZBoundaries2016 <- read_sf("../alldata/SG_SIMD_2016")
+DZBoundaries2012 <- read_sf("../alldata/SG_SIMD_2012")
+DZBoundaries2009 <- read_sf("../alldata/SG_SIMD_2009")
+DZBoundaries2006 <- read_sf("../alldata/SG_SIMD_2006")
+DZBoundaries2004 <- read_sf("../alldata/SG_SIMD_2004")
+```
+
+```{r}
+#Selecting Arran data from Scotland (2016)
+#Find postcode look-up from below file for KA27 postcodes. Find unique DZ. Find row positions.
+#SIMD2016 <-read.csv("../alldata/00505244.csv")
+#Selecting ArranDZ2016
+arran2016 <- DZBoundaries2016[c(4672,4666,4669,4671,4667,4668,4670),]
+#Reorder arran 2016
+reorderedvector<- c("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172" )
+arran2016 <- arran2016 %>%
+  slice(match(reorderedvector, DataZone))
+
+#Find postcode look-up, KA27 postcodes. Find unique DZ. Find row positions.
+#Selecting ArranDZ2012
+Arrandz2012 <- c(4409,4372,4353,4352,4351,4350,4349)
+
+#2012
+arran2012 <- DZBoundaries2012[Arrandz2012,]
+#2009
+arran2009 <- DZBoundaries2009[Arrandz2012,]
+#2006
+arran2006 <- DZBoundaries2006[Arrandz2012,]
+#2004
+arran2004 <- DZBoundaries2004[Arrandz2012,]
+```
+
+```{r}
+arran20162 <- arran2016 %>%
+  select(DataZone, geometry, Percentile)  %>%
+  mutate(year="2016")
+
+arran20122 <- arran2012 %>%
+  select(DataZone, geometry, Percentile) %>%
+  mutate(year="2012")
+
+arran20092 <- arran2009 %>%
+  select(DataZone, geometry, Percentile) %>%
+  mutate(year="2009")
+
+arran20062 <- arran2006 %>%
+  select(DataZone, geometry, Percentile) %>%
+  mutate(year="2006")
+
+arran20042 <- arran2004 %>%
+  select(DataZone, geometry, Percentile) %>%
+  mutate(year="2004")
+
+#Now I add it together
+arransimd <- rbind(arran20162,arran20122,arran20092,arran20062,arran20042) %>%
+mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    )
+```
+
+```{r}
+simple.sf <- st_as_sf(arrancoordinates, coords=c('longitude','latitude'))
+st_crs(simple.sf) <- 4326
+
+exampleshapes <- sf:::as_Spatial(arran2016$geometry)
+examplepoints <- sf:::as_Spatial(simple.sf$geom)
+
+examplepoints <- spTransform(examplepoints, CRS("+proj=longlat +datum=WGS84"))
+exampleshapes <- spTransform(exampleshapes, CRS("+proj=longlat +datum=WGS84"))
+
+namingdzpostcode <- over(exampleshapes, examplepoints, returnList = TRUE)
+```
+
+```{r}
+#datazones <- unique(arransimd$DataZone)
+```
+
+///
+
+```{r}
+function0.5 <- function(argument) 
+{
+  filter(arransimd, DataZone==argument)
+}
+```
+
+#Front-Page Graphics
+```{r}
+plot1 <- ggplot() +
+  theme_grey() +
+  geom_point(data = arrancoordinates, 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+plot2 <- ggplot() +
+  geom_sf(data = arransubsect) +
+  theme_grey() +
+  geom_point(data = arrancoordinates, 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+plot3 <- ggplot() +
+  geom_sf(data = arran2016) +
+  theme_grey() +
+  geom_point(data = arrancoordinates, 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+plot4 <- ggplot() +
+  geom_sf(data = arransubsect) +
+  geom_sf(data= function0.5("S01004372")) +
+  geom_point(data = arrancoordinates[namingdzpostcode[[2]],], 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  theme_grey() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+plot5 <- function0.5("S01004372") %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_point(data = arrancoordinates[namingdzpostcode[[2]],], 
+             mapping = aes(x = longitude, y = latitude), size=1) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+
+grid.arrange(plot1, plot2, plot3, plot4, plot5, nrow = 1)
+```
+
+```{r}
+plot6 <- arran2016 %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  theme(legend.position="none") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
+
+```{r}
+plot7 <- arran2016 %>%
+  ggplot() +
+  geom_sf(aes(fill = DataZone)) +
+  theme_grey() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
+
+```{r}
+plot8 <- arran2016 %>%
+mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    ) %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank())
+```
+
+```{r}
+grid.arrange(plot6, plot7, plot8, nrow = 1)
+```
+
+```{r}
+arransimd %>%
+ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year', nrow = 1) +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  theme(legend.position="right")  
+```
+```{r}
+function1.5.5 <- function(argument) 
+{
+  argument %>%
+mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    ) %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile)) +
+  facet_wrap('year') +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat), size = 2, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="bottom")  
+}
+
+function2.5.1 <- function(argument) 
+{
+  arransubsect %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+  theme(legend.position="bottom") +
+  geom_sf(data= argument, aes(fill = DataZone))
+}
+
+function5 <- function(argument, argument2) 
+{
+  argument %>%
+  ggplot() +
+  geom_sf() +
+  theme_grey() +
+  geom_point(data=function6(argument2), mapping = aes(x = longitude, y = latitude), size=1) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326))
+}
+
+function6 <- function(argument) 
+{
+  arrancoordinates[namingdzpostcode[[argument]],]
+}
+
+function7.5.1 <- function(argument, argument2) 
+{
+  a <- function1.5.5(argument)
+  b <- function2.5.1(argument) 
+  c <- function5(argument, argument2)
+  grid.arrange(a, b, c, nrow = 1)
+}
+```
+
+```{r}
+function7.5.1(function0.5("S01004372"),2)
+```
+
+[See the rest of these plots.](Code.html#plots)

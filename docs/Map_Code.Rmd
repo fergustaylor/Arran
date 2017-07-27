@@ -1,0 +1,495 @@
+---
+title: "Map Code"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+  html_notebook: default
+---
+#Package Dependencies/ Data
+##Load Packages
+First I need to load up the packages I'll need
+```{r}
+library(sf)
+library(ggplot2) #development version!
+## devtools::install_github("tidyverse/ggplot2")
+library(tidyverse)
+library(readr)
+library(cowplot)
+library(sp)
+library(gridExtra)
+library(dplyr)
+library(ggrepel)
+library(plyr)
+```
+
+##Import Postcode Data
+Now I import my data. I filter for the Arran postcodes, (since Arran all begins 'KA27').
+```{r}
+#Add download commands for data.
+## Finding the Arran coordinates
+arrancoordinates <- read.csv("../alldata/ukpostcodes.csv") %>%
+ filter(substr(postcode,1,4)=="KA27")
+
+#Find way to replace with existing SIMD shape files
+arransubsect <- read_sf("../alldata/Scotland_pcs_2011") %>%
+filter(substr(label,1,4)=="KA27")
+```
+
+##Import SIMD data
+Now I load the SIMD data, containing the geometries (shapefiles) and SIMD data (percentiles, etc)
+```{r}
+reorderedvector<- c("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172" )
+
+arran2016 <- read_sf("../alldata/SG_SIMD_2016")[c(4672,4666,4669,4671,4667,4668,4670),] %>%
+  slice(match(reorderedvector, DataZone))
+
+Arrandz2012 <- c(4409,4372,4353,4352,4351,4350,4349)
+
+arran2012 <- read_sf("../alldata/SG_SIMD_2012")[Arrandz2012,]
+arran2009 <- read_sf("../alldata/SG_SIMD_2009")[Arrandz2012,]
+arran2006 <- read_sf("../alldata/SG_SIMD_2006")[Arrandz2012,]
+arran2004 <- read_sf("../alldata/SG_SIMD_2004")[Arrandz2012,]
+
+sharedvariables <- intersect(colnames(arran2016), colnames(arran2012)) %>%
+  intersect(colnames(arran2009))  %>%
+  intersect(colnames(arran2006))  %>%
+  intersect(colnames(arran2004))
+  
+arran20162 <- arran2016 %>%
+  select(sharedvariables) %>%
+  mutate(year="2016")
+arran20122 <- arran2012 %>%
+  select(sharedvariables) %>%
+  mutate(year="2012")
+arran20092 <- arran2009 %>%
+  select(sharedvariables) %>%
+  mutate(year="2009")
+arran20062 <- arran2006 %>%
+  select(sharedvariables) %>%
+  mutate(year="2006")
+arran20042 <- arran2004 %>%
+  select(sharedvariables) %>%
+  mutate(year="2004")
+
+arransimd <- rbind(arran20162,arran20122,arran20092,arran20062,arran20042) %>%
+mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    )
+
+arransimd$listID <- revalue(arransimd$DataZone,
+               c("S01004409"="S01004409/S01011174", "S01004372"="S01004372/S01011171", "S01004353"="S01004353/S01011177", "S01004352"="S01004352/S01011176", "S01004351"="S01004351/S01011175", "S01004350"="S01004350/S01011173", "S01004349"="S01004349/S01011172", "S01011174"="S01004409/S01011174", "S01011171"="S01004372/S01011171", "S01011177"="S01004353/S01011177", "S01011176"="S01004352/S01011176", "S01011175"="S01004351/S01011175", "S01011173"="S01004350/S01011173", "S01011172"="S01004349/S01011172"))
+```
+
+Now I want to overlay the postcodes by Datazone.
+To do this I've converted both the Arran coordinates and Arran (2016) shapefiles into spatial points/polygons, converted them into a common CRS, and then compared them by using 'plyr::over()'.
+This gives me the object 'namingdzpostcode', with the postcode rows grouped into IDs (unidentified datazones).
+```{r}
+simple.sf <- st_as_sf(arrancoordinates, coords=c('longitude','latitude'))
+st_crs(simple.sf) <- 4326
+
+exampleshapes <- sf:::as_Spatial(arran2016$geometry) %>%
+  spTransform(CRS("+proj=longlat +datum=WGS84"))
+
+examplepoints <- sf:::as_Spatial(simple.sf$geom) %>%
+  spTransform(CRS("+proj=longlat +datum=WGS84"))
+
+namingdzpostcode <- over(exampleshapes, examplepoints, returnList = TRUE)
+```
+
+I can then take a member reference from the orginal postcode list, which gives me a selection of the rows in that DZ. For simplicity I've written this as a new function. 
+##Mutate arrancoordinates to label the IDs
+```{r}
+function100 <- function(argument) 
+{
+  argument <- arrancoordinates[namingdzpostcode[[argument]],] %>% mutate(DataZone=argument)
+}
+
+arrancoordinates <- lapply(1:7,function100)
+arrancoordinates <- rbind(arrancoordinates[[1]], arrancoordinates[[2]], arrancoordinates[[3]], arrancoordinates[[4]], arrancoordinates[[5]], arrancoordinates[[6]], arrancoordinates[[7]])
+
+arrancoordinates$listID <- revalue(as.character(arrancoordinates$DataZone),
+               c('1'="S01004409/S01011174", '2'="S01004372/S01011171", '3'="S01004353/S01011177", '4'="S01004352/S01011176", '5'="S01004351/S01011175", '6'="S01004350/S01011173", '7'="S01004349/S01011172"))
+```
+
+##Labelling the namingdzpostcode list
+```{r}
+names(namingdzpostcode) <- c(unique(arransimd$listID))
+```
+
+//
+
+#Mapping
+```{r}
+library(rgdal)
+library(leaflet)
+library(ggmap)
+```
+
+##Coordinates
+```{r}
+postcodelist <- paste(unique(arrancoordinates$listID), "Postcodes", sep=" ")
+datazonelist <- paste(unique(arrancoordinates$listID), "Datazones", sep=" ")
+
+m = leaflet() %>% addTiles() %>% setView(-5.227680, 55.582338, zoom = 10) 
+```
+
+#Map1
+```{r}
+m %>% 
+
+#allcoordinates
+addMarkers(
+    lng = arrancoordinates$longitude, lat = arrancoordinates$latitude,
+    label = arrancoordinates$postcode,
+    labelOptions = labelOptions(noHide = F), group = "Postcode Plots") %>%
+hideGroup("All Postcode Plots") %>% 
+
+#alldatazones  
+addPolygons(data=exampleshapes, 
+            weight = 2, 
+            label = datazonelist,
+            group = "All Datazones") %>% 
+hideGroup("Datazones") %>% 
+  
+#selectcoordinates
+addMarkers(
+    lng = arrancoordinates$longitude, lat = arrancoordinates$latitude,
+    label = arrancoordinates$postcode,
+    labelOptions = labelOptions(noHide = F), group = arrancoordinates$listID) %>% 
+hideGroup(arrancoordinates$listID) %>% 
+
+#selectdatazone
+addPolygons(data = exampleshapes[1] , 
+            weight = 2, label = datazonelist[1], group = datazonelist[1]) %>% 
+addPolygons(data = exampleshapes[2] , 
+            weight = 2, label = datazonelist[2], group = datazonelist[2]) %>% 
+addPolygons(data = exampleshapes[3] , 
+            weight = 2, label = datazonelist[3], group = datazonelist[3]) %>% 
+addPolygons(data = exampleshapes[4] , 
+            weight = 2, label = datazonelist[4], group = datazonelist[4]) %>% 
+addPolygons(data = exampleshapes[5] , 
+            weight = 2, label = datazonelist[5], group = datazonelist[5]) %>% 
+addPolygons(data = exampleshapes[6] , 
+            weight = 2, label = datazonelist[6], group = datazonelist[6]) %>% 
+addPolygons(data = exampleshapes[7] , 
+            weight = 2, label = datazonelist[7], group = datazonelist[7]) %>% 
+hideGroup(datazonelist[1]) %>%
+hideGroup(datazonelist[2]) %>%
+hideGroup(datazonelist[3]) %>%
+hideGroup(datazonelist[4]) %>%
+hideGroup(datazonelist[5]) %>%
+hideGroup(datazonelist[6]) %>%
+hideGroup(datazonelist[7]) %>%
+
+#Layers control
+addLayersControl(
+    baseGroups = c("All Datazones", "Postcode Plots", "Nothing"),
+    overlayGroups = c(arrancoordinates$listID, datazonelist),
+    options = layersControlOptions(collapsed = TRUE)
+  )
+```
+
+#Example Markers
+Inputing example markers.
+```{r}
+cliniccoordinates <- read.csv("../alldata/clinics.csv") %>%
+dplyr::left_join(arrancoordinates, by="postcode")
+#change to character
+cliniccoordinates$X <- as.character(cliniccoordinates$X)
+```
+
+#Map2
+```{r}
+m %>%
+
+#allcoordinates
+addMarkers(
+    lng = arrancoordinates$longitude, lat = arrancoordinates$latitude,
+    label = arrancoordinates$postcode,
+    labelOptions = labelOptions(noHide = F), group = "All Postcode Plots") %>%
+hideGroup("All Postcode Plots") %>% 
+
+#alldatazones  
+addPolygons(data=exampleshapes, 
+            weight = 2, 
+            label = datazonelist,
+            group = "All Datazones",
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("All Datazones") %>% 
+
+#cliniccoordinates
+addMarkers(
+    lng = cliniccoordinates$longitude, lat = cliniccoordinates$latitude,
+    label = cliniccoordinates$X,
+    labelOptions = labelOptions(noHide = F), group = "All GP clinics") %>%
+  hideGroup("All GP clinics") %>%   
+
+#cliniccoordinates
+addMarkers(
+    lng = cliniccoordinates$longitude, lat = cliniccoordinates$latitude,
+    label = cliniccoordinates$X,
+    labelOptions = labelOptions(noHide = F), group = cliniccoordinates$X) %>%
+  hideGroup(cliniccoordinates$X) %>%   
+  
+#Layers control
+addLayersControl(
+    baseGroups = c("All Datazones", "All Postcode Plots", "All GP clinics", "Nothing"),
+    overlayGroups = c(cliniccoordinates$X),
+    options = layersControlOptions(collapsed = TRUE)
+  )
+```
+
+#Map3
+##Overlaying percentiles
+```{r}
+exampleshapes2 <- as(arransimd, "Spatial") %>%
+spTransform(CRS("+proj=longlat +datum=WGS84"))
+```
+
+##Creating a palate for percentiles
+```{r}
+pal2 <- colorNumeric(
+  palette = "viridis",
+  domain = exampleshapes2$Percentile)
+```
+
+##Creating the percentile labels
+```{r}
+listlistlist <- paste(datazonelist, exampleshapes2$Percentile, sep=" ") %>%
+paste("%", sep="")
+```
+
+##Map
+```{r}
+m %>% 
+
+#alldatazones  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2004, ], 
+            weight = 2, 
+            label = listlistlist[29:35],
+            group = "2004",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2004") %>% 
+  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2006, ], 
+            weight = 2, 
+            label = listlistlist[22:28],
+            group = "2006",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2006") %>% 
+  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2009, ], 
+            weight = 2, 
+            label = listlistlist[15:21],
+            group = "2009",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2009") %>% 
+  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2012, ], 
+            weight = 2, 
+            label = listlistlist[8:14],
+            group = "2012",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2012") %>% 
+
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2016, ], 
+            weight = 2, 
+            label = listlistlist[1:7],
+            group = "2016",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2016") %>% 
+  
+#cliniccoordinates
+addMarkers(
+    lng = cliniccoordinates$longitude, lat = cliniccoordinates$latitude,
+    label = cliniccoordinates$X,
+    labelOptions = labelOptions(noHide = F), group = cliniccoordinates$X) %>%
+  hideGroup(cliniccoordinates$X) %>%   
+
+addLegend("bottomleft", pal = pal2, values = exampleshapes2$Percentile,
+    title = "SIMD Percentile",
+    labFormat = labelFormat(suffix = "%"),
+    opacity = 1
+  )  %>%  
+
+#Layers control
+addLayersControl(
+    baseGroups = c("2004", "2006", "2009", "2012", "2016", "Nothing"),
+    overlayGroups = c(cliniccoordinates$X),
+    options = layersControlOptions(collapsed = TRUE)
+  )
+```
+
+#Map4 Arran vs. Scotland
+Beautiful map, but I have to leave the laptop running overnight to compile it.
+```{r eval=FALSE}
+#Import UK data
+DZBoundaries2016 <- read_sf("../alldata/SG_SIMD_2016")
+Scotland2016 <- as(DZBoundaries2016, "Spatial") %>%
+spTransform(CRS("+proj=longlat +datum=WGS84"))
+
+DZBoundaries2012 <- read_sf("../alldata/SG_SIMD_2012")
+Scotland2012 <- as(DZBoundaries2012, "Spatial") %>%
+spTransform(CRS("+proj=longlat +datum=WGS84"))
+
+DZBoundaries2009 <- read_sf("../alldata/SG_SIMD_2009")
+Scotland2009 <- as(DZBoundaries2009, "Spatial") %>%
+spTransform(CRS("+proj=longlat +datum=WGS84"))
+
+DZBoundaries2006 <- read_sf("../alldata/SG_SIMD_2006")
+Scotland2006 <- as(DZBoundaries2006, "Spatial") %>%
+spTransform(CRS("+proj=longlat +datum=WGS84"))
+
+DZBoundaries2004 <- read_sf("../alldata/SG_SIMD_2004")
+Scotland2004 <- as(DZBoundaries2004, "Spatial") %>%
+spTransform(CRS("+proj=longlat +datum=WGS84"))
+
+#Colour Palate
+pal2 <- colorNumeric(
+  palette = "viridis",
+  domain = 0:100)
+
+leaflet() %>% 
+  addTiles() %>% 
+  setView(-5.227680, 55.582338, zoom = 10) %>% 
+
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2004, ], 
+            weight = 2, 
+            label = listlistlist[29:35],
+            group = "2004",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2004") %>% 
+  
+addPolygons(data=Scotland2004, 
+            weight = 2, 
+            group = "Scotland 2004",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("Scotland 2004") %>% 
+  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2006, ], 
+            weight = 2, 
+            label = listlistlist[22:28],
+            group = "2006",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2006") %>% 
+
+addPolygons(data=Scotland2006, 
+            weight = 2, 
+            group = "Scotland 2006",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("Scotland 2006") %>% 
+  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2009, ], 
+            weight = 2, 
+            label = listlistlist[15:21],
+            group = "2009",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2009") %>% 
+
+addPolygons(data=Scotland2009, 
+            weight = 2, 
+            group = "Scotland 2009",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("Scotland 2009") %>% 
+  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2012, ], 
+            weight = 2, 
+            label = listlistlist[8:14],
+            group = "2012",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2012") %>% 
+  
+addPolygons(data=Scotland2012, 
+            weight = 2, 
+            group = "Scotland 2012",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("Scotland 2012") %>% 
+
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2016, ], 
+            weight = 2, 
+            label = listlistlist[1:7],
+            group = "2016",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2016") %>% 
+
+addPolygons(data=Scotland2012, 
+            weight = 2, 
+            group = "Scotland 2016",
+            fillOpacity =0.8,
+            color = ~pal2(Percentile),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("Scotland 2016") %>% 
+  
+addMarkers(
+    lng = cliniccoordinates$longitude, lat = cliniccoordinates$latitude,
+    label = cliniccoordinates$X,
+    labelOptions = labelOptions(noHide = F), group = cliniccoordinates$X) %>%
+  hideGroup(cliniccoordinates$X) %>%   
+
+addLegend("bottomleft", pal = pal2, values = exampleshapes2$Percentile,
+    title = "SIMD Percentile",
+    labFormat = labelFormat(suffix = "%"),
+    opacity = 1
+  )  %>%  
+
+addLayersControl(
+    baseGroups = c("2004", "Scotland 2004", "2006", "Scotland 2006", "2009", "Scotland 2009", "2012", "Scotland 2012", "2016", "Scotland 2016", "Nothing"),
+    overlayGroups = c(cliniccoordinates$X),
+    options = layersControlOptions(collapsed = TRUE)
+  )
+```
+
+#Map5
+I'll continue this on a new document so I can knit it to an html website. 
+[Map5.](Map5view.html)
+[Map5 Code.](Map5_Code.html)
+But the development is that I've used intersect() on each filtered 'SG_SIMD_...' to create the 'sharedvariables' vector, so I was able to create a new dataframe of every year with only shared variables, rather than percentile alone  which I originally used as an example to practice the maps on (my previous version of 'arransimd').
+The new 'arranSIMD' can then have a version of map3 for each shared variable.
+
+

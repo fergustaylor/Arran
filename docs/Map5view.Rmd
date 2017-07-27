@@ -1,0 +1,18 @@
+---
+output: html_document
+---
+
+## {.tabset .tabset-fade .tabset-pills}
+
+### 
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+<iframe src="map.html">
+</iframe>
+
+[Fullscreen.](.html)
