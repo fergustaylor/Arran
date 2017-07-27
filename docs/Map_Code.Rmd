@@ -485,6 +485,8 @@ addLayersControl(
   )
 ```
 
+![Map4](RplotMap4.png)
+
 #Map5
 I'll continue this on a new document so I can knit it to an html website. 
 

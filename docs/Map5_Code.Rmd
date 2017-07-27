@@ -240,10 +240,7 @@ addLayersControl(
 ```{r}
 map51 <- functionmap(exampleshapes2$Rank, "Rank")
 saveWidget(map51, file="map51.html")
-map52 <- functionmap(exampleshapes2$Quintile, "Quintile")
-saveWidget(map52, file="map52.html")
-map53 <- functionmap(exampleshapes2$Quintile, "Decile")
-saveWidget(map53, file="map53.html")
+
 map54 <- functionmap(exampleshapes2$Vigintile, "Vigintile")
 saveWidget(map54, file="map54.html")
 map55 <- functionmap(exampleshapes2$Percentile, "Percentile")
@@ -263,3 +260,101 @@ saveWidget(map511, file="map511.html")
 map512 <- functionmap(exampleshapes2$HouseRank, "HouseRank")
 saveWidget(map512, file="map512.html")
 ```
+
+```{r}
+functionmap2 <- function(argument, argument2, argument3) 
+{
+listlistlist <- paste(datazonelist, argument, sep=" ")
+
+m %>% 
+
+#alldatazones  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2004, ], 
+            weight = 2, 
+            label = listlistlist[29:35],
+            group = "2004",
+            fillOpacity =0.8,
+            color = ~argument3(argument[29:35]),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2004") %>% 
+  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2006, ], 
+            weight = 2, 
+            label = listlistlist[22:28],
+            group = "2006",
+            fillOpacity =0.8,
+            color = ~argument3(argument[22:28]),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2006") %>% 
+  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2009, ], 
+            weight = 2, 
+            label = listlistlist[15:21],
+            group = "2009",
+            fillOpacity =0.8,
+            color = ~argument3(argument[15:21]),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2009") %>% 
+  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2012, ], 
+            weight = 2, 
+            label = listlistlist[8:14],
+            group = "2012",
+            fillOpacity =0.8,
+            color = ~argument3(argument[8:14]),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2012") %>% 
+
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2016, ], 
+            weight = 2, 
+            label = listlistlist[1:7],
+            group = "2016",
+            fillOpacity =0.8,
+            color = ~argument3(argument[1:7]),
+            highlightOptions = highlightOptions(color = "black", weight = 2,
+      bringToFront = TRUE)) %>% 
+hideGroup("2016") %>% 
+  
+#cliniccoordinates
+addMarkers(
+    lng = cliniccoordinates$longitude, lat = cliniccoordinates$latitude,
+    label = cliniccoordinates$X,
+    labelOptions = labelOptions(noHide = F), group = cliniccoordinates$X) %>%
+  hideGroup(cliniccoordinates$X) %>%   
+
+addLegend("bottomleft", pal = argument3, values = argument,
+    title = argument2,
+    opacity = 1
+  )  %>%  
+
+#Layers control
+addLayersControl(
+    baseGroups = c("2004", "2006", "2009", "2012", "2016", "Nothing"),
+    overlayGroups = c(cliniccoordinates$X),
+    options = layersControlOptions(collapsed = TRUE)
+  )
+}
+```
+
+```{r}
+pal3 <- colorBin(palette = "magma",
+  domain = 0:5, bins = 5)
+
+pal4 <- colorBin(palette = "magma",
+  domain = 0:10, bins = 10)
+```
+
+```{r}
+map52 <- functionmap2(exampleshapes2$Quintile, "Quintile", pal3)
+saveWidget(map52, file="map52.html")
+map53 <- functionmap2(exampleshapes2$Decile, "Decile", pal4)
+saveWidget(map53, file="map53.html")
+```
+
+[See these maps.](https://fergustaylor.github.io/Arran/Map5view.html)
+
+[Go back.](https://fergustaylor.github.io/Arran)

@@ -483,10 +483,7 @@ addLayersControl(
 <h2>Each map</h2>
 <pre class="r"><code>map51 &lt;- functionmap(exampleshapes2$Rank, &quot;Rank&quot;)
 saveWidget(map51, file=&quot;map51.html&quot;)
-map52 &lt;- functionmap(exampleshapes2$Quintile, &quot;Quintile&quot;)
-saveWidget(map52, file=&quot;map52.html&quot;)
-map53 &lt;- functionmap(exampleshapes2$Quintile, &quot;Decile&quot;)
-saveWidget(map53, file=&quot;map53.html&quot;)
+
 map54 &lt;- functionmap(exampleshapes2$Vigintile, &quot;Vigintile&quot;)
 saveWidget(map54, file=&quot;map54.html&quot;)
 map55 &lt;- functionmap(exampleshapes2$Percentile, &quot;Percentile&quot;)
@@ -505,6 +502,93 @@ map511 &lt;- functionmap(exampleshapes2$GAccRank, &quot;GAccRank&quot;)
 saveWidget(map511, file=&quot;map511.html&quot;)
 map512 &lt;- functionmap(exampleshapes2$HouseRank, &quot;HouseRank&quot;)
 saveWidget(map512, file=&quot;map512.html&quot;)</code></pre>
+<pre class="r"><code>functionmap2 &lt;- function(argument, argument2, argument3) 
+{
+listlistlist &lt;- paste(datazonelist, argument, sep=&quot; &quot;)
+
+m %&gt;% 
+
+#alldatazones  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2004, ], 
+            weight = 2, 
+            label = listlistlist[29:35],
+            group = &quot;2004&quot;,
+            fillOpacity =0.8,
+            color = ~argument3(argument[29:35]),
+            highlightOptions = highlightOptions(color = &quot;black&quot;, weight = 2,
+      bringToFront = TRUE)) %&gt;% 
+hideGroup(&quot;2004&quot;) %&gt;% 
+  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2006, ], 
+            weight = 2, 
+            label = listlistlist[22:28],
+            group = &quot;2006&quot;,
+            fillOpacity =0.8,
+            color = ~argument3(argument[22:28]),
+            highlightOptions = highlightOptions(color = &quot;black&quot;, weight = 2,
+      bringToFront = TRUE)) %&gt;% 
+hideGroup(&quot;2006&quot;) %&gt;% 
+  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2009, ], 
+            weight = 2, 
+            label = listlistlist[15:21],
+            group = &quot;2009&quot;,
+            fillOpacity =0.8,
+            color = ~argument3(argument[15:21]),
+            highlightOptions = highlightOptions(color = &quot;black&quot;, weight = 2,
+      bringToFront = TRUE)) %&gt;% 
+hideGroup(&quot;2009&quot;) %&gt;% 
+  
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2012, ], 
+            weight = 2, 
+            label = listlistlist[8:14],
+            group = &quot;2012&quot;,
+            fillOpacity =0.8,
+            color = ~argument3(argument[8:14]),
+            highlightOptions = highlightOptions(color = &quot;black&quot;, weight = 2,
+      bringToFront = TRUE)) %&gt;% 
+hideGroup(&quot;2012&quot;) %&gt;% 
+
+addPolygons(data=exampleshapes2[exampleshapes2$year == 2016, ], 
+            weight = 2, 
+            label = listlistlist[1:7],
+            group = &quot;2016&quot;,
+            fillOpacity =0.8,
+            color = ~argument3(argument[1:7]),
+            highlightOptions = highlightOptions(color = &quot;black&quot;, weight = 2,
+      bringToFront = TRUE)) %&gt;% 
+hideGroup(&quot;2016&quot;) %&gt;% 
+  
+#cliniccoordinates
+addMarkers(
+    lng = cliniccoordinates$longitude, lat = cliniccoordinates$latitude,
+    label = cliniccoordinates$X,
+    labelOptions = labelOptions(noHide = F), group = cliniccoordinates$X) %&gt;%
+  hideGroup(cliniccoordinates$X) %&gt;%   
+
+addLegend(&quot;bottomleft&quot;, pal = argument3, values = argument,
+    title = argument2,
+    opacity = 1
+  )  %&gt;%  
+
+#Layers control
+addLayersControl(
+    baseGroups = c(&quot;2004&quot;, &quot;2006&quot;, &quot;2009&quot;, &quot;2012&quot;, &quot;2016&quot;, &quot;Nothing&quot;),
+    overlayGroups = c(cliniccoordinates$X),
+    options = layersControlOptions(collapsed = TRUE)
+  )
+}</code></pre>
+<pre class="r"><code>pal3 &lt;- colorBin(palette = &quot;magma&quot;,
+  domain = 0:5, bins = 5)
+
+pal4 &lt;- colorBin(palette = &quot;magma&quot;,
+  domain = 0:10, bins = 10)</code></pre>
+<pre class="r"><code>map52 &lt;- functionmap2(exampleshapes2$Quintile, &quot;Quintile&quot;, pal3)
+saveWidget(map52, file=&quot;map52.html&quot;)
+map53 &lt;- functionmap2(exampleshapes2$Decile, &quot;Decile&quot;, pal4)
+saveWidget(map53, file=&quot;map53.html&quot;)</code></pre>
+<p><a href="https://fergustaylor.github.io/Arran/Map5view.html">See these maps.</a></p>
+<p><a href="https://fergustaylor.github.io/Arran">Go back.</a></p>
 </div>
 </div>
 
