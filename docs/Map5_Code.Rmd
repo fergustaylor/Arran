@@ -126,9 +126,10 @@ names(namingdzpostcode) <- c(unique(arransimd$listID))
 library(rgdal)
 library(leaflet)
 library(ggmap)
+library(htmlwidgets)
 ```
 
-##Coordinates
+#Coordinates
 ```{r}
 postcodelist <- paste(unique(arrancoordinates$listID), "Postcodes", sep=" ")
 datazonelist <- paste(unique(arrancoordinates$listID), "Datazones", sep=" ")
@@ -156,7 +157,7 @@ spTransform(CRS("+proj=longlat +datum=WGS84"))
 ```{r}
 functionmap <- function(argument, argument2) 
 {
-pal2 <- colorNumeric(palette = "viridis",
+pal2 <- colorNumeric(palette = "magma",
   domain = argument)
 
 listlistlist <- paste(datazonelist, argument, sep=" ")
@@ -235,24 +236,30 @@ addLayersControl(
 }
 ```
 
+##Each map
 ```{r}
-colnames(arransimd)
+map51 <- functionmap(exampleshapes2$Rank, "Rank")
+saveWidget(map51, file="map51.html")
+map52 <- functionmap(exampleshapes2$Quintile, "Quintile")
+saveWidget(map51, file="map52.html")
+map53 <- functionmap(exampleshapes2$Quintile, "Decile")
+saveWidget(map51, file="map53.html")
+map54 <- functionmap(exampleshapes2$Vigintile, "Vigintile")
+saveWidget(map51, file="map54.html")
+map55 <- functionmap(exampleshapes2$Percentile, "Percentile")
+saveWidget(map51, file="map55.html")
+map56 <- functionmap(exampleshapes2$IncRate, "IncRate")
+saveWidget(map51, file="map56.html")
+map57 <- functionmap(exampleshapes2$IncRank, "IncRank")
+saveWidget(map51, file="map57.html")
+map58 <- functionmap(exampleshapes2$EmpRate, "EmpRate")
+saveWidget(map51, file="map58.html")
+map59 <- functionmap(exampleshapes2$HlthRank, "HlthRank")
+saveWidget(map51, file="map59.html")
+map510 <- functionmap(exampleshapes2$EduRank, "EduRank")
+saveWidget(map51, file="map510.html")
+map511 <- functionmap(exampleshapes2$GAccRank, "GAccRank")
+saveWidget(map51, file="map511.html")
+map512 <- functionmap(exampleshapes2$HouseRank, "HouseRank")
+saveWidget(map51, file="map512.html")
 ```
-
-```{r}
-functionmap(exampleshapes2$Rank, "Rank")
-functionmap(exampleshapes2$Quintile, "Quintile")
-functionmap(exampleshapes2$Quintile, "Decile")
-functionmap(exampleshapes2$Vigintile, "Vigintile")
-functionmap(exampleshapes2$Percentile, "Percentile")
-functionmap(exampleshapes2$IncRate, "IncRate")
-functionmap(exampleshapes2$IncRank, "IncRank")
-functionmap(exampleshapes2$EmpRate, "EmpRate")
-functionmap(exampleshapes2$HlthRank, "HlthRank")
-functionmap(exampleshapes2$EduRank, "EduRank")
-functionmap(exampleshapes2$GAccRank, "GAccRank")
-functionmap(exampleshapes2$HouseRank, "HouseRank")
-```
-
-map51.html ->
-map512.html
