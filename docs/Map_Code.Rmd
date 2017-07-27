@@ -487,9 +487,13 @@ addLayersControl(
 
 #Map5
 I'll continue this on a new document so I can knit it to an html website. 
+
 [Map5.](Map5view.html)
+
 [Map5 Code.](Map5_Code.html)
+
 But the development is that I've used intersect() on each filtered 'SG_SIMD_...' to create the 'sharedvariables' vector, so I was able to create a new dataframe of every year with only shared variables, rather than percentile alone  which I originally used as an example to practice the maps on (my previous version of 'arransimd').
 The new 'arranSIMD' can then have a version of map3 for each shared variable.
 
+[Go back.](https://fergustaylor.github.io/Arran)
 

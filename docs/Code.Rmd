@@ -206,7 +206,9 @@ ggplot() +
   facet_wrap('listID', nrow = 1)
 ```
 
-```{r}
+[See this plot at a larger scale.](Rplot15.png)
+
+```{r eval=FALSE}
 thisfunction2 <- function(argument) 
 {arransimd %>%
   filter(listID == argument)  %>%
@@ -231,6 +233,8 @@ thisfunction2 <- function(argument)
 output2 <- lapply(unique(arransimd$listID), thisfunction2)
 grid.arrange(output2[[1]], output2[[2]], output2[[3]], output2[[4]], output2[[5]], output2[[6]], output2[[7]], ncol = 7)
 ```
+
+[See this plot at a larger scale.](Rplot14.png)
 
 #Plots
 ```{r}
@@ -290,7 +294,7 @@ grid.arrange(a, b, c, nrow = 1)
 
 [See these plots at a larger scale.](function10plots.html)
 
-```{r}
+```{r eval=FALSE}
 a2 <- arransimd %>%
   ggplot() +
   geom_sf(aes(fill = Percentile)) +
