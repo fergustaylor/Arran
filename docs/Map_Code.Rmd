@@ -1,10 +1,11 @@
 ---
 title: "Map Code"
 output:
+  md_document: default
+  html_notebook: default
   html_document:
     toc: yes
     toc_float: yes
-  html_notebook: default
 ---
 #Package Dependencies/ Data
 ##Load Packages
