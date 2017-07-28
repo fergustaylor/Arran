@@ -485,6 +485,7 @@ addLayersControl(
   )
 ```
 
+#Map4 Arran vs. Scotland Map
 ![Map4](RplotMap4.png)
 
 #Map5
