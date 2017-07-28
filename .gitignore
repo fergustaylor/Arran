@@ -5,3 +5,11 @@
 .alldata
 /alldata
 /alldata/**
+/minimal/**
+/minimal
+/Gemfile
+/Gemfile.lock
+/_site
+/_site/**
+/_layouts
+/_layouts/**

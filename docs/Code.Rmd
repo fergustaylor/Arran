@@ -3,8 +3,9 @@ title: "R Code"
 output:
   html_document:
     toc: yes
-    toc_float: yes
     toc_depth: 2
+    toc_float: yes
+  md_document:
 ---
 #Load Packages
 First I need to load up the packages I'll need
