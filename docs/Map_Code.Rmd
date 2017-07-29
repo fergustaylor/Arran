@@ -1,11 +1,11 @@
 ---
 title: "Map Code"
 output:
-  md_document: default
-  html_notebook: default
   html_document:
     toc: yes
     toc_float: yes
+  html_notebook: default
+  md_document: default
 ---
 #Package Dependencies/ Data
 ##Load Packages
@@ -458,7 +458,7 @@ addPolygons(data=exampleshapes2[exampleshapes2$year == 2016, ],
       bringToFront = TRUE)) %>% 
 hideGroup("2016") %>% 
 
-addPolygons(data=Scotland2012, 
+addPolygons(data=Scotland2016, 
             weight = 2, 
             group = "Scotland 2016",
             fillOpacity =0.8,
@@ -487,7 +487,7 @@ addLayersControl(
 ```
 
 #Map4 Arran vs. Scotland Map
-![Map4](RplotMap4.png)
+![Map4](gif4.gif)
 
 #Map5
 I'll continue this on a new document so I can knit it to an html website. 

@@ -159,163 +159,48 @@ listlistlist <- paste(datazonelist, exampleshapes2$Percentile, sep=" ") %>%
 paste("%", sep="")
 ```
 
-#Map4 Arran vs. Scotland
-Beautiful map, but I have to leave the laptop running overnight to compile it.
-```{r eval=FALSE}
-#Import UK data
-DZBoundaries2016 <- read_sf("../alldata/SG_SIMD_2016")
-Scotland2016 <- as(DZBoundaries2016, "Spatial") %>%
-spTransform(CRS("+proj=longlat +datum=WGS84"))
-
-DZBoundaries2012 <- read_sf("../alldata/SG_SIMD_2012")
-Scotland2012 <- as(DZBoundaries2012, "Spatial") %>%
-spTransform(CRS("+proj=longlat +datum=WGS84"))
-
-DZBoundaries2009 <- read_sf("../alldata/SG_SIMD_2009")
-Scotland2009 <- as(DZBoundaries2009, "Spatial") %>%
-spTransform(CRS("+proj=longlat +datum=WGS84"))
-
-DZBoundaries2006 <- read_sf("../alldata/SG_SIMD_2006")
-Scotland2006 <- as(DZBoundaries2006, "Spatial") %>%
-spTransform(CRS("+proj=longlat +datum=WGS84"))
-
-DZBoundaries2004 <- read_sf("../alldata/SG_SIMD_2004")
-Scotland2004 <- as(DZBoundaries2004, "Spatial") %>%
-spTransform(CRS("+proj=longlat +datum=WGS84"))
-
-#Colour Palate
-pal2 <- colorNumeric(
-  palette = "viridis",
-  domain = 0:100)
-
-leaflet() %>% 
-  addTiles() %>% 
-  setView(-5.227680, 55.582338, zoom = 10) %>% 
-
-addPolygons(data=exampleshapes2[exampleshapes2$year == 2004, ], 
-            weight = 2, 
-            label = listlistlist[29:35],
-            group = "2004",
-            fillOpacity =0.8,
-            color = ~pal2(Percentile),
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("2004") %>% 
-  
-addPolygons(data=Scotland2004, 
-            weight = 2, 
-            group = "Scotland 2004",
-            fillOpacity =0.8,
-            color = ~pal2(Percentile),
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("Scotland 2004") %>% 
-  
-addPolygons(data=exampleshapes2[exampleshapes2$year == 2006, ], 
-            weight = 2, 
-            label = listlistlist[22:28],
-            group = "2006",
-            fillOpacity =0.8,
-            color = ~pal2(Percentile),
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("2006") %>% 
-
-addPolygons(data=Scotland2006, 
-            weight = 2, 
-            group = "Scotland 2006",
-            fillOpacity =0.8,
-            color = ~pal2(Percentile),
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("Scotland 2006") %>% 
-  
-addPolygons(data=exampleshapes2[exampleshapes2$year == 2009, ], 
-            weight = 2, 
-            label = listlistlist[15:21],
-            group = "2009",
-            fillOpacity =0.8,
-            color = ~pal2(Percentile),
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("2009") %>% 
-
-addPolygons(data=Scotland2009, 
-            weight = 2, 
-            group = "Scotland 2009",
-            fillOpacity =0.8,
-            color = ~pal2(Percentile),
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("Scotland 2009") %>% 
-  
-addPolygons(data=exampleshapes2[exampleshapes2$year == 2012, ], 
-            weight = 2, 
-            label = listlistlist[8:14],
-            group = "2012",
-            fillOpacity =0.8,
-            color = ~pal2(Percentile),
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("2012") %>% 
-  
-addPolygons(data=Scotland2012, 
-            weight = 2, 
-            group = "Scotland 2012",
-            fillOpacity =0.8,
-            color = ~pal2(Percentile),
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("Scotland 2012") %>% 
-
-addPolygons(data=exampleshapes2[exampleshapes2$year == 2016, ], 
-            weight = 2, 
-            label = listlistlist[1:7],
-            group = "2016",
-            fillOpacity =0.8,
-            color = ~pal2(Percentile),
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("2016") %>% 
-
-addPolygons(data=Scotland2012, 
-            weight = 2, 
-            group = "Scotland 2016",
-            fillOpacity =0.8,
-            color = ~pal2(Percentile),
-            highlightOptions = highlightOptions(color = "black", weight = 2,
-      bringToFront = TRUE)) %>% 
-hideGroup("Scotland 2016") %>% 
-  
-addMarkers(
-    lng = cliniccoordinates$longitude, lat = cliniccoordinates$latitude,
-    label = cliniccoordinates$X,
-    labelOptions = labelOptions(noHide = F), group = cliniccoordinates$X) %>%
-  hideGroup(cliniccoordinates$X) %>%   
-
-addLegend("bottomleft", pal = pal2, values = exampleshapes2$Percentile,
-    title = "SIMD Percentile",
-    labFormat = labelFormat(suffix = "%"),
-    opacity = 1
-  )  %>%  
-
-addLayersControl(
-    baseGroups = c("2004", "Scotland 2004", "2006", "Scotland 2006", "2009", "Scotland 2009", "2012", "Scotland 2012", "2016", "Scotland 2016", "Nothing"),
-    overlayGroups = c(cliniccoordinates$X),
-    options = layersControlOptions(collapsed = TRUE)
-  )
-```
-
+#Creating animated maps
 ```{r}
-p <- ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, color = continent, frame = year)) +
-  geom_point() +
-  scale_x_log10()
-
+p <- arransimd %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile, frame = year)) +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat, frame = year), size = 5, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="bottom")  
 gganimate(p)
+gganimate(p, "output2.gif")
 ```
 
-Timeline
+#Creating animated maps over ggmap
 ```{r}
+map <- get_map(location = c(lon = -5.227680, lat =55.582338)) %>%
+  ggmap() +
+  geom_sf(data = arransimd, aes(fill = Percentile, frame = year)) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326)) +
+  theme_grey() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="bottom")
+
+gganimate(map)
+gganimate(map, "output3.gif")
+```
+
+
+
+//
+Timeline
+```{r eval= FALSE}
 library(htmlwidgets)
 library(htmltools)
 library(leaflet)
