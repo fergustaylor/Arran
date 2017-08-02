@@ -1,16 +1,22 @@
 ---
-title: "Map Code"
 output:
   html_document:
     toc: yes
     toc_float: yes
+    code_folding: hide
   html_notebook: default
-  md_document: default
 ---
+
 #Package Dependencies/ Data
+N.B. There are codeblocks here which have been hidden by default as they are just repeats of the start of ['code'.](Code.html) 
+This just the point where in a new environment you would need to load up the same packages as before, and import/create the data in 'code', to make the below graphics produceable in R.
+Anything new starts after ///.
+
+If you'd like to see this code, it's visible in the .rmd at ['Map_Code.Rmd'.](Map_Code.Rmd). Or directly from github https://github.com/fergustaylor/Arran (in /docs).
+
+```{r include=FALSE}
 ##Load Packages
-First I need to load up the packages I'll need
-```{r}
+#First I need to load up the packages I'll need
 library(sf)
 library(ggplot2) #development version!
 ## devtools::install_github("tidyverse/ggplot2")
@@ -24,9 +30,9 @@ library(ggrepel)
 library(plyr)
 ```
 
+```{r include=FALSE}
 ##Import Postcode Data
-Now I import my data. I filter for the Arran postcodes, (since Arran all begins 'KA27').
-```{r}
+#Now I import my data. I filter for the Arran postcodes, (since Arran all begins 'KA27').
 #Add download commands for data.
 ## Finding the Arran coordinates
 arrancoordinates <- read.csv("../alldata/ukpostcodes.csv") %>%
@@ -37,9 +43,9 @@ arransubsect <- read_sf("../alldata/Scotland_pcs_2011") %>%
 filter(substr(label,1,4)=="KA27")
 ```
 
+```{r include=FALSE}
 ##Import SIMD data
-Now I load the SIMD data, containing the geometries (shapefiles) and SIMD data (percentiles, etc)
-```{r}
+#Now I load the SIMD data, containing the geometries (shapefiles) and SIMD data (percentiles, etc)
 reorderedvector<- c("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172" )
 
 arran2016 <- read_sf("../alldata/SG_SIMD_2016")[c(4672,4666,4669,4671,4667,4668,4670),] %>%
@@ -83,10 +89,10 @@ arransimd$listID <- revalue(arransimd$DataZone,
                c("S01004409"="S01004409/S01011174", "S01004372"="S01004372/S01011171", "S01004353"="S01004353/S01011177", "S01004352"="S01004352/S01011176", "S01004351"="S01004351/S01011175", "S01004350"="S01004350/S01011173", "S01004349"="S01004349/S01011172", "S01011174"="S01004409/S01011174", "S01011171"="S01004372/S01011171", "S01011177"="S01004353/S01011177", "S01011176"="S01004352/S01011176", "S01011175"="S01004351/S01011175", "S01011173"="S01004350/S01011173", "S01011172"="S01004349/S01011172"))
 ```
 
-Now I want to overlay the postcodes by Datazone.
-To do this I've converted both the Arran coordinates and Arran (2016) shapefiles into spatial points/polygons, converted them into a common CRS, and then compared them by using 'plyr::over()'.
-This gives me the object 'namingdzpostcode', with the postcode rows grouped into IDs (unidentified datazones).
-```{r}
+```{r include=FALSE}
+#Now I want to overlay the postcodes by Datazone.
+#To do this I've converted both the Arran coordinates and Arran (2016) shapefiles into spatial points/polygons, converted them into a common CRS, and then compared them by using 'plyr::over()'.
+#This gives me the object 'namingdzpostcode', with the postcode rows grouped into IDs (unidentified datazones).
 simple.sf <- st_as_sf(arrancoordinates, coords=c('longitude','latitude'))
 st_crs(simple.sf) <- 4326
 
@@ -99,9 +105,9 @@ examplepoints <- sf:::as_Spatial(simple.sf$geom) %>%
 namingdzpostcode <- over(exampleshapes, examplepoints, returnList = TRUE)
 ```
 
-I can then take a member reference from the orginal postcode list, which gives me a selection of the rows in that DZ. For simplicity I've written this as a new function. 
+```{r include=FALSE}
+#I can then take a member reference from the orginal postcode list, which gives me a selection of the rows in that DZ. For simplicity I've written this as a new function. 
 ##Mutate arrancoordinates to label the IDs
-```{r}
 function100 <- function(argument) 
 {
   argument <- arrancoordinates[namingdzpostcode[[argument]],] %>% mutate(DataZone=argument)
@@ -114,15 +120,17 @@ arrancoordinates$listID <- revalue(as.character(arrancoordinates$DataZone),
                c('1'="S01004409/S01011174", '2'="S01004372/S01011171", '3'="S01004353/S01011177", '4'="S01004352/S01011176", '5'="S01004351/S01011175", '6'="S01004350/S01011173", '7'="S01004349/S01011172"))
 ```
 
+```{r include=FALSE}
 ##Labelling the namingdzpostcode list
-```{r}
 names(namingdzpostcode) <- c(unique(arransimd$listID))
 ```
 
-//
+///
 
 #Mapping
-```{r}
+
+##Load the packages
+```{r message=FALSE, warning=FALSE}
 library(rgdal)
 library(leaflet)
 library(ggmap)
@@ -135,6 +143,8 @@ datazonelist <- paste(unique(arrancoordinates$listID), "Datazones", sep=" ")
 
 m = leaflet() %>% addTiles() %>% setView(-5.227680, 55.582338, zoom = 10) 
 ```
+
+Create some labels for the maps.
 
 #Map1
 ```{r}
@@ -194,7 +204,7 @@ addLayersControl(
 
 #Example Markers
 Inputing example markers.
-```{r}
+```{r message=FALSE, warning=FALSE}
 cliniccoordinates <- read.csv("../alldata/clinics.csv") %>%
 dplyr::left_join(arrancoordinates, by="postcode")
 #change to character

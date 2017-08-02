@@ -140,7 +140,8 @@ function0.5 <- function(argument)
 function0.5 <- function(argument) 
 {
   filter(arransimd, DataZone==argument)
-}`
+}
+`
 
 The code for each plot is hidden by default, select 'code'/'hide' on the right to individually show/hide the code used for each plot.
 ```{r}
