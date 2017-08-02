@@ -1,16 +1,24 @@
 ---
-title: "Front Page Graphics"
 output:
   html_document:
     toc: yes
     toc_float: yes
+    code_folding: hide
   html_notebook: default
 ---
+#Introduction
 These are all the graphics used on the home (https://fergustaylor.github.io/Arran/) page.
-N.B The previews shown underneath their code often look cramped here. This is because the image elements shuffle themselves around depending on the available dimensions, rather than scaling at a set ratio. As such you can create much nicer images by running the same code through the console and exporting the image at custom (larger) dimensions. 
 
-#Pre-requisites/Dependencies
-```{r}
+N.B. The previews shown underneath their code often look cramped here. This is because the image elements shuffle themselves around depending on the available dimensions, rather than scaling at a set ratio. As such you can create much nicer images by running the same code through the console and exporting the image at custom (larger) dimensions. 
+
+#Dependencies
+N.B. There are codeblocks here which have been hidden by default as they are just repeats of the start of ['code'.](Code.html) 
+This just the point where in a new environment you would need to load up the same packages as before, and import/create the data in 'code', to make the below graphics produceable in R.
+Anything new starts after ///.
+
+If you'd like to see this code, it's visible in the .rmd at ['front_page_graphics.Rmd'.](front_page_graphics.Rmd). Or directly from github https://github.com/fergustaylor/Arran (in /docs).
+
+```{r include=FALSE}
 library(sf)
 library(ggplot2) #development version!
 ## devtools::install_github("tidyverse/ggplot2")
@@ -26,7 +34,7 @@ library(ggrepel)
 library(plyr)
 ```
 
-```{r}
+```{r include=FALSE}
 ## Finding the Arran coordinates
 arrancoordinates <- read.csv("../alldata/ukpostcodes.csv") %>%
  filter(substr(postcode,1,4)=="KA27")
@@ -35,7 +43,7 @@ arransubsect <- read_sf("../alldata/Scotland_pcs_2011") %>%
 filter(substr(label,1,4)=="KA27")
 ```
 
-```{r}
+```{r include=FALSE}
 #Import SIMD data from http://www.gov.scot/Topics/Statistics/SIMD
 #https://data.gov.uk/dataset/scottish-index-of-multiple-deprivation-simd-2012
 #https://data.gov.uk/dataset/scottish-index-of-multiple-deprivation-simd-2012/resource/d6fa8924-83da-4e80-a560-4ef0477f230b
@@ -46,7 +54,7 @@ DZBoundaries2006 <- read_sf("../alldata/SG_SIMD_2006")
 DZBoundaries2004 <- read_sf("../alldata/SG_SIMD_2004")
 ```
 
-```{r}
+```{r include=FALSE}
 #Selecting Arran data from Scotland (2016)
 #Find postcode look-up from below file for KA27 postcodes. Find unique DZ. Find row positions.
 #SIMD2016 <-read.csv("../alldata/00505244.csv")
@@ -71,7 +79,7 @@ arran2006 <- DZBoundaries2006[Arrandz2012,]
 arran2004 <- DZBoundaries2004[Arrandz2012,]
 ```
 
-```{r}
+```{r include=FALSE}
 arran20162 <- arran2016 %>%
   select(DataZone, geometry, Percentile)  %>%
   mutate(year="2016")
@@ -100,7 +108,7 @@ mutate(
     )
 ```
 
-```{r}
+```{r include=FALSE}
 simple.sf <- st_as_sf(arrancoordinates, coords=c('longitude','latitude'))
 st_crs(simple.sf) <- 4326
 
@@ -113,20 +121,28 @@ exampleshapes <- spTransform(exampleshapes, CRS("+proj=longlat +datum=WGS84"))
 namingdzpostcode <- over(exampleshapes, examplepoints, returnList = TRUE)
 ```
 
-```{r}
+```{r include=FALSE}
 #datazones <- unique(arransimd$DataZone)
 ```
 
 ///
 
-```{r}
+#Front-Page Graphics
+First - create a small function to make the plots work.
+```{r }
 function0.5 <- function(argument) 
 {
   filter(arransimd, DataZone==argument)
 }
 ```
 
-#Front-Page Graphics
+`r
+function0.5 <- function(argument) 
+{
+  filter(arransimd, DataZone==argument)
+}`
+
+The code for each plot is hidden by default, select 'code'/'hide' on the right to individually show/hide the code used for each plot.
 ```{r}
 plot1 <- ggplot() +
   theme_grey() +
@@ -195,18 +211,14 @@ plot6 <- arran2016 %>%
   theme(legend.position="none") +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
-```
 
-```{r}
 plot7 <- arran2016 %>%
   ggplot() +
   geom_sf(aes(fill = DataZone)) +
   theme_grey() +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
-```
 
-```{r}
 plot8 <- arran2016 %>%
 mutate(
     lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
@@ -220,9 +232,7 @@ mutate(
         axis.ticks.x=element_blank(),
         axis.title.x = element_blank(),
         axis.title.y = element_blank())
-```
 
-```{r}
 grid.arrange(plot6, plot7, plot8, nrow = 1)
 ```
 
@@ -296,9 +306,7 @@ function7.5.1 <- function(argument, argument2)
   c <- function5(argument, argument2)
   grid.arrange(a, b, c, nrow = 1)
 }
-```
 
-```{r}
 function7.5.1(function0.5("S01004372"),2)
 ```
 

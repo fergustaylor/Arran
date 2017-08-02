@@ -1,15 +1,14 @@
 ---
-title: "R Code"
 output:
   html_document:
     toc: yes
     toc_depth: 2
     toc_float: yes
-  md_document:
+  md_document: default
 ---
 #Load Packages
 First I need to load up the packages I'll need
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(sf)
 library(ggplot2) #development version!
 ## devtools::install_github("tidyverse/ggplot2")
@@ -18,9 +17,9 @@ library(readr)
 library(cowplot)
 library(sp)
 library(gridExtra)
+library(plyr)
 library(dplyr)
 library(ggrepel)
-library(plyr)
 ```
 
 #Import Postcode Data
