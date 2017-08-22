@@ -9,6 +9,7 @@
 </iframe>
 
 [See the map.](map2.html)
+[See the code.](Map_Code.html)
 
 ## Introduction
 This is an early project based on SIMD data that I'm using to try and learn R.
@@ -93,5 +94,7 @@ If I used OS postcode tiles I could even overlay some information (a continuous/
 [See the full project code.](Code.html)
 
 [See the code specific to these graphics.](front_page_graphics.html)
+
+[See the code for the maps.](Map_Code.html)
 
 [Other projects I'm working on.](https://fergustaylor.github.io) 
