@@ -233,7 +233,6 @@ mutate(
         axis.ticks.x=element_blank(),
         axis.title.x = element_blank(),
         axis.title.y = element_blank())
-
 grid.arrange(plot6, plot7, plot8, nrow = 1)
 ```
 

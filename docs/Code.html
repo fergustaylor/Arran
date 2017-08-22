@@ -234,7 +234,7 @@ library(ggrepel)</code></pre>
 </div>
 <div id="import-postcode-data" class="section level1">
 <h1>Import Postcode Data</h1>
-<p>Now I import my data. I filter for the Arran postcodes, (since Arran all begins ‘KA27’).</p>
+<p>Now I import my data. I filter for the Arran postcodes, (since Arran all begins ‘KA27’). (I’ve already downloaded it but you can use the below download code). temp &lt;- tempfile() download.file(“<a href="https://www.freemaptools.com/download/full-postcodes/ukpostcodes.zip" class="uri">https://www.freemaptools.com/download/full-postcodes/ukpostcodes.zip</a>”,temp) ukpostcodes &lt;- read.csv(unz(temp, “ukpostcodes.csv”)) unlink(temp)</p>
 <pre class="r"><code>#Add download commands for data.
 ## Finding the Arran coordinates
 arrancoordinates &lt;- read.csv(&quot;../alldata/ukpostcodes.csv&quot;) %&gt;%
@@ -246,7 +246,7 @@ filter(substr(label,1,4)==&quot;KA27&quot;)</code></pre>
 </div>
 <div id="import-simd-data" class="section level1">
 <h1>Import SIMD data</h1>
-<p>Now I load the SIMD data, containing the geometries (shapefiles) and SIMD data (percentiles, etc)</p>
+<p>Now I load the SIMD data, containing the geometries (shapefiles) and SIMD data (percentiles, etc) (Can be downloaded from the below address). <a href="http://sedsh127.sedsh.gov.uk/Atom_data/ScotGov/ZippedShapefiles/SG_SIMD_2016.zip" class="uri">http://sedsh127.sedsh.gov.uk/Atom_data/ScotGov/ZippedShapefiles/SG_SIMD_2016.zip</a></p>
 <pre class="r"><code>reorderedvector&lt;- c(&quot;S01011174&quot;, &quot;S01011171&quot;, &quot;S01011177&quot;, &quot;S01011176&quot;, &quot;S01011175&quot;, &quot;S01011173&quot;, &quot;S01011172&quot; )
 
 arran2016 &lt;- read_sf(&quot;../alldata/SG_SIMD_2016&quot;)[c(4672,4666,4669,4671,4667,4668,4670),] %&gt;%

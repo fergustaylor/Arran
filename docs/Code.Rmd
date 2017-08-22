@@ -24,6 +24,12 @@ library(ggrepel)
 
 #Import Postcode Data
 Now I import my data. I filter for the Arran postcodes, (since Arran all begins 'KA27').
+(I've already downloaded it but you can use the below download code).
+temp <- tempfile()
+download.file("https://www.freemaptools.com/download/full-postcodes/ukpostcodes.zip",temp)
+ukpostcodes <- read.csv(unz(temp, "ukpostcodes.csv"))
+unlink(temp)
+
 ```{r}
 #Add download commands for data.
 ## Finding the Arran coordinates
@@ -37,6 +43,8 @@ filter(substr(label,1,4)=="KA27")
 
 #Import SIMD data
 Now I load the SIMD data, containing the geometries (shapefiles) and SIMD data (percentiles, etc)
+(Can be downloaded from the below address).
+http://sedsh127.sedsh.gov.uk/Atom_data/ScotGov/ZippedShapefiles/SG_SIMD_2016.zip
 ```{r}
 reorderedvector<- c("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172" )
 
