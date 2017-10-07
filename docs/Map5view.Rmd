@@ -6,156 +6,84 @@ output: html_document
 
 ###Rank 
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map51.html">
+<iframe src="map51.html" height=650px width=100% style="border:none;">
 </iframe>
 
 [Fullscreen.](map51.html)
 
 ###Quintile
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map52.html">
+<iframe src="map52.html" height=650px width=100% style="border:none;">
 </iframe>
 
 [Fullscreen.](map52.html)
 
 ###Decile
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map53.html">
+<iframe src="map53.html" height=650px width=100% style="border:none;">
 </iframe>
 
 [Fullscreen.](map53.html)
 
 ###Vigintile
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map54.html">
+<iframe src="map54.html" height=650px width=100% style="border:none;">
 </iframe>
 
 [Fullscreen.](map54.html)
 
 ###Percentile
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map55.html">
+<iframe src="map55.html" height=650px width=100% style="border:none;">
 </iframe>
 
 [Fullscreen.](map55.html)
 
 ###IncRate
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map56.html">
+<iframe src="map56.html" height=650px width=100% style="border:none;">
 </iframe>
 
 [Fullscreen.](map56.html)
 
 ###IncRank
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map57.html">
+<iframe src="map57.html" height=650px width=100% style="border:none;">
 </iframe>
 
 [Fullscreen.](map57.html)
 
 ###EmpRate
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map58.html">
+<iframe src="map58.html" height=650px width=100% style="border:none;">
 </iframe>
 
 [Fullscreen.](map58.html)
 
 ###HlthRank
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map59.html">
+<iframe src="map59.html" height=650px width=100% style="border:none;">
 </iframe>
 
 [Fullscreen.](map59.html)
 
 ###EduRank
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map510.html">
+<iframe src="map510.html" height=650px width=100% style="border:none;">
 </iframe>
 
 [Fullscreen.](map510.html)
 
 ###GAccRank
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map511.html">
+<iframe src="map511.html" height=650px width=100% style="border:none;">
 </iframe>
 
 [Fullscreen.](map511.html)
 
 ###HouseRank
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map512.html">
+<iframe src="map512.html" height=650px width=100% style="border:none;">
 </iframe>
 
 [Fullscreen.](map512.html)
