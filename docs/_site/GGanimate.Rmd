@@ -1,0 +1,270 @@
+#Package Dependencies/ Data
+##Load Packages
+First I need to load up the packages I'll need
+```{r}
+library(sf)
+library(ggplot2) #development version!
+## devtools::install_github("tidyverse/ggplot2")
+library(tidyverse)
+library(readr)
+library(cowplot)
+library(sp)
+library(gridExtra)
+library(dplyr)
+library(ggrepel)
+library(plyr)
+library(gapminder)
+#devtools::install_github("dgrtwo/gganimate", force=TRUE)
+library(gganimate)
+```
+
+##Import Postcode Data
+Now I import my data. I filter for the Arran postcodes, (since Arran all begins 'KA27').
+```{r}
+#Add download commands for data.
+## Finding the Arran coordinates
+arrancoordinates <- read.csv("../alldata/ukpostcodes.csv") %>%
+ filter(substr(postcode,1,4)=="KA27")
+
+#Find way to replace with existing SIMD shape files
+arransubsect <- read_sf("../alldata/Scotland_pcs_2011") %>%
+filter(substr(label,1,4)=="KA27")
+```
+
+##Import SIMD data
+Now I load the SIMD data, containing the geometries (shapefiles) and SIMD data (percentiles, etc)
+```{r}
+reorderedvector<- c("S01011174", "S01011171", "S01011177", "S01011176", "S01011175", "S01011173", "S01011172" )
+
+arran2016 <- read_sf("../alldata/SG_SIMD_2016")[c(4672,4666,4669,4671,4667,4668,4670),] %>%
+  slice(match(reorderedvector, DataZone))
+
+Arrandz2012 <- c(4409,4372,4353,4352,4351,4350,4349)
+
+arran2012 <- read_sf("../alldata/SG_SIMD_2012")[Arrandz2012,]
+arran2009 <- read_sf("../alldata/SG_SIMD_2009")[Arrandz2012,]
+arran2006 <- read_sf("../alldata/SG_SIMD_2006")[Arrandz2012,]
+arran2004 <- read_sf("../alldata/SG_SIMD_2004")[Arrandz2012,]
+
+sharedvariables <- intersect(colnames(arran2016), colnames(arran2012)) %>%
+  intersect(colnames(arran2009))  %>%
+  intersect(colnames(arran2006))  %>%
+  intersect(colnames(arran2004))
+  
+arran20162 <- arran2016 %>%
+  select(sharedvariables) %>%
+  mutate(year="2016")
+arran20122 <- arran2012 %>%
+  select(sharedvariables) %>%
+  mutate(year="2012")
+arran20092 <- arran2009 %>%
+  select(sharedvariables) %>%
+  mutate(year="2009")
+arran20062 <- arran2006 %>%
+  select(sharedvariables) %>%
+  mutate(year="2006")
+arran20042 <- arran2004 %>%
+  select(sharedvariables) %>%
+  mutate(year="2004")
+
+arransimd <- rbind(arran20162,arran20122,arran20092,arran20062,arran20042) %>%
+mutate(
+    lon = map_dbl(geometry, ~st_centroid(.x)[[1]]),
+    lat = map_dbl(geometry, ~st_centroid(.x)[[2]])
+    )
+
+arransimd$listID <- revalue(arransimd$DataZone,
+               c("S01004409"="S01004409/S01011174", "S01004372"="S01004372/S01011171", "S01004353"="S01004353/S01011177", "S01004352"="S01004352/S01011176", "S01004351"="S01004351/S01011175", "S01004350"="S01004350/S01011173", "S01004349"="S01004349/S01011172", "S01011174"="S01004409/S01011174", "S01011171"="S01004372/S01011171", "S01011177"="S01004353/S01011177", "S01011176"="S01004352/S01011176", "S01011175"="S01004351/S01011175", "S01011173"="S01004350/S01011173", "S01011172"="S01004349/S01011172"))
+```
+
+Now I want to overlay the postcodes by Datazone.
+To do this I've converted both the Arran coordinates and Arran (2016) shapefiles into spatial points/polygons, converted them into a common CRS, and then compared them by using 'plyr::over()'.
+This gives me the object 'namingdzpostcode', with the postcode rows grouped into IDs (unidentified datazones).
+```{r}
+simple.sf <- st_as_sf(arrancoordinates, coords=c('longitude','latitude'))
+st_crs(simple.sf) <- 4326
+
+exampleshapes <- sf:::as_Spatial(arran2016$geometry) %>%
+  spTransform(CRS("+proj=longlat +datum=WGS84"))
+
+examplepoints <- sf:::as_Spatial(simple.sf$geom) %>%
+  spTransform(CRS("+proj=longlat +datum=WGS84"))
+
+namingdzpostcode <- over(exampleshapes, examplepoints, returnList = TRUE)
+```
+
+I can then take a member reference from the orginal postcode list, which gives me a selection of the rows in that DZ. For simplicity I've written this as a new function. 
+##Mutate arrancoordinates to label the IDs
+```{r}
+function100 <- function(argument) 
+{
+  argument <- arrancoordinates[namingdzpostcode[[argument]],] %>% mutate(DataZone=argument)
+}
+
+arrancoordinates <- lapply(1:7,function100)
+arrancoordinates <- rbind(arrancoordinates[[1]], arrancoordinates[[2]], arrancoordinates[[3]], arrancoordinates[[4]], arrancoordinates[[5]], arrancoordinates[[6]], arrancoordinates[[7]])
+
+arrancoordinates$listID <- revalue(as.character(arrancoordinates$DataZone),
+               c('1'="S01004409/S01011174", '2'="S01004372/S01011171", '3'="S01004353/S01011177", '4'="S01004352/S01011176", '5'="S01004351/S01011175", '6'="S01004350/S01011173", '7'="S01004349/S01011172"))
+```
+
+##Labelling the namingdzpostcode list
+```{r}
+names(namingdzpostcode) <- c(unique(arransimd$listID))
+```
+
+//
+
+#Mapping
+```{r}
+library(rgdal)
+library(leaflet)
+library(ggmap)
+```
+
+##Coordinates
+```{r}
+postcodelist <- paste(unique(arrancoordinates$listID), "Postcodes", sep=" ")
+datazonelist <- paste(unique(arrancoordinates$listID), "Datazones", sep=" ")
+
+m = leaflet() %>% addTiles() %>% setView(-5.227680, 55.582338, zoom = 10) 
+```
+
+#Example Markers
+Inputing example markers.
+```{r}
+cliniccoordinates <- read.csv("../alldata/clinics.csv") %>%
+dplyr::left_join(arrancoordinates, by="postcode")
+#change to character
+cliniccoordinates$X <- as.character(cliniccoordinates$X)
+```
+
+```{r}
+exampleshapes2 <- as(arransimd, "Spatial") %>%
+spTransform(CRS("+proj=longlat +datum=WGS84"))
+```
+
+##Creating the percentile labels
+```{r}
+listlistlist <- paste(datazonelist, exampleshapes2$Percentile, sep=" ") %>%
+paste("%", sep="")
+```
+
+#Creating animated maps
+```{r}
+p <- arransimd %>%
+  ggplot() +
+  geom_sf(aes(fill = Percentile, frame = year)) +
+  theme_grey() +
+  geom_text(aes(label = Percentile, x = lon, y = lat, frame = year), size = 5, colour = "white") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="bottom")  
+gganimate(p)
+gganimate(p, "output2.gif")
+```
+
+#Creating animated maps over ggmap
+```{r}
+map <- get_map(location = c(lon = -5.227680, lat =55.582338)) %>%
+  ggmap() +
+  geom_sf(data = arransimd, aes(fill = Percentile, frame = year)) +
+  coord_sf(crs= 4326, datum = sf::st_crs(4326)) +
+  theme_grey() +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  theme(legend.position="bottom")
+
+gganimate(map)
+gganimate(map, "output3.gif")
+```
+
+
+
+//
+Timeline
+```{r eval= FALSE}
+library(htmlwidgets)
+library(htmltools)
+library(leaflet)
+library(geojsonio)
+
+#Build data.frame with 10 obs + 3 cols
+power <- data.frame(
+  "Latitude" = c(33.515556, 38.060556, 47.903056, 49.71, 49.041667, 31.934167, 54.140586, 54.140586, 48.494444, 48.494444),
+  "Longitude" = c(129.837222, -77.789444, 7.563056, 8.415278, 9.175, -82.343889, 13.664422, 13.664422, 17.681944, 17.681944),
+  "start" = do.call(
+    "as.Date",
+    list(
+      x = c("15-Sep-1971", "1-Dec-1971", "1-Feb-1972", "1-Feb-1972", "1-Feb-1972", "1-Feb-1972", "1-Apr-1972", "1-Apr-1972", "24-Apr-1972", "24-Apr-1972"),
+      format = "%d-%b-%Y"
+    )
+  )
+)
+
+# set start same as end
+#  adjust however you would like
+power$end <- power$start
+
+
+# use geojsonio to convert our data.frame
+#  to GeoJSON which timeline expects
+power_geo <- geojson_json(power,lat="Latitude",lon="Longitude")
+
+# create a leaflet map on which we will build
+leaf <- leaflet() %>%
+  addTiles()
+
+# add leaflet-timeline as a dependency
+#  to get the js and css
+leaf$dependencies[[length(leaf$dependencies)+1]] <- htmlDependency(
+  name = "leaflet-timeline",
+  version = "1.0.0",
+  src = c("href" = "http://skeate.github.io/Leaflet.timeline/"),
+  script = "javascripts/leaflet.timeline.js",
+  stylesheet = "stylesheets/leaflet.timeline.css"
+)
+
+# use the new onRender in htmlwidgets to run
+#  this code once our leaflet map is rendered
+#  I did not spend time perfecting the leaflet-timeline
+#  options
+leaf %>%
+  setView(44.0665,23.74667,2) %>%
+  onRender(sprintf(
+    '
+function(el,x){
+    var power_data = %s;
+
+    var timeline = L.timeline(power_data, {
+      pointToLayer: function(data, latlng){
+        var hue_min = 120;
+        var hue_max = 0;
+        var hue = hue_min;
+        return L.circleMarker(latlng, {
+          radius: 10,
+          color: "hsl("+hue+", 100%%, 50%%)",
+          fillColor: "hsl("+hue+", 100%%, 50%%)"
+        });
+      },
+      steps: 1000,
+      duration: 10000,
+      showTicks: true
+    });
+    timeline.addTo(HTMLWidgets.find(".leaflet"));
+}
+    ',
+    power_geo
+))
+
+https://stackoverflow.com/questions/36554605/cant-loop-with-rs-leaflet-package-to-produce-multiple-maps/36587525
+```
+

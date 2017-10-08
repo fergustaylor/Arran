@@ -1,0 +1,192 @@
+<!DOCTYPE HTML>
+
+
+<html>
+  <head>
+    <title>Arran by fergustaylor</title>
+    <meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    	<meta http-equiv="content-language" content="en-uk" />
+    	<meta name="og:image" content="https://fergustaylor.github.io/images/avatar.jpg">
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://fergustaylor.github.io/css/main.css" />
+    
+  </head>
+  
+  <body id="top">
+
+<header id="header">
+  
+  <a href="../" class="image avatar"><img src="https://fergustaylor.github.io/images/avatar.jpg" alt="" /></a>
+  
+  
+        <h1><strong>Arran</strong></h1>
+        <h1>A practice at using ggplot2, geom_sf and leaflet to demonstrate Arran SIMD data.</h1>
+
+<nav id="sidebar">
+			<ul>
+        
+				<li><a href="../">Home</a></li>
+				<li><a href="https://fergustaylor.github.io/post">Archive</a></li>
+			
+			</ul>
+		</nav>
+        
+</header>
+      
+      
+      <div id="main">
+
+      
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+
+<iframe src="map2.html">
+</iframe>
+
+<p><a href="/map2.html">See the map.</a>
+<a href="/Map_Code.html">See the code.</a></p>
+
+<h2 id="introduction">Introduction</h2>
+<p>This is an early project based on SIMD data that I’m using to try and learn R.
+I’ve used the package <a href="http://ggplot2.tidyverse.org/reference/ggsf.html">‘ggplot2’</a> as part of the Tidyverse to practice a set of skills I’m attempting to learn through a combination of <a href="https://www.datacamp.com/courses/free-introduction-to-r">DataCamp courses</a>, <a href="https://www.rstudio.com/resources/cheatsheets/">RStudio ‘Cheat Sheets’</a> and <a href="https://twitter.com/hashtag/Rstats?src=hash">twitter</a>.</p>
+
+<p>I thought Arran would make nice maps.</p>
+
+<h3 id="early-progress">Early progress</h3>
+
+<p>Initially I used map cordinates given by <a href="https://www.ordnancesurvey.co.uk/opendatadownload/products.html">Ordinance Survey</a> to find the centre of any KA27 postcode on a map.
+(KA27 being the prefix or ‘postcode area’ that denotes all Aran Island postcodes).</p>
+
+<p>I then read the coordinates into sf with st_as_sf(), and plotted over a shape file map of Arran; over the SIMD data zones, as well as the section of coordinates contained in one data zone/</p>
+
+<p><img src="/Rplot11.5.png" alt="Coordinate plots" /></p>
+
+<p>With the postcodes sorted, I then wanted to relate some other information about these areas.
+I used <a href="www.gov.scot/Topics/Statistics/SIMD">SIMD</a> ‘DataZone boundraries’ and plotted their ERSI Shapefiles using ‘geom_sf.’ 
+First the data zones onto the island.
+Then I coloured/labelled the individual data zones.
+Having worked that out, I wanted to show some health data about the zones. I overlayed ‘percentile’ data about the areas for 2016.</p>
+
+<p><img src="/Rplot13.png" alt="DZ Outlines2" /></p>
+
+<p>Then after faffing about with individual shape files for every year, (The data zone labels changed after 2012), I did the same for all the SIMD data periods and used facet_wrap to plot them all together.</p>
+
+<p><img src="/Rplot10.png" alt="Percentile Facet_wrap" /></p>
+
+<p>Combining the postcode and SIMD data, I’ve summarised each of the zones below.</p>
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+
+<iframe src="Function10.html">
+</iframe>
+
+<p><a href="/Function10.html">See these plots in a new window.</a></p>
+
+<p>As shown at the top, I’ve since overlaid this data onto interactive maps using leaflet.</p>
+
+<p><em>SIMD Datazones and Example Markers</em></p>
+
+<style>
+	iframe {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+
+<iframe src="map.html">
+</iframe>
+
+<p><a href="/map.html">First Version.</a></p>
+
+<style>
+	iframe {
+		width: 500px;
+		height: 700px;
+	}
+</style>
+
+<iframe src="Map5view.html">
+</iframe>
+
+<p><a href="/Map5view.html">See the map.</a></p>
+
+<p>The overall aim of this project is to eventually create an easy template by which a user with no prior programming knowledge can create interactive graphs or static maps by overlaying some form of data assigned to a postcode alone.</p>
+
+<p>The reason I’ve chosen postcode is that it’s a prevalent measurement that can be integrated easily.
+Since I’ve already imported a list of Arran Postcodes with coordinates, I can create markers for any given address using one.
+For example, I had a list of each GP clinic on Arran.
+If I put this information onto an excel chart, I can subsect the original full postcode list by the clinic list, giving me a new list with coordinates I can then plot as markers on a map with labels.
+This means I can plot anything I’d like to see the geographical spread of and using this method is the same amount of effort plotting the data for 10 markers as it would be for 100.</p>
+
+<p>I can then overlay onto the map+markers any information I want. In my first 2 maps I’ve shown SIMD DataZones (the units Scotland is subdivided into for measurement purposes), but I could create overlays dividing up the map by closest clinic for example (in 10/15/20 mile increments), or distance to the ferry for hospital transport.</p>
+
+<p>If I used OS postcode tiles I could even overlay some information (a continuous/ variable matched to a colour palate) assigned to that postcode. (Like the percentile data, but showing many smaller areas over Arran).</p>
+
+<p><a href="/Map_Code.html#example_markers">See the clinic plot example.</a></p>
+
+<p><a href="/Code.html">See the full project code.</a></p>
+
+<p><a href="/front_page_graphics.html">See the code specific to these graphics.</a></p>
+
+<p><a href="/Map_Code.html">See the code for the maps.</a></p>
+
+<p><a href="https://fergustaylor.github.io">Other projects I’m working on.</a></p>
+
+      
+      </div>
+      
+      <footer id="footer">
+	<ul class="icons">
+		
+		 <p class="view"><a href="http://github.com/fergustaylor/Arran">View the Project on GitHub <small></small></a></p>
+		
+		<li><a href="//twitter.com/ferguswtaylor" target="_blank" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+		
+		<li><a href="//github.com/fergustaylor" target="_blank" class="icon fa-github"><span class="label">GitHub</span></a></li>
+		
+<li><a href="../index.xml" class="icon fa-rss" type="application/rss+xml"><span class="label">RSS</span></a></li>
+		
+	</ul>
+
+	<ul class="copyright">
+		
+		<li>&copy; Fergus Taylor</li>
+		
+		<li>Images my own.</li>
+		
+		<li>Design: <a href="//html5up.net">HTML5 UP</a></li>
+		
+	</ul>
+      </footer>
+    
+<script src="https://fergustaylor.github.io/js/jquery.min.js"></script>
+<script src="https://fergustaylor.github.io/js/jquery.poptrox.min.js"></script>
+<script src="https://fergustaylor.github.io/js/skel.min.js"></script>
+<script src="https://fergustaylor.github.io/js/util.js"></script>
+
+<script src="https://fergustaylor.github.io/js/main.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-107299466-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+	</body>
+</html>
