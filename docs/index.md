@@ -34,7 +34,7 @@ Then after faffing about with individual shape files for every year, (The data z
 
 Combining the postcode and SIMD data, I've summarised each of the zones below.
 
-<iframe src="Function10.html" width="100%" height="650px" >
+<iframe src="Function10.html" width="100%" height="700px" >
 </iframe>
 
 [See these plots in a new window.](Function10.html)
@@ -48,7 +48,7 @@ As shown at the top, I've since overlaid this data onto interactive maps using l
 
 [First Version.](map.html)
 
-<iframe src="Map5view.html" width="100%" height="650px" >
+<iframe src="Map5view.html" width="100%" height="700px" >
 </iframe>
 
 [See the map.](Map5view.html)
