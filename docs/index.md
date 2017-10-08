@@ -1,11 +1,5 @@
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map2.html">
+<iframe src="map2.html" width="100%" height="650px" >
 </iframe>
 
 [See the map.](map2.html)
@@ -24,7 +18,7 @@ Initially I used map cordinates given by [Ordinance Survey](https://www.ordnance
 
 I then read the coordinates into sf with st_as_sf(), and plotted over a shape file map of Arran; over the SIMD data zones, as well as the section of coordinates contained in one data zone/
 
-![Coordinate plots](Rplot11.5.png)
+<img src="Rplot11.5.png" alt="Coordinate plots" style="width:100%;height:auto;">
 
 With the postcodes sorted, I then wanted to relate some other information about these areas.
 I used [SIMD](www.gov.scot/Topics/Statistics/SIMD) 'DataZone boundraries' and plotted their ERSI Shapefiles using 'geom_sf.' 
@@ -32,21 +26,15 @@ First the data zones onto the island.
 Then I coloured/labelled the individual data zones.
 Having worked that out, I wanted to show some health data about the zones. I overlayed 'percentile' data about the areas for 2016.
 
-![DZ Outlines2](Rplot13.png)
+<img src="Rplot13.png" alt="DZ Outlines2" style="width:100%;height:auto;">
 
 Then after faffing about with individual shape files for every year, (The data zone labels changed after 2012), I did the same for all the SIMD data periods and used facet_wrap to plot them all together.
 
-![Percentile Facet_wrap](Rplot10.png)
+<img src="Rplot10.png" alt="Percentile Facet_wrap" style="width:100%;height:auto;">
 
 Combining the postcode and SIMD data, I've summarised each of the zones below.
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="Function10.html">
+<iframe src="Function10.html" width="100%" height="650px" >
 </iframe>
 
 [See these plots in a new window.](Function10.html)
@@ -55,24 +43,12 @@ As shown at the top, I've since overlaid this data onto interactive maps using l
 
 *SIMD Datazones and Example Markers*
 
-<style>
-	iframe {
-		width: 500px;
-		height: 500px;
-	}
-</style>
-<iframe src="map.html">
+<iframe src="map.html" width="100%" height="650px" >
 </iframe>
 
 [First Version.](map.html)
 
-<style>
-	iframe {
-		width: 500px;
-		height: 700px;
-	}
-</style>
-<iframe src="Map5view.html">
+<iframe src="Map5view.html" width="100%" height="650px" >
 </iframe>
 
 [See the map.](Map5view.html)
