@@ -16,3 +16,5 @@ With a little manipulation these diagrams and interactive maps can be adapted/re
 The project website https://fergustaylor.github.io/Arran/ is viewable from the README in 'docs'.
 
 As well as more examples of how I've used this repository, [here.](https://fergustaylor.github.io/categories/arran/)
+
+![Alt Text](https://media.giphy.com/media/3o72wDhW4An19iHJwA/giphy.gif)
