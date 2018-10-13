@@ -6,7 +6,7 @@
 [See the code.](Map_Code.html)
 
 ## Introduction
-This is an early project based on SIMD data that I'm using to try and learn R.
+This is an early project based on SIMD data that I've used to try to learn R.
 I've used the package ['ggplot2'](http://ggplot2.tidyverse.org/reference/ggsf.html) as part of the Tidyverse to practice a set of skills I'm attempting to learn through a combination of [DataCamp courses](https://www.datacamp.com/courses/free-introduction-to-r), [RStudio 'Cheat Sheets'](https://www.rstudio.com/resources/cheatsheets/) and [twitter](https://twitter.com/hashtag/Rstats?src=hash).
 
 I thought Arran would make nice maps.
